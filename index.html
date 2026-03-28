@@ -9,21 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --bg: #0a0c10;
-    --surface: #111318;
-    --surface2: #181c24;
-    --surface3: #1e2330;
-    --border: #2a2f3d;
-    --border2: #343b4f;
-    --text: #e8eaf0;
-    --text2: #9ba3b8;
-    --text3: #5c6480;
-    --accent: #5b8def;
-    --green: #4ecca3;
-    --yellow: #f5c842;
-    --red: #f06060;
-    --purple: #a78bfa;
-    --orange: #fb923c;
+    --bg: #0a0c10; --surface: #111318; --surface2: #181c24; --surface3: #1e2330;
+    --border: #2a2f3d; --border2: #343b4f; --text: #e8eaf0; --text2: #9ba3b8; --text3: #5c6480;
+    --accent: #5b8def; --green: #4ecca3; --yellow: #f5c842; --red: #f06060; --purple: #a78bfa; --orange: #fb923c;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
@@ -37,11 +25,25 @@
   /* Header */
   .header { display: flex; align-items: center; justify-content: space-between; padding: 28px 0; border-bottom: 1px solid var(--border); margin-bottom: 36px; flex-wrap: wrap; gap: 16px; }
   .logo { display: flex; align-items: center; gap: 12px; }
-  .logo-mark { width: 40px; height: 40px; background: linear-gradient(135deg, var(--accent), var(--purple)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px; color: white; }
+  .logo-mark {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--accent), var(--purple));
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px;
+    color: white; letter-spacing: -1px;
+    box-shadow: 0 4px 14px rgba(91,141,239,0.45), inset 0 1px 0 rgba(255,255,255,0.2);
+    position: relative; overflow: hidden;
+  }
+  .logo-mark::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(160deg, rgba(255,255,255,0.18) 0%, transparent 55%);
+    pointer-events: none;
+  }
   .logo-text { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; letter-spacing: -0.5px; }
   .logo-sub { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
 
-  /* Page Tab Nav */
+  /* Page tabs */
   .page-nav { display: flex; align-items: center; gap: 4px; background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 4px; }
   .page-tab { display: flex; align-items: center; gap: 7px; padding: 8px 18px; border-radius: 9px; font-family: 'Syne', sans-serif; font-weight: 600; font-size: 13px; color: var(--text3); cursor: pointer; border: none; background: transparent; transition: all 0.2s; white-space: nowrap; }
   .page-tab:hover:not(:disabled) { color: var(--text2); }
@@ -57,7 +59,7 @@
   .page.active { display: block; animation: fadeUp 0.3s ease; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-  /* Main grid (page 1) */
+  /* Layout */
   .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
   @media (max-width: 860px) { .main-grid { grid-template-columns: 1fr; } }
 
@@ -78,25 +80,63 @@
   .role-count { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); margin-top: 3px; }
 
   /* Skill form */
-  .skill-form { display: grid; grid-template-columns: 1fr auto auto; gap: 10px; margin-bottom: 16px; align-items: end; }
-  @media (max-width: 540px) { .skill-form { grid-template-columns: 1fr 1fr; } .skill-form .btn-add-wrap { grid-column: span 2; } }
-  .form-group label { display: block; font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
-  .form-input { width: 100%; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 14px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; }
+  .skill-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .skill-form-bottom { display: flex; gap: 10px; margin-bottom: 16px; align-items: flex-end; }
+  .form-group { display: flex; flex-direction: column; }
+  .form-group label { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 6px; }
+
+  /* Combobox (type + dropdown) */
+  .combo-wrap { position: relative; }
+  .form-input {
+    width: 100%; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 10px 36px 10px 14px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s;
+  }
   .form-input:focus { border-color: var(--accent); }
   .form-input::placeholder { color: var(--text3); }
-  .level-select { background: var(--surface2); border: 1.5px solid var(--border); border-radius: 10px; padding: 10px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 14px; outline: none; cursor: pointer; min-width: 56px; text-align: center; }
+  .combo-arrow {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    color: var(--text3); font-size: 10px; pointer-events: none; transition: transform 0.2s;
+  }
+  .combo-dropdown {
+    position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 100;
+    background: var(--surface2); border: 1.5px solid var(--accent); border-radius: 10px;
+    max-height: 220px; overflow-y: auto; display: none; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .combo-dropdown.open { display: block; }
+  .combo-dropdown::-webkit-scrollbar { width: 4px; }
+  .combo-dropdown::-webkit-scrollbar-track { background: var(--surface2); }
+  .combo-dropdown::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+  .combo-option {
+    padding: 9px 14px; font-size: 13px; color: var(--text2); cursor: pointer; transition: all 0.15s;
+    border-bottom: 1px solid var(--border);
+  }
+  .combo-option:last-child { border-bottom: none; }
+  .combo-option:hover, .combo-option.highlighted { background: rgba(91,141,239,0.12); color: var(--text); }
+  .combo-option.highlighted { border-left: 2px solid var(--accent); }
+  .combo-no-match { padding: 9px 14px; font-size: 12px; color: var(--text3); font-style: italic; }
+
+  /* Level select styled */
+  .level-select-wrap { position: relative; flex: 1; }
+  .level-select {
+    width: 100%; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 10px 14px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
+    outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; transition: border-color 0.2s;
+  }
   .level-select:focus { border-color: var(--accent); }
+  .level-select option { background: var(--surface2); }
 
   /* Buttons */
   .btn { border: none; border-radius: 10px; padding: 10px 18px; font-family: 'Syne', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-  .btn-add { background: var(--surface3); color: var(--text); border: 1.5px solid var(--border2); height: 40px; }
+  .btn-add { background: var(--surface3); color: var(--text); border: 1.5px solid var(--border2); height: 42px; padding: 0 20px; flex-shrink: 0; }
   .btn-add:hover { background: var(--accent); color: white; border-color: var(--accent); }
+  .btn-clear { background: transparent; color: var(--red); border: 1.5px solid rgba(240,96,96,0.35); height: 42px; padding: 0 16px; flex-shrink: 0; border-radius: 10px; font-family: 'Syne', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+  .btn-clear:hover { background: rgba(240,96,96,0.1); border-color: var(--red); }
   .btn-sm { padding: 5px 10px; font-size: 11px; border-radius: 7px; }
   .btn-ghost { background: transparent; color: var(--text3); border: 1.5px solid var(--border); }
   .btn-ghost:hover { color: var(--red); border-color: var(--red); }
 
   /* Skill list */
-  .skill-list { display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; padding-right: 2px; }
+  .skill-list { display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; padding-right: 2px; }
   .skill-list::-webkit-scrollbar { width: 4px; }
   .skill-list::-webkit-scrollbar-track { background: var(--surface2); border-radius: 4px; }
   .skill-list::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
@@ -104,11 +144,15 @@
   @keyframes slideIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
   .skill-item:hover { border-color: var(--border2); }
   .skill-name-text { flex: 1; font-size: 14px; color: var(--text); font-weight: 500; }
-  .skill-level-badge { font-family: 'DM Mono', monospace; font-size: 11px; padding: 3px 8px; border-radius: 20px; background: var(--surface3); color: var(--text2); border: 1px solid var(--border2); white-space: nowrap; }
+  .skill-level-badge { font-family: 'DM Mono', monospace; font-size: 11px; padding: 3px 10px; border-radius: 20px; background: var(--surface3); color: var(--text2); border: 1px solid var(--border2); white-space: nowrap; }
+  .lvl-beginner { color: #fb923c !important; border-color: rgba(251,146,60,0.3) !important; }
+  .lvl-intermediate { color: #f5c842 !important; border-color: rgba(245,200,66,0.3) !important; }
+  .lvl-expert { color: #4ecca3 !important; border-color: rgba(78,204,163,0.3) !important; }
+
   .empty-state { text-align: center; padding: 36px 20px; color: var(--text3); font-size: 13px; }
   .empty-icon { font-size: 32px; margin-bottom: 10px; opacity: 0.5; }
 
-  /* Analyze section */
+  /* Analyze */
   .analyze-section { margin-top: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
   .skill-counter { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text3); }
   .btn-analyze { background: linear-gradient(135deg, var(--accent), var(--purple)); color: white; border: none; border-radius: 12px; padding: 13px 28px; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.25s; display: flex; align-items: center; gap: 8px; }
@@ -119,10 +163,8 @@
   .tag { display: inline-flex; align-items: center; background: var(--surface3); border: 1px solid var(--border2); border-radius: 20px; padding: 3px 10px; font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text2); white-space: nowrap; }
   .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 6px; flex-shrink: 0; }
   .divider { height: 1px; background: var(--border); margin: 20px 0; }
-  .level-legend { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
-  .level-legend span { font-size: 11px; font-family: 'DM Mono', monospace; color: var(--text3); }
 
-  /* ═══ RESULTS PAGE ═══ */
+  /* Results page */
   .results-page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
   .results-page-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .results-role-badge { background: rgba(91,141,239,0.12); border: 1px solid rgba(91,141,239,0.3); color: var(--accent); border-radius: 20px; padding: 4px 14px; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 400; }
@@ -153,7 +195,6 @@
 
   .results-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
   @media (max-width: 700px) { .results-bottom { grid-template-columns: 1fr; } }
-
   .section-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
   .section-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text3); margin-bottom: 16px; display: flex; align-items: center; gap: 6px; }
   .s-icon { color: var(--accent); }
@@ -179,12 +220,71 @@
   .priority-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
   .priority-cat { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text3); }
   .good-msg { font-size: 13px; color: var(--green); font-style: italic; padding: 8px 0; }
+
+  /* Tier explanation */
+  .tier-section { margin-top: 20px; }
+  .tier-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+  .tier-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; transition: border-color 0.2s; }
+  .tier-item:hover { border-color: var(--border2); }
+  .tier-header { margin-bottom: 10px; }
+  .tier-badge { display: inline-flex; align-items: center; gap: 7px; border: 1px solid; border-radius: 20px; padding: 3px 10px; margin-bottom: 8px; }
+  .tier-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .tier-range { font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; }
+  .tier-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; }
+  .tier-desc { font-size: 13px; color: var(--text2); line-height: 1.65; margin-bottom: 12px; }
+  .tier-action { display: flex; align-items: flex-start; gap: 8px; background: var(--surface3); border-radius: 8px; padding: 9px 12px; font-size: 12px; color: var(--text2); line-height: 1.5; }
+  .tier-action span { flex: 1; }
+
+  /* Toast */
+  .skill-toast {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(240,96,96,0.12); border: 1px solid rgba(240,96,96,0.3);
+    color: var(--red); border-radius: 10px; padding: 9px 14px;
+    font-size: 13px; margin-bottom: 12px;
+    animation: slideIn 0.2s ease;
+  }
+  .skill-toast.success {
+    background: rgba(78,204,163,0.1); border-color: rgba(78,204,163,0.3); color: var(--green);
+  }
+
+  /* Resume upload */
+  .resume-section { margin-bottom: 16px; }
+  .resume-label { font-size: 12px; color: var(--text3); font-family: 'DM Mono', monospace; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .resume-dropzone {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 6px; padding: 20px 16px;
+    border: 1.5px dashed var(--border2); border-radius: 12px;
+    cursor: pointer; transition: all 0.2s; text-align: center;
+    background: var(--surface2);
+  }
+  .resume-dropzone:hover, .resume-dropzone.drag-over { border-color: var(--accent); background: rgba(91,141,239,0.06); }
+  .resume-drop-icon { font-size: 22px; opacity: 0.5; }
+  .resume-drop-text { font-size: 13px; color: var(--text2); }
+  .resume-browse { color: var(--accent); text-decoration: underline; }
+  .resume-drop-sub { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
+  .resume-status-box {
+    margin-top: 10px; border-radius: 10px; padding: 12px 14px;
+    font-size: 13px; display: flex; align-items: flex-start; gap: 10px;
+  }
+  .resume-status-box.loading { background: rgba(91,141,239,0.08); border: 1px solid rgba(91,141,239,0.2); color: var(--text2); }
+  .resume-status-box.error   { background: rgba(240,96,96,0.08); border: 1px solid rgba(240,96,96,0.2); color: var(--red); }
+  .resume-status-box.done    { background: rgba(78,204,163,0.08); border: 1px solid rgba(78,204,163,0.2); color: var(--green); }
+  .spinner { width: 16px; height: 16px; border: 2px solid rgba(91,141,239,0.3); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0; margin-top: 1px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .extracted-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .extracted-tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: rgba(78,204,163,0.1); border: 1px solid rgba(78,204,163,0.25);
+    color: var(--green); border-radius: 20px; padding: 3px 10px;
+    font-size: 11px; font-family: 'DM Mono', monospace; cursor: pointer; transition: all 0.15s;
+  }
+  .extracted-tag:hover { background: rgba(78,204,163,0.2); }
+  .extracted-tag.added { background: var(--surface3); border-color: var(--border2); color: var(--text3); cursor: default; text-decoration: line-through; }
 </style>
 </head>
 <body>
 <div id="app">
 
-  <!-- Header -->
   <header class="header">
     <div class="logo">
       <div class="logo-mark">P</div>
@@ -208,7 +308,6 @@
   <div class="page active" id="page-setup">
     <div class="main-grid">
 
-      <!-- Role selection -->
       <div class="card">
         <div class="card-title"><span class="icon">◈</span> Select Career Role</div>
         <div class="role-grid" id="role-grid"></div>
@@ -217,31 +316,53 @@
         <div id="required-skills" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
       </div>
 
-      <!-- Skills input -->
       <div class="card">
         <div class="card-title" id="skill-card-title"><span class="icon">✦</span> Your Skills</div>
+
+        <!-- Skill name combobox + level select on one row -->
         <div class="skill-form">
           <div class="form-group">
             <label>Skill Name</label>
-            <input id="skill-input" class="form-input" placeholder="e.g. Python, Figma, Excel…" />
+            <div class="combo-wrap" id="combo-wrap">
+              <input id="skill-input" class="form-input" placeholder="Type or pick a skill…" autocomplete="off" />
+              <span class="combo-arrow">▼</span>
+              <div class="combo-dropdown" id="combo-dropdown"></div>
+            </div>
           </div>
           <div class="form-group">
-            <label>Level</label>
-            <select id="skill-level" class="level-select">
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3" selected>3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-            </select>
-          </div>
-          <div class="form-group btn-add-wrap" style="display:flex;align-items:flex-end;">
-            <button id="add-btn" class="btn btn-add btn-sm">+ Add</button>
+            <label>Proficiency Level</label>
+            <div class="level-select-wrap">
+              <select id="skill-level" class="level-select">
+                <option value="1">Beginner</option>
+                <option value="2" selected>Intermediate</option>
+                <option value="3">Expert</option>
+              </select>
+              <span class="combo-arrow" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;">▼</span>
+            </div>
           </div>
         </div>
-        <div class="level-legend">
-          <span>1=Beginner</span><span>2=Basic</span><span>3=Intermediate</span><span>4=Advanced</span><span>5=Expert</span>
+
+        <div style="display:flex;gap:10px;margin-bottom:16px;">
+          <button id="add-btn" class="btn btn-add" style="flex:1;">+ Add Skill</button>
+          <button id="clear-btn" class="btn btn-clear" onclick="clearAllSkills()" style="display:none;">🗑 Clear All</button>
         </div>
+
+
+        <!-- Toast notification -->
+        <div id="skill-toast" class="skill-toast" style="display:none;"></div>
+
+        <!-- Resume Upload -->
+        <div class="resume-section">
+          <div class="resume-label"><span>📄</span> Or upload your resume to auto-extract skills</div>
+          <label class="resume-dropzone" id="resume-dropzone">
+            <input type="file" id="resume-file" accept=".pdf,.txt,.doc,.docx" style="display:none;" />
+            <div id="resume-drop-icon" class="resume-drop-icon">⬆</div>
+            <div id="resume-drop-text" class="resume-drop-text">Drop your resume here or <span class="resume-browse">browse</span></div>
+            <div class="resume-drop-sub">Supports PDF, TXT, DOC, DOCX</div>
+          </label>
+          <div id="resume-status"></div>
+        </div>
+
         <div id="skill-list-container">
           <div class="empty-state">
             <div class="empty-icon">📝</div>
@@ -261,7 +382,6 @@
 
   <!-- PAGE 2: RESULTS -->
   <div class="page" id="page-results">
-
     <div class="results-page-header">
       <div class="results-page-title">
         Readiness Report
@@ -270,7 +390,6 @@
       <button class="btn-back" onclick="switchPage('setup')">← Back to Setup</button>
     </div>
 
-    <!-- Score hero -->
     <div class="score-hero">
       <div class="score-circle">
         <svg width="150" height="150" class="score-svg" viewBox="0 0 150 150">
@@ -286,36 +405,22 @@
       <div>
         <div class="score-label" id="score-label">—</div>
         <p class="score-desc" id="score-desc"></p>
-        <div class="progress-bar-wrap">
-          <div class="progress-bar-fill" id="progress-fill"></div>
-        </div>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill"></div></div>
         <div class="progress-label"><span>0%</span><span>Readiness Score</span><span>100%</span></div>
       </div>
     </div>
 
-    <!-- Stat row -->
     <div class="stat-row">
-      <div class="stat-box">
-        <div class="stat-label">Skills Matched</div>
-        <div class="stat-value" id="stat-matched" style="color:var(--green)">—</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">Missing Skills</div>
-        <div class="stat-value" id="stat-missing" style="color:var(--red)">—</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">Readiness Score</div>
-        <div class="stat-value" id="stat-score">—</div>
-      </div>
+      <div class="stat-box"><div class="stat-label">Skills Matched</div><div class="stat-value" id="stat-matched" style="color:var(--green)">—</div></div>
+      <div class="stat-box"><div class="stat-label">Missing Skills</div><div class="stat-value" id="stat-missing" style="color:var(--red)">—</div></div>
+      <div class="stat-box"><div class="stat-label">Readiness Score</div><div class="stat-value" id="stat-score">—</div></div>
     </div>
 
-    <!-- Category breakdown -->
     <div class="section-card" style="margin-bottom:0;">
       <div class="section-title"><span class="s-icon">▤</span> Category Breakdown</div>
       <div class="cat-grid" id="cat-grid"></div>
     </div>
 
-    <!-- Bottom 2-col -->
     <div class="results-bottom">
       <div class="section-card">
         <div class="section-title"><span class="s-icon" style="color:var(--red)">✗</span> Missing Skills</div>
@@ -325,19 +430,90 @@
         <div class="section-title"><span class="s-icon" style="color:var(--yellow)">★</span> Top 3 to Learn Next</div>
         <div class="priority-list" id="priority-list"></div>
       </div>
-    </div>
 
+    <!-- Tier Explanation -->
+    <div class="section-card tier-section">
+      <div class="section-title"><span class="s-icon">◈</span> Career Readiness Tiers — What They Mean</div>
+      <div class="tier-grid">
+
+        <div class="tier-item">
+          <div class="tier-header">
+            <div class="tier-badge" style="background:rgba(240,96,96,0.12);border-color:rgba(240,96,96,0.3);">
+              <span class="tier-dot" style="background:#f06060;"></span>
+              <span class="tier-range" style="color:#f06060;">0 – 29%</span>
+            </div>
+            <div class="tier-name" style="color:#f06060;">Just Starting Out</div>
+          </div>
+          <p class="tier-desc">You're at the very beginning. Core fundamentals are largely missing. Focus on structured learning — online courses, bootcamps, or university modules — before targeting job applications.</p>
+          <div class="tier-action">📚 <span>Pick 2–3 key skills and go deep before applying.</span></div>
+        </div>
+
+        <div class="tier-item">
+          <div class="tier-header">
+            <div class="tier-badge" style="background:rgba(251,146,60,0.12);border-color:rgba(251,146,60,0.3);">
+              <span class="tier-dot" style="background:#fb923c;"></span>
+              <span class="tier-range" style="color:#fb923c;">30 – 54%</span>
+            </div>
+            <div class="tier-name" style="color:#fb923c;">Building Foundations</div>
+          </div>
+          <p class="tier-desc">You have some relevant skills but gaps remain in core areas. Fill them through side projects, internships, or practical coursework. You're closer than you think.</p>
+          <div class="tier-action">🛠️ <span>Target your missing skills. Side projects count as real experience.</span></div>
+        </div>
+
+        <div class="tier-item">
+          <div class="tier-header">
+            <div class="tier-badge" style="background:rgba(245,200,66,0.12);border-color:rgba(245,200,66,0.3);">
+              <span class="tier-dot" style="background:#f5c842;"></span>
+              <span class="tier-range" style="color:#f5c842;">55 – 74%</span>
+            </div>
+            <div class="tier-name" style="color:#f5c842;">Developing Skills</div>
+          </div>
+          <p class="tier-desc">Solid progress — the basics are covered and you're building depth. Start applying for junior or graduate roles while continuing to upskill. Real-world experience will accelerate you quickly.</p>
+          <div class="tier-action">🚀 <span>Start applying to junior roles. You'll learn the rest on the job.</span></div>
+        </div>
+
+        <div class="tier-item">
+          <div class="tier-header">
+            <div class="tier-badge" style="background:rgba(78,204,163,0.12);border-color:rgba(78,204,163,0.3);">
+              <span class="tier-dot" style="background:#4ecca3;"></span>
+              <span class="tier-range" style="color:#4ecca3;">75 – 89%</span>
+            </div>
+            <div class="tier-name" style="color:#4ecca3;">Strong Candidate</div>
+          </div>
+          <p class="tier-desc">You meet most core requirements. Employers will take you seriously. Polish weak areas, build a portfolio of real projects, and practise role-specific interview questions to stand out.</p>
+          <div class="tier-action">✨ <span>Polish & apply confidently. Real projects will set you apart.</span></div>
+        </div>
+
+        <div class="tier-item">
+          <div class="tier-header">
+            <div class="tier-badge" style="background:rgba(91,141,239,0.12);border-color:rgba(91,141,239,0.3);">
+              <span class="tier-dot" style="background:#5b8def;"></span>
+              <span class="tier-range" style="color:#5b8def;">90 – 100%</span>
+            </div>
+            <div class="tier-name" style="color:#5b8def;">Job-Ready Expert</div>
+          </div>
+          <p class="tier-desc">You match or exceed industry expectations. Start applying confidently. Focus on networking, tailoring your CV, and nailing interviews. You're genuinely competitive for this role right now.</p>
+          <div class="tier-action">🎯 <span>Apply now. Network actively. You're ready for the role.</span></div>
+        </div>
+
+      </div>
+    </div>
+    </div>
   </div>
+
 </div>
 
 <script>
+/* ═══════════════════════════════════════════
+   DATA
+═══════════════════════════════════════════ */
 const ROLES = {
   "Data Analyst": {
     icon: "📊",
     skills: [
       { name: "SQL", weight: 5, category: "Databases" },
       { name: "Python", weight: 4, category: "Programming" },
-      { name: "Excel / Sheets", weight: 4, category: "Tools" },
+      { name: "Excel / Google Sheets", weight: 4, category: "Tools" },
       { name: "Data Visualization", weight: 4, category: "Analytics" },
       { name: "Statistics", weight: 5, category: "Analytics" },
       { name: "Tableau / Power BI", weight: 3, category: "Tools" },
@@ -431,19 +607,19 @@ const ROLES = {
       { name: "Communication", weight: 5, category: "Soft Skills" },
     ]
   },
-  "Management Consultant": {
-    icon: "📋",
+  "Financial Analyst": {
+    icon: "💰",
     skills: [
-      { name: "Structured Problem Solving", weight: 5, category: "Analytical" },
       { name: "Financial Modelling", weight: 5, category: "Finance" },
-      { name: "Excel / Sheets (Advanced)", weight: 4, category: "Tools" },
-      { name: "PowerPoint / Slide Decks", weight: 4, category: "Communication" },
-      { name: "Client Communication", weight: 5, category: "Soft Skills" },
-      { name: "Market Research", weight: 4, category: "Research" },
-      { name: "Data Analysis", weight: 4, category: "Analytical" },
-      { name: "Project Management", weight: 3, category: "Execution" },
-      { name: "Business Strategy", weight: 5, category: "Strategy" },
-      { name: "Storytelling / Presentation", weight: 4, category: "Communication" },
+      { name: "Excel / Google Sheets (Advanced)", weight: 5, category: "Tools" },
+      { name: "Financial Statement Analysis", weight: 5, category: "Finance" },
+      { name: "Budgeting & Forecasting", weight: 4, category: "Finance" },
+      { name: "Valuation Techniques (DCF/Comps)", weight: 4, category: "Finance" },
+      { name: "SQL / Data Querying", weight: 3, category: "Data" },
+      { name: "PowerPoint / Presentations", weight: 4, category: "Communication" },
+      { name: "Accounting Fundamentals", weight: 4, category: "Finance" },
+      { name: "Data Visualisation (Power BI/Tableau)", weight: 3, category: "Data" },
+      { name: "Attention to Detail", weight: 5, category: "Soft Skills" },
     ]
   },
   "DevOps Engineer": {
@@ -474,7 +650,42 @@ const ROLES = {
       { name: "Compliance & Frameworks (NIST/ISO)", weight: 3, category: "Governance" },
     ]
   },
+  "Cloud Architect": {
+    icon: "☁️",
+    skills: [
+      { name: "AWS / Azure / GCP (Advanced)", weight: 5, category: "Cloud Platforms" },
+      { name: "Cloud Architecture Design", weight: 5, category: "Architecture" },
+      { name: "Infrastructure as Code (Terraform/CDK)", weight: 5, category: "Automation" },
+      { name: "Networking (VPC, DNS, Load Balancing)", weight: 4, category: "Networking" },
+      { name: "Security & IAM", weight: 4, category: "Security" },
+      { name: "Kubernetes / Container Orchestration", weight: 4, category: "Containers" },
+      { name: "Cost Optimisation", weight: 4, category: "FinOps" },
+      { name: "Serverless Architecture", weight: 3, category: "Architecture" },
+      { name: "Multi-cloud Strategy", weight: 3, category: "Architecture" },
+      { name: "DevOps / CI/CD Integration", weight: 3, category: "Automation" },
+    ]
+  },
+  "SAP Consultant": {
+    icon: "🏢",
+    skills: [
+      { name: "SAP ERP Modules (FI/CO/MM/SD)", weight: 5, category: "SAP Core" },
+      { name: "SAP S/4HANA", weight: 5, category: "SAP Core" },
+      { name: "SAP Configuration & Customising", weight: 5, category: "SAP Core" },
+      { name: "Business Process Analysis", weight: 4, category: "Consulting" },
+      { name: "SAP ABAP (Basics)", weight: 3, category: "Technical" },
+      { name: "SAP Fiori / UI5", weight: 3, category: "Technical" },
+      { name: "Data Migration (LSMW/BAPI)", weight: 4, category: "Technical" },
+      { name: "Integration (SAP PI/PO / BTP)", weight: 4, category: "Integration" },
+      { name: "Project Management", weight: 3, category: "Consulting" },
+      { name: "Stakeholder Communication", weight: 4, category: "Soft Skills" },
+    ]
+  },
 };
+
+/* All unique skill names across all roles — for the dropdown */
+const ALL_SKILL_SUGGESTIONS = [...new Set(
+  Object.values(ROLES).flatMap(r => r.skills.map(s => s.name))
+)].sort();
 
 const SCORE_COLORS = [
   { max: 30,  color: "#f06060", label: "Just Starting Out" },
@@ -483,26 +694,111 @@ const SCORE_COLORS = [
   { max: 90,  color: "#4ecca3", label: "Strong Candidate" },
   { max: 101, color: "#5b8def", label: "Job-Ready Expert" },
 ];
-const LEVEL_LABELS = ["","Beginner","Basic","Intermediate","Advanced","Expert"];
 
+// 3-level system: 1=Beginner, 2=Intermediate, 3=Expert
+const LEVEL_LABELS = { 1: "Beginner", 2: "Intermediate", 3: "Expert" };
+const LEVEL_CSS    = { 1: "lvl-beginner", 2: "lvl-intermediate", 3: "lvl-expert" };
+
+/* ═══ STATE ═══ */
 let selectedRole = "Data Analyst";
 let skills = [];
 let editId = null;
 let lastResults = null;
+let highlightedIndex = -1;
 
-function getScoreInfo(s) { return SCORE_COLORS.find(x => s < x.max) || SCORE_COLORS[SCORE_COLORS.length-1]; }
-function getLevelLabel(l) { return LEVEL_LABELS[l] || l; }
+/* ═══ HELPERS ═══ */
+function getScoreInfo(s) { return SCORE_COLORS.find(x => s < x.max) || SCORE_COLORS[SCORE_COLORS.length - 1]; }
 
-/* ── Page switching ── */
+/* ═══ PAGE SWITCH ═══ */
 function switchPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
   document.getElementById('tab-' + name).classList.add('active');
+  closeDropdown();
   if (name === 'results' && lastResults) animateResults(lastResults.score);
 }
 
-/* ── Roles ── */
+/* ═══ COMBOBOX LOGIC ═══ */
+const skillInput = document.getElementById('skill-input');
+const dropdown = document.getElementById('combo-dropdown');
+
+function getFilteredSuggestions(query) {
+  const q = query.toLowerCase().trim();
+  if (!q) return ALL_SKILL_SUGGESTIONS;
+  return ALL_SKILL_SUGGESTIONS.filter(s => s.toLowerCase().includes(q));
+}
+
+function renderDropdown(items) {
+  highlightedIndex = -1;
+  if (items.length === 0) {
+    dropdown.innerHTML = `<div class="combo-no-match">No match — your custom skill will be added</div>`;
+  } else {
+    dropdown.innerHTML = items.map((item, i) =>
+      `<div class="combo-option" data-value="${item}" data-index="${i}">${item}</div>`
+    ).join('');
+    dropdown.querySelectorAll('.combo-option').forEach(opt => {
+      opt.addEventListener('mousedown', e => {
+        e.preventDefault();
+        skillInput.value = opt.dataset.value;
+        closeDropdown();
+      });
+    });
+  }
+  dropdown.classList.add('open');
+}
+
+function closeDropdown() {
+  dropdown.classList.remove('open');
+  highlightedIndex = -1;
+}
+
+function updateHighlight() {
+  const opts = dropdown.querySelectorAll('.combo-option');
+  opts.forEach((o, i) => o.classList.toggle('highlighted', i === highlightedIndex));
+  if (highlightedIndex >= 0 && opts[highlightedIndex]) {
+    opts[highlightedIndex].scrollIntoView({ block: 'nearest' });
+  }
+}
+
+skillInput.addEventListener('input', () => {
+  const items = getFilteredSuggestions(skillInput.value);
+  renderDropdown(items);
+});
+
+skillInput.addEventListener('focus', () => {
+  const items = getFilteredSuggestions(skillInput.value);
+  renderDropdown(items);
+});
+
+skillInput.addEventListener('keydown', e => {
+  const opts = dropdown.querySelectorAll('.combo-option');
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    highlightedIndex = Math.min(highlightedIndex + 1, opts.length - 1);
+    updateHighlight();
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    highlightedIndex = Math.max(highlightedIndex - 1, 0);
+    updateHighlight();
+  } else if (e.key === 'Enter') {
+    if (highlightedIndex >= 0 && opts[highlightedIndex]) {
+      skillInput.value = opts[highlightedIndex].dataset.value;
+      closeDropdown();
+    } else {
+      closeDropdown();
+      addSkill();
+    }
+  } else if (e.key === 'Escape') {
+    closeDropdown();
+  }
+});
+
+document.addEventListener('click', e => {
+  if (!document.getElementById('combo-wrap').contains(e.target)) closeDropdown();
+});
+
+/* ═══ ROLES ═══ */
 function renderRoles() {
   const grid = document.getElementById('role-grid');
   grid.innerHTML = '';
@@ -527,11 +823,12 @@ function renderRequiredSkills() {
   });
 }
 
-/* ── Skills ── */
+/* ═══ SKILLS ═══ */
 function renderSkillList() {
   const c = document.getElementById('skill-list-container');
   document.getElementById('skill-counter').textContent = skills.length + ' skill' + (skills.length !== 1 ? 's' : '') + ' added';
   document.getElementById('analyze-btn').disabled = skills.length === 0;
+  document.getElementById('clear-btn').style.display = skills.length > 0 ? '' : 'none';
   document.getElementById('skill-card-title').innerHTML = `<span class="icon">✦</span> ${editId !== null ? 'Edit Skill' : 'Your Skills'}`;
 
   if (skills.length === 0) {
@@ -543,7 +840,12 @@ function renderSkillList() {
   skills.forEach(s => {
     const item = document.createElement('div');
     item.className = 'skill-item';
-    item.innerHTML = `<span class="skill-name-text">${s.name}</span><span class="skill-level-badge">${getLevelLabel(s.level)}</span><button class="btn btn-sm btn-ghost eb" data-id="${s.id}">✎</button><button class="btn btn-sm btn-ghost rb" data-id="${s.id}">✕</button>`;
+    const lvlClass = LEVEL_CSS[s.level] || '';
+    item.innerHTML = `
+      <span class="skill-name-text">${s.name}</span>
+      <span class="skill-level-badge ${lvlClass}">${LEVEL_LABELS[s.level]}</span>
+      <button class="btn btn-sm btn-ghost eb" data-id="${s.id}">✎</button>
+      <button class="btn btn-sm btn-ghost rb" data-id="${s.id}">✕</button>`;
     list.appendChild(item);
   });
   c.innerHTML = '';
@@ -553,23 +855,35 @@ function renderSkillList() {
 }
 
 function addSkill() {
-  const inp = document.getElementById('skill-input');
-  const lvl = document.getElementById('skill-level');
-  const name = inp.value.trim();
+  const name = skillInput.value.trim();
   if (!name) return;
-  const level = parseInt(lvl.value);
+  const level = parseInt(document.getElementById('skill-level').value);
   if (editId !== null) {
-    skills = skills.map(s => s.id === editId ? {...s, name, level} : s);
+    skills = skills.map(s => s.id === editId ? { ...s, name, level } : s);
     editId = null;
-    document.getElementById('add-btn').textContent = '+ Add';
+    document.getElementById('add-btn').textContent = '+ Add Skill';
   } else {
-    if (skills.find(s => s.name.toLowerCase() === name.toLowerCase())) return;
+    if (skills.find(s => s.name.toLowerCase() === name.toLowerCase())) {
+      showToast('⚠ "' + name + '" is already in your skills list.');
+      skillInput.select();
+      return;
+    }
     skills.push({ id: Date.now(), name, level });
   }
-  inp.value = ''; lvl.value = '3';
+  skillInput.value = '';
+  document.getElementById('skill-level').value = '2';
   resetResults();
   renderSkillList();
-  inp.focus();
+  skillInput.focus();
+}
+
+function clearAllSkills() {
+  if (skills.length === 0) return;
+  skills = [];
+  editId = null;
+  document.getElementById('add-btn').textContent = '+ Add Skill';
+  resetResults();
+  renderSkillList();
 }
 
 function removeSkill(id) { skills = skills.filter(s => s.id !== id); resetResults(); renderSkillList(); }
@@ -578,21 +892,20 @@ function startEdit(id) {
   const s = skills.find(x => x.id === id);
   if (!s) return;
   editId = id;
-  document.getElementById('skill-input').value = s.name;
+  skillInput.value = s.name;
   document.getElementById('skill-level').value = s.level;
-  document.getElementById('add-btn').textContent = '✓ Save';
-  document.getElementById('skill-input').focus();
+  document.getElementById('add-btn').textContent = '✓ Save Changes';
+  skillInput.focus();
   renderSkillList();
 }
 
 function resetResults() {
   lastResults = null;
-  const tab = document.getElementById('tab-results');
-  tab.disabled = true;
+  document.getElementById('tab-results').disabled = true;
   document.getElementById('score-badge').style.display = 'none';
 }
 
-/* ── Analyze ── */
+/* ═══ ANALYZE ═══ */
 function analyze() {
   const role = ROLES[selectedRole];
   const totalWeight = role.skills.reduce((a, s) => a + s.weight, 0);
@@ -605,14 +918,17 @@ function analyze() {
       rs.name.toLowerCase().includes(u.name.toLowerCase())
     );
     if (us) {
-      const c = rs.weight * (us.level / 5);
-      matchedWeight += c;
-      matched.push({...rs, userLevel: us.level, contribution: c});
-    } else { missing.push(rs); }
+      // level 1=0.33, 2=0.67, 3=1.0
+      const lvlFactor = us.level / 3;
+      const contribution = rs.weight * lvlFactor;
+      matchedWeight += contribution;
+      matched.push({ ...rs, userLevel: us.level, contribution });
+    } else {
+      missing.push(rs);
+    }
   });
 
   const score = Math.min(100, Math.round((matchedWeight / totalWeight) * 100));
-
   const cats = {};
   role.skills.forEach(rs => {
     if (!cats[rs.category]) cats[rs.category] = { total: 0, achieved: 0 };
@@ -626,9 +942,7 @@ function analyze() {
   const priorities = [...missing].sort((a, b) => b.weight - a.weight).slice(0, 3);
   lastResults = { score, missing, matched, catResults, priorities };
 
-  // Unlock results tab + badge
-  const tab = document.getElementById('tab-results');
-  tab.disabled = false;
+  document.getElementById('tab-results').disabled = false;
   const badge = document.getElementById('score-badge');
   badge.textContent = score + '%';
   badge.style.display = '';
@@ -643,7 +957,6 @@ function buildResultsHTML({ score, missing, matched, catResults, priorities }) {
 
   document.getElementById('results-role-badge').textContent = ROLES[selectedRole].icon + '  ' + selectedRole;
 
-  // Reset circle
   const arc = document.getElementById('score-arc');
   arc.setAttribute('stroke', si.color);
   arc.setAttribute('stroke-dasharray', circ);
@@ -677,7 +990,7 @@ function buildResultsHTML({ score, missing, matched, catResults, priorities }) {
   const pc = ['#f5c842','#fb923c','#a78bfa'];
   document.getElementById('priority-list').innerHTML = priorities.length === 0
     ? `<div class="good-msg">✓ No gaps to fill!</div>`
-    : priorities.map((s,i) => `<div class="priority-item"><div class="priority-num" style="background:${pc[i]}20;color:${pc[i]}">#${i+1}</div><div class="priority-info"><div class="priority-name">${s.name}</div><div class="priority-cat">${s.category}</div></div><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3)">wt ${s.weight}</span></div>`).join('');
+    : priorities.map((s, i) => `<div class="priority-item"><div class="priority-num" style="background:${pc[i]}20;color:${pc[i]}">#${i+1}</div><div class="priority-info"><div class="priority-name">${s.name}</div><div class="priority-cat">${s.category}</div></div><span style="font-size:11px;font-family:'DM Mono',monospace;color:var(--text3)">wt ${s.weight}</span></div>`).join('');
 }
 
 function animateResults(score) {
@@ -702,13 +1015,191 @@ function animateResults(score) {
   }, 150);
 }
 
-// Init
+/* ═══ INIT ═══ */
 document.getElementById('add-btn').onclick = addSkill;
-document.getElementById('skill-input').addEventListener('keydown', e => { if (e.key === 'Enter') addSkill(); });
 document.getElementById('analyze-btn').onclick = analyze;
 renderRoles();
 renderRequiredSkills();
 renderSkillList();
+
+
+/* ═══ TOAST ═══ */
+let toastTimer = null;
+function showToast(msg, type = 'error') {
+  const t = document.getElementById('skill-toast');
+  t.textContent = msg;
+  t.className = 'skill-toast' + (type === 'success' ? ' success' : '');
+  t.style.display = 'flex';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.style.display = 'none'; }, 3000);
+}
+
+/* ═══ RESUME UPLOAD ═══ */
+const resumeFile = document.getElementById('resume-file');
+const resumeDropzone = document.getElementById('resume-dropzone');
+const resumeStatus = document.getElementById('resume-status');
+
+resumeFile.addEventListener('change', () => {
+  if (resumeFile.files[0]) handleResumeFile(resumeFile.files[0]);
+});
+
+resumeDropzone.addEventListener('dragover', e => { e.preventDefault(); resumeDropzone.classList.add('drag-over'); });
+resumeDropzone.addEventListener('dragleave', () => resumeDropzone.classList.remove('drag-over'));
+resumeDropzone.addEventListener('drop', e => {
+  e.preventDefault();
+  resumeDropzone.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) handleResumeFile(file);
+});
+
+function setResumeStatus(type, html) {
+  resumeStatus.innerHTML = `<div class="resume-status-box ${type}">${html}</div>`;
+}
+
+async function handleResumeFile(file) {
+  const allowedTypes = ['text/plain', 'application/pdf', 'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+  if (!allowedTypes.includes(file.type) && !file.name.match(/\.(pdf|txt|doc|docx)$/i)) {
+    setResumeStatus('error', '✕ Unsupported file type. Please upload a PDF, TXT, DOC or DOCX.');
+    return;
+  }
+
+  // Update dropzone to show filename
+  document.getElementById('resume-drop-icon').textContent = '📄';
+  document.getElementById('resume-drop-text').textContent = file.name;
+  setResumeStatus('loading', '<div class="spinner"></div><span>Reading resume and extracting skills…</span>');
+
+  try {
+    let text = '';
+
+    if (file.type === 'text/plain' || file.name.endsWith('.txt')) {
+      text = await file.text();
+    } else {
+      // For PDF/DOC, read as base64 and send to Claude
+      const base64 = await fileToBase64(file);
+      const isPDF = file.type === 'application/pdf' || file.name.endsWith('.pdf');
+      const extracted = await extractTextViaAPI(base64, isPDF, file.name);
+      text = extracted;
+    }
+
+    if (!text || text.length < 50) {
+      setResumeStatus('error', '✕ Could not read file content. Try a plain text (.txt) version of your resume.');
+      return;
+    }
+
+    await extractSkillsFromText(text);
+  } catch (err) {
+    console.error(err);
+    setResumeStatus('error', '✕ Something went wrong. Please try a .txt version of your resume.');
+  }
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+async function extractTextViaAPI(base64, isPDF, filename) {
+  const mediaType = isPDF ? 'application/pdf' : 'application/octet-stream';
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      messages: [{
+        role: 'user',
+        content: [
+          isPDF
+            ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: base64 } }
+            : { type: 'text', text: '[Binary file - extract any readable text you can]' },
+          { type: 'text', text: 'Extract and return only the plain text content of this resume. No commentary.' }
+        ]
+      }]
+    })
+  });
+  const data = await response.json();
+  return data.content?.find(b => b.type === 'text')?.text || '';
+}
+
+async function extractSkillsFromText(resumeText) {
+  setResumeStatus('loading', '<div class="spinner"></div><span>Identifying skills from your resume…</span>');
+
+  const allKnownSkills = [...new Set(Object.values(ROLES).flatMap(r => r.skills.map(s => s.name)))];
+
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 1000,
+      messages: [{
+        role: 'user',
+        content: `You are a career skills extractor. From the resume text below, extract all technical and professional skills mentioned.
+
+Known skills to look for (match these if found, use exact names): ${allKnownSkills.join(', ')}
+
+Also extract any other skills not in the list above.
+
+Respond ONLY with a valid JSON array of skill name strings. No explanation, no markdown, no backticks.
+Example: ["Python", "SQL", "Communication", "React"]
+
+Resume text:
+${resumeText.slice(0, 6000)}`
+      }]
+    })
+  });
+
+  const data = await response.json();
+  const raw = data.content?.find(b => b.type === 'text')?.text || '[]';
+
+  let extracted = [];
+  try {
+    const clean = raw.replace(/\`\`\`json|\`\`\`/g, '').trim();
+    extracted = JSON.parse(clean);
+  } catch {
+    setResumeStatus('error', '✕ Could not parse skills from resume. Try again or add skills manually.');
+    return;
+  }
+
+  if (!extracted.length) {
+    setResumeStatus('error', '✕ No skills found in resume. Try a different file or add skills manually.');
+    return;
+  }
+
+  renderExtractedSkills(extracted);
+}
+
+function renderExtractedSkills(extractedNames) {
+  const added = [];
+  const skipped = [];
+
+  // Auto-add skills not already in list
+  extractedNames.forEach(name => {
+    const trimmed = name.trim();
+    if (!trimmed) return;
+    if (skills.find(s => s.name.toLowerCase() === trimmed.toLowerCase())) {
+      skipped.push(trimmed);
+    } else {
+      skills.push({ id: Date.now() + Math.random(), name: trimmed, level: 2 });
+      added.push(trimmed);
+    }
+  });
+
+  resetResults();
+  renderSkillList();
+
+  const summary = added.length > 0
+    ? `✓ <strong>${added.length} skill${added.length !== 1 ? 's' : ''} extracted</strong> from your resume${skipped.length > 0 ? ` (${skipped.length} already in your list)` : ''}. Review levels and click Analyze.`
+    : `All ${skipped.length} extracted skills were already in your list.`;
+
+  setResumeStatus('done', summary);
+}
+
 </script>
 </body>
 </html>
