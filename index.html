@@ -9,24 +9,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --bg: #07080d;
+    --bg: #0d0e1a;
     --surface: rgba(255,255,255,0.03);
-    --surface2: rgba(255,255,255,0.05);
-    --surface3: rgba(255,255,255,0.08);
-    --border: rgba(255,255,255,0.08);
-    --border2: rgba(255,255,255,0.14);
-    --text: #f0f2ff;
-    --text2: #9da8c7;
-    --text3: #4e5a7a;
-    --accent: #6c8fff;
-    --accent2: #8ba4ff;
-    --green: #3de8b0;
-    --yellow: #ffd166;
-    --red: #ff6b7a;
-    --purple: #b69fff;
-    --orange: #ff9556;
-    --glow-blue: rgba(108,143,255,0.18);
-    --glow-purple: rgba(182,159,255,0.12);
+    --surface2: rgba(255,255,255,0.045);
+    --surface3: rgba(255,255,255,0.07);
+    --border: rgba(255,255,255,0.055);
+    --border2: rgba(255,255,255,0.10);
+    --text: #dddaf5;
+    --text2: #7e7a9e;
+    --text3: #3e3a5c;
+    --accent: #c41578;
+    --accent2: #e03da0;
+    --green: #28c990;
+    --yellow: #e8b84b;
+    --red: #e05060;
+    --purple: #7c6fb8;
+    --orange: #d97a3e;
+    --pink: #e03da0;
+    --blue-soft: #5f70c0;
+    --glow-pink: rgba(196,21,120,0.20);
+    --glow-purple: rgba(124,111,184,0.15);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -38,19 +40,19 @@
     overflow-x: hidden;
   }
 
-  /* Rich layered background */
+  /* Rich layered background — warm purple/pink like the reference */
   body::before {
     content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
     background:
-      radial-gradient(ellipse 80% 50% at 10% -10%, rgba(108,143,255,0.13) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 90% 110%, rgba(182,159,255,0.10) 0%, transparent 55%),
-      radial-gradient(ellipse 50% 60% at 50% 50%, rgba(61,232,176,0.04) 0%, transparent 70%);
+      radial-gradient(ellipse 70% 55% at 15% 0%, rgba(120,70,170,0.16) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 45% at 85% 100%, rgba(196,21,120,0.10) 0%, transparent 55%),
+      radial-gradient(ellipse 80% 40% at 50% 50%, rgba(90,100,180,0.05) 0%, transparent 70%);
   }
   body::after {
     content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
     background-image:
-      linear-gradient(rgba(108,143,255,0.035) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(108,143,255,0.035) 1px, transparent 1px);
+      linear-gradient(rgba(155,143,212,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(155,143,212,0.04) 1px, transparent 1px);
     background-size: 44px 44px;
   }
 
@@ -65,11 +67,11 @@
   .logo { display: flex; align-items: center; gap: 14px; }
   .logo-mark {
     width: 46px; height: 46px;
-    background: linear-gradient(135deg, #6c8fff, #b69fff);
+    background: linear-gradient(135deg, #e91e8c, #9b8fd4);
     border-radius: 14px;
     display: flex; align-items: center; justify-content: center;
     font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; color: white;
-    box-shadow: 0 0 0 1px rgba(255,255,255,0.12) inset, 0 6px 24px rgba(108,143,255,0.5), 0 2px 8px rgba(0,0,0,0.4);
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.12) inset, 0 6px 24px rgba(233,30,140,0.45), 0 2px 8px rgba(0,0,0,0.5);
     position: relative; overflow: hidden;
   }
   .logo-mark::after {
@@ -77,7 +79,7 @@
     background: linear-gradient(150deg, rgba(255,255,255,0.22) 0%, transparent 50%);
     pointer-events: none;
   }
-  .logo-text { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.5px; background: linear-gradient(90deg, #f0f2ff, #b69fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .logo-text { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 23px; letter-spacing: -0.5px; background: linear-gradient(90deg, #f2f0ff, #e91e8c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .logo-sub { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; letter-spacing: 1px; text-transform: uppercase; margin-top: 3px; }
 
   /* Page tabs */
@@ -91,11 +93,11 @@
   .page-tab { display: flex; align-items: center; gap: 7px; padding: 8px 20px; border-radius: 10px; font-family: 'Syne', sans-serif; font-weight: 600; font-size: 13px; color: var(--text3); cursor: pointer; border: none; background: transparent; transition: all 0.22s; white-space: nowrap; }
   .page-tab:hover:not(:disabled) { color: var(--text2); background: rgba(255,255,255,0.04); }
   .page-tab:disabled { opacity: 0.35; cursor: not-allowed; }
-  .page-tab.active { background: rgba(108,143,255,0.12); color: var(--text); border: 1px solid rgba(108,143,255,0.25); box-shadow: 0 2px 12px rgba(108,143,255,0.12); }
+  .page-tab.active { background: rgba(233,30,140,0.1); color: var(--text); border: 1px solid rgba(233,30,140,0.3); box-shadow: 0 2px 12px rgba(233,30,140,0.15); }
   .tab-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text3); flex-shrink: 0; transition: background 0.2s; }
-  .page-tab.active .tab-dot { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+  .page-tab.active .tab-dot { background: var(--accent); box-shadow: 0 0 8px var(--accent); }
   .page-tab.tab-results.active .tab-dot { background: var(--green); box-shadow: 0 0 6px var(--green); }
-  .tab-badge { font-family: 'DM Mono', monospace; font-size: 10px; background: rgba(108,143,255,0.15); color: var(--accent); border-radius: 20px; padding: 1px 8px; border: 1px solid rgba(108,143,255,0.3); }
+  .tab-badge { font-family: 'DM Mono', monospace; font-size: 10px; background: rgba(233,30,140,0.15); color: var(--accent); border-radius: 20px; padding: 1px 8px; border: 1px solid rgba(233,30,140,0.35); }
 
   /* Pages */
   .page { display: none; }
@@ -118,7 +120,7 @@
   }
   .card::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(108,143,255,0.6), rgba(182,159,255,0.4), transparent);
+    background: linear-gradient(90deg, transparent, rgba(233,30,140,0.7), rgba(155,143,212,0.5), transparent);
   }
   .card-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 1.8px; color: var(--text3); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
   .card-title .icon { color: var(--accent); font-size: 14px; }
@@ -130,8 +132,8 @@
     background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
     border-radius: 13px; padding: 13px 14px; cursor: pointer; transition: all 0.22s; text-align: left; color: var(--text);
   }
-  .role-btn:hover { border-color: rgba(108,143,255,0.3); background: rgba(108,143,255,0.06); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(108,143,255,0.1); }
-  .role-btn.active { border-color: rgba(108,143,255,0.5); background: rgba(108,143,255,0.1); box-shadow: 0 0 0 1px rgba(108,143,255,0.2) inset, 0 4px 20px rgba(108,143,255,0.15); }
+  .role-btn:hover { border-color: rgba(155,143,212,0.35); background: rgba(155,143,212,0.07); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(155,143,212,0.12); }
+  .role-btn.active { border-color: rgba(233,30,140,0.55); background: rgba(233,30,140,0.08); box-shadow: 0 0 0 1px rgba(233,30,140,0.2) inset, 0 4px 20px rgba(233,30,140,0.15); }
   .role-icon { font-size: 20px; margin-bottom: 7px; }
   .role-name { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 12px; color: var(--text); line-height: 1.3; }
   .role-count { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text3); margin-top: 4px; }
@@ -149,14 +151,14 @@
     border-radius: 11px; padding: 10px 36px 10px 14px; color: var(--text);
     font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: all 0.2s;
   }
-  .form-input:focus { border-color: rgba(108,143,255,0.5); background: rgba(108,143,255,0.06); box-shadow: 0 0 0 3px rgba(108,143,255,0.1); }
+  .form-input:focus { border-color: rgba(233,30,140,0.5); background: rgba(233,30,140,0.05); box-shadow: 0 0 0 3px rgba(233,30,140,0.1); }
   .form-input::placeholder { color: var(--text3); }
   .combo-arrow { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); font-size: 10px; pointer-events: none; }
   .combo-dropdown {
     position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 100;
-    background: rgba(18,20,30,0.92); border: 1px solid rgba(108,143,255,0.35); border-radius: 12px;
+    background: rgba(22,20,38,0.95); border: 1px solid rgba(233,30,140,0.3); border-radius: 12px;
     max-height: 220px; overflow-y: auto; display: none;
-    box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 0 1px rgba(108,143,255,0.1);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.6), 0 0 0 1px rgba(233,30,140,0.08);
     backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   }
   .combo-dropdown.open { display: block; }
@@ -165,7 +167,7 @@
   .combo-dropdown::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
   .combo-option { padding: 9px 14px; font-size: 13px; color: var(--text2); cursor: pointer; transition: all 0.15s; border-bottom: 1px solid rgba(255,255,255,0.05); }
   .combo-option:last-child { border-bottom: none; }
-  .combo-option:hover, .combo-option.highlighted { background: rgba(108,143,255,0.12); color: var(--text); }
+  .combo-option:hover, .combo-option.highlighted { background: rgba(233,30,140,0.1); color: var(--text); }
   .combo-option.highlighted { border-left: 2px solid var(--accent); }
   .combo-no-match { padding: 9px 14px; font-size: 12px; color: var(--text3); font-style: italic; }
 
@@ -176,13 +178,13 @@
     border-radius: 11px; padding: 10px 14px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 14px;
     outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; transition: all 0.2s;
   }
-  .level-select:focus { border-color: rgba(108,143,255,0.5); box-shadow: 0 0 0 3px rgba(108,143,255,0.1); }
+  .level-select:focus { border-color: rgba(233,30,140,0.5); box-shadow: 0 0 0 3px rgba(233,30,140,0.1); }
   .level-select option { background: #12141e; }
 
   /* Buttons */
   .btn { border: none; border-radius: 11px; padding: 10px 18px; font-family: 'Syne', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.22s; white-space: nowrap; }
   .btn-add { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid rgba(255,255,255,0.12); height: 42px; padding: 0 20px; flex-shrink: 0; }
-  .btn-add:hover { background: rgba(108,143,255,0.2); color: white; border-color: rgba(108,143,255,0.5); box-shadow: 0 4px 16px rgba(108,143,255,0.2); }
+  .btn-add:hover { background: rgba(233,30,140,0.18); color: white; border-color: rgba(233,30,140,0.55); box-shadow: 0 4px 16px rgba(233,30,140,0.25); }
   .btn-clear { background: transparent; color: var(--red); border: 1px solid rgba(255,107,122,0.3); height: 42px; padding: 0 16px; flex-shrink: 0; border-radius: 11px; font-family: 'Syne', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
   .btn-clear:hover { background: rgba(255,107,122,0.1); border-color: var(--red); }
   .btn-sm { padding: 5px 10px; font-size: 11px; border-radius: 8px; }
@@ -196,7 +198,7 @@
   .skill-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
   .skill-item { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 11px; padding: 10px 14px; transition: all 0.2s; animation: slideIn 0.2s ease; }
   @keyframes slideIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
-  .skill-item:hover { border-color: rgba(108,143,255,0.25); background: rgba(108,143,255,0.05); }
+  .skill-item:hover { border-color: rgba(233,30,140,0.25); background: rgba(233,30,140,0.05); }
   .skill-name-text { flex: 1; font-size: 14px; color: var(--text); font-weight: 500; }
   .skill-level-badge { font-family: 'DM Mono', monospace; font-size: 11px; padding: 3px 10px; border-radius: 20px; background: rgba(255,255,255,0.05); color: var(--text2); border: 1px solid rgba(255,255,255,0.1); white-space: nowrap; }
   .lvl-beginner { color: var(--orange) !important; border-color: rgba(255,149,86,0.3) !important; background: rgba(255,149,86,0.08) !important; }
@@ -210,13 +212,13 @@
   .analyze-section { margin-top: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
   .skill-counter { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text3); }
   .btn-analyze {
-    background: linear-gradient(135deg, #6c8fff, #b69fff);
+    background: linear-gradient(135deg, #e91e8c, #9b8fd4);
     color: white; border: none; border-radius: 13px; padding: 13px 28px;
     font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px;
     cursor: pointer; transition: all 0.25s; display: flex; align-items: center; gap: 8px;
-    box-shadow: 0 4px 20px rgba(108,143,255,0.3);
+    box-shadow: 0 4px 20px rgba(233,30,140,0.35);
   }
-  .btn-analyze:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(108,143,255,0.45); }
+  .btn-analyze:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(233,30,140,0.5); }
   .btn-analyze:disabled { opacity: 0.35; cursor: not-allowed; transform: none; box-shadow: none; }
 
   /* Tags */
@@ -227,7 +229,7 @@
   /* Results page */
   .results-page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
   .results-page-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 22px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .results-role-badge { background: rgba(108,143,255,0.12); border: 1px solid rgba(108,143,255,0.3); color: var(--accent); border-radius: 20px; padding: 4px 14px; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 400; }
+  .results-role-badge { background: rgba(233,30,140,0.1); border: 1px solid rgba(233,30,140,0.3); color: var(--accent); border-radius: 20px; padding: 4px 14px; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 400; }
   .btn-back { display: flex; align-items: center; gap: 7px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1); border-radius: 11px; padding: 9px 18px; color: var(--text2); font-family: 'Syne', sans-serif; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(12px); }
   .btn-back:hover { background: rgba(255,255,255,0.08); color: var(--text); }
 
@@ -239,10 +241,10 @@
     backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
     box-shadow: 0 4px 40px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.07);
   }
-  .score-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(108,143,255,0.7), rgba(182,159,255,0.5), transparent); }
-  .score-hero::after { content: ''; position: absolute; top: -80px; right: -80px; width: 280px; height: 280px; background: radial-gradient(circle, rgba(182,159,255,0.08) 0%, transparent 70%); pointer-events: none; }
+  .score-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(233,30,140,0.8), rgba(155,143,212,0.6), transparent); }
+  .score-hero::after { content: ''; position: absolute; top: -80px; right: -80px; width: 280px; height: 280px; background: radial-gradient(circle, rgba(233,30,140,0.1) 0%, transparent 70%); pointer-events: none; }
   @media (max-width: 600px) { .score-hero { grid-template-columns: 1fr; text-align: center; } }
-  .score-circle { position: relative; width: 150px; height: 150px; flex-shrink: 0; margin: 0 auto; filter: drop-shadow(0 0 16px rgba(108,143,255,0.25)); }
+  .score-circle { position: relative; width: 150px; height: 150px; flex-shrink: 0; margin: 0 auto; filter: drop-shadow(0 0 18px rgba(233,30,140,0.3)); }
   .score-svg { transform: rotate(-90deg); }
   .score-track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 10; }
   .score-fill { fill: none; stroke-width: 10; stroke-linecap: round; }
@@ -280,7 +282,7 @@
   .cat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
   @media (max-width: 500px) { .cat-grid { grid-template-columns: 1fr; } }
   .cat-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07); border-radius: 12px; padding: 14px 16px; transition: border-color 0.2s; }
-  .cat-item:hover { border-color: rgba(108,143,255,0.2); }
+  .cat-item:hover { border-color: rgba(155,143,212,0.25); }
   .cat-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   .cat-name { font-size: 13px; font-weight: 500; color: var(--text); }
   .cat-pct { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text2); }
@@ -294,7 +296,7 @@
 
   .priority-list { display: flex; flex-direction: column; gap: 8px; }
   .priority-item { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 11px; padding: 12px 14px; transition: border-color 0.2s; }
-  .priority-item:hover { border-color: rgba(108,143,255,0.2); }
+  .priority-item:hover { border-color: rgba(233,30,140,0.2); }
   .priority-num { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-weight: 800; font-size: 12px; flex-shrink: 0; }
   .priority-info { flex: 1; }
   .priority-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
@@ -335,7 +337,7 @@
     background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
     border-radius: 13px; padding: 16px 18px; transition: all 0.2s;
   }
-  .why-item:hover { border-color: rgba(108,143,255,0.2); background: rgba(108,143,255,0.04); }
+  .why-item:hover { border-color: rgba(233,30,140,0.2); background: rgba(233,30,140,0.04); }
   .why-skill-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 13px; color: var(--text); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
   .why-skill-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
   .why-skill-reason { font-size: 12px; color: var(--text2); line-height: 1.6; }
@@ -470,6 +472,48 @@
     box-shadow: 0 0 10px rgba(108,143,255,0.5);
   }
 
+
+  /* Skill Learning Roadmap */
+  .roadmap-section { margin-top: 16px; }
+  .roadmap-timeline { display: flex; flex-direction: column; gap: 0; position: relative; }
+  .roadmap-timeline::before {
+    content: ''; position: absolute; left: 18px; top: 0; bottom: 0; width: 2px;
+    background: linear-gradient(180deg, rgba(196,21,120,0.6), rgba(124,111,184,0.4), rgba(255,255,255,0.05));
+    border-radius: 2px;
+  }
+  .roadmap-phase { display: flex; gap: 16px; padding-bottom: 20px; position: relative; }
+  .roadmap-phase:last-child { padding-bottom: 0; }
+  .roadmap-node {
+    width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; position: relative; z-index: 1;
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 0 4px rgba(13,14,26,1);
+  }
+  .roadmap-node.phase-1 { background: linear-gradient(135deg, rgba(196,21,120,0.3), rgba(196,21,120,0.15)); border-color: rgba(196,21,120,0.5); }
+  .roadmap-node.phase-2 { background: linear-gradient(135deg, rgba(232,184,75,0.3), rgba(232,184,75,0.15)); border-color: rgba(232,184,75,0.5); }
+  .roadmap-node.phase-3 { background: linear-gradient(135deg, rgba(40,201,144,0.3), rgba(40,201,144,0.15)); border-color: rgba(40,201,144,0.5); }
+  .roadmap-node.phase-4 { background: linear-gradient(135deg, rgba(124,111,184,0.3), rgba(124,111,184,0.15)); border-color: rgba(124,111,184,0.5); }
+  .roadmap-content { flex: 1; padding-top: 6px; }
+  .roadmap-phase-label {
+    font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px;
+    color: var(--text3); margin-bottom: 4px;
+  }
+  .roadmap-phase-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 8px; }
+  .roadmap-skills-list { display: flex; flex-wrap: wrap; gap: 6px; }
+  .roadmap-skill-tag {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 10px; border-radius: 20px; font-size: 11px;
+    font-family: 'DM Mono', monospace; border: 1px solid; white-space: nowrap;
+  }
+  .roadmap-skill-tag.owned { background: rgba(40,201,144,0.08); border-color: rgba(40,201,144,0.25); color: var(--green); }
+  .roadmap-skill-tag.missing { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.1); color: var(--text2); }
+  .roadmap-skill-check { font-size: 10px; }
+  .roadmap-duration {
+    margin-top: 8px; font-size: 11px; font-family: 'DM Mono', monospace;
+    color: var(--text3); display: flex; align-items: center; gap: 5px;
+  }
+
 </style>
 </head>
 <body>
@@ -542,8 +586,8 @@
             <label>Proficiency Level</label>
             <div class="level-select-wrap">
               <select id="skill-level" class="level-select">
-                <option value="1">Beginner</option>
-                <option value="2" selected>Intermediate</option>
+                <option value="1" selected>Beginner</option>
+                <option value="2">Intermediate</option>
                 <option value="3">Expert</option>
               </select>
               <span class="combo-arrow" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);pointer-events:none;">▼</span>
@@ -700,6 +744,12 @@
 
       </div>
     </div>
+
+    <!-- Skill Learning Roadmap -->
+    <div class="section-card roadmap-section">
+      <div class="section-title"><span class="s-icon" style="color:var(--accent)">⟶</span> Skill Learning Roadmap</div>
+      <div class="roadmap-timeline" id="roadmap-timeline"></div>
+    </div>
     </div>
   </div>
 
@@ -811,19 +861,19 @@ const ROLES = {
       { name: "Authentication & Security", weight: 4, category: "Security" },
     ]
   },
-  "Financial Analyst": {
-    icon: "💰",
+  "Game Developer": {
+    icon: "🎮",
     skills: [
-      { name: "Financial Modelling", weight: 5, category: "Finance" },
-      { name: "Excel / Google Sheets (Advanced)", weight: 5, category: "Tools" },
-      { name: "Financial Statement Analysis", weight: 5, category: "Finance" },
-      { name: "Budgeting & Forecasting", weight: 4, category: "Finance" },
-      { name: "Valuation Techniques (DCF/Comps)", weight: 4, category: "Finance" },
-      { name: "SQL / Data Querying", weight: 3, category: "Data" },
-      { name: "PowerPoint / Presentations", weight: 4, category: "Communication" },
-      { name: "Accounting Fundamentals", weight: 4, category: "Finance" },
-      { name: "Data Visualisation (Power BI/Tableau)", weight: 3, category: "Data" },
-      { name: "Attention to Detail", weight: 5, category: "Soft Skills" },
+      { name: "C++ / C#", weight: 5, category: "Programming" },
+      { name: "Unity / Unreal Engine", weight: 5, category: "Game Engine" },
+      { name: "Game Design Principles", weight: 4, category: "Design" },
+      { name: "Linear Algebra & Maths", weight: 4, category: "Mathematics" },
+      { name: "Physics Simulation", weight: 3, category: "Mathematics" },
+      { name: "3D Modelling Basics (Blender)", weight: 3, category: "Art" },
+      { name: "Version Control (Git)", weight: 4, category: "Tools" },
+      { name: "Shader Programming (HLSL/GLSL)", weight: 3, category: "Graphics" },
+      { name: "Multiplayer / Networking Basics", weight: 3, category: "Architecture" },
+      { name: "Performance Optimisation", weight: 4, category: "Engineering" },
     ]
   },
   "DevOps Engineer": {
@@ -1075,7 +1125,7 @@ function addSkill() {
     skills.push({ id: Date.now(), name, level });
   }
   skillInput.value = '';
-  document.getElementById('skill-level').value = '2';
+  document.getElementById('skill-level').value = '1';
   resetResults();
   saveState();
   renderSkillList();
@@ -1247,6 +1297,7 @@ function buildResultsHTML({ score, missing, matched, catResults, priorities }) {
 
   buildInsights(selectedRole, score);
   buildWhySection(matched, missing, selectedRole);
+  buildRoadmap(matched, missing, selectedRole);
 
   const pc = ['#f5c842','#fb923c','#a78bfa'];
   document.getElementById('priority-list').innerHTML = priorities.length === 0
@@ -1421,6 +1472,18 @@ const SKILL_REASONS = {
   "Fine-tuning & Model Adaptation": "Off-the-shelf models don't always fit your use case. Fine-tuning lets you customise model behaviour for specific tasks.",
   "REST APIs / FastAPI": "AI models need to be served via APIs to be useful. FastAPI is the go-to framework for wrapping Python AI code into production endpoints.",
   "Evaluation & Testing of LLMs": "LLMs are non-deterministic. Systematic evaluation is how you know your AI product actually works reliably.",
+
+  "C++ / C#": "The two dominant languages in game development. C++ powers Unreal Engine and performance-critical systems; C# is the scripting language for Unity.",
+  "Unity / Unreal Engine": "The industry-standard game engines. Unity dominates indie and mobile; Unreal powers AAA titles. Employers expect proficiency in at least one.",
+  "Game Design Principles": "Great code doesn't make a great game — design does. Understanding player psychology, loop design, and level design separates engineers from game developers.",
+  "Linear Algebra & Maths": "Game development is applied mathematics. Vectors, matrices, and trigonometry are used constantly for movement, collisions, and 3D transformations.",
+  "Physics Simulation": "Realistic physics make games feel alive. Rigidbodies, collisions, and constraints are core gameplay mechanics in most genres.",
+  "3D Modelling Basics (Blender)": "Game developers who understand the 3D pipeline work better with artists and can prototype assets independently.",
+  "Version Control (Git)": "Game projects involve dozens of files. Git keeps teams in sync and prevents catastrophic overwritten work.",
+  "Shader Programming (HLSL/GLSL)": "Visual effects, water, lighting, and post-processing all run on shaders. Shader knowledge separates good graphics programmers from great ones.",
+  "Multiplayer / Networking Basics": "Online multiplayer is expected in most modern games. Understanding latency, state synchronisation, and server architecture is increasingly essential.",
+  "Performance Optimisation": "Games must run at 60fps+ on target hardware. Profiling, draw call batching, and memory management are daily concerns for any game developer.",
+
   "Stakeholder Communication": "SAP implementations affect entire organisations. Communicating clearly with business users and executives is essential.",
   "Structured Problem Solving": "Consultants earn their fees by solving hard problems systematically. Frameworks like MECE thinking are fundamental.",
   "Client Communication": "Your work only creates value if the client trusts and acts on it. Clear, confident communication is non-negotiable.",
@@ -1554,6 +1617,92 @@ function showToast(msg, type = 'error') {
   t.style.display = 'flex';
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => { t.style.display = 'none'; }, 3000);
+}
+
+/* ═══ SKILL LEARNING ROADMAP ═══ */
+const ROADMAP_DURATIONS = {
+  1: { label: "~2–4 weeks", weeks: 3 },
+  2: { label: "~1–2 months", weeks: 6 },
+  3: { label: "~2–3 months", weeks: 10 },
+  4: { label: "~3–5 months", weeks: 16 },
+  5: { label: "~5–8 months", weeks: 26 },
+};
+
+function buildRoadmap(matched, missing, role) {
+  const timeline = document.getElementById('roadmap-timeline');
+  if (!timeline) return;
+
+  const allRoleSkills = ROLES[role].skills;
+
+  // Sort all skills: critical missing first, then partial, then owned
+  const critical = missing.filter(s => s.weight >= 4).sort((a,b) => b.weight - a.weight);
+  const important = missing.filter(s => s.weight === 3).sort((a,b) => b.weight - a.weight);
+  const owned = matched.sort((a,b) => b.weight - a.weight);
+
+  const phases = [
+    {
+      id: 1,
+      icon: '🎯',
+      label: 'Phase 1 — Start Here',
+      title: 'Critical Foundations',
+      color: 'var(--accent)',
+      skills: critical.slice(0, 4),
+      note: critical.length === 0 ? 'All critical skills covered ✓' : null,
+    },
+    {
+      id: 2,
+      icon: '📖',
+      label: 'Phase 2 — Build Depth',
+      title: 'Supporting Skills',
+      color: 'var(--yellow)',
+      skills: important.slice(0, 4),
+      note: important.length === 0 ? 'All supporting skills covered ✓' : null,
+    },
+    {
+      id: 3,
+      icon: '🚀',
+      label: 'Phase 3 — Strengthen',
+      title: 'Level Up Existing Skills',
+      color: 'var(--green)',
+      skills: owned.filter(s => s.userLevel < 3).slice(0, 4),
+      note: owned.filter(s => s.userLevel < 3).length === 0 ? 'All matched skills at Expert level ✓' : null,
+    },
+    {
+      id: 4,
+      icon: '⭐',
+      label: 'Phase 4 — Stand Out',
+      title: 'Advanced & Extra Skills',
+      color: 'var(--purple)',
+      skills: [...critical.slice(4), ...important.slice(4)].slice(0, 4),
+      note: (critical.length <= 4 && important.length <= 4) ? 'Complete phases 1–3 and you're fully role-ready!' : null,
+    },
+  ];
+
+  timeline.innerHTML = phases.map(phase => {
+    const totalWeeks = phase.skills.reduce((sum, s) => sum + (ROADMAP_DURATIONS[s.weight]?.weeks || 4), 0);
+    const durationText = totalWeeks === 0 ? '' : totalWeeks <= 4 ? '~1 month' : totalWeeks <= 10 ? '~2–3 months' : totalWeeks <= 20 ? '~3–5 months' : '~5+ months';
+
+    const skillsHTML = phase.note
+      ? `<span style="font-size:12px;color:var(--green);font-style:italic;">${phase.note}</span>`
+      : phase.skills.map(s => {
+          const isOwned = matched.find(m => m.name === s.name);
+          return `<span class="roadmap-skill-tag ${isOwned ? 'owned' : 'missing'}">
+            <span class="roadmap-skill-check">${isOwned ? '✓' : '○'}</span>
+            ${s.name}
+          </span>`;
+        }).join('');
+
+    return `
+      <div class="roadmap-phase">
+        <div class="roadmap-node phase-${phase.id}">${phase.icon}</div>
+        <div class="roadmap-content">
+          <div class="roadmap-phase-label">${phase.label}</div>
+          <div class="roadmap-phase-title">${phase.title}</div>
+          <div class="roadmap-skills-list">${skillsHTML}</div>
+          ${durationText ? `<div class="roadmap-duration">⏱ Estimated time: ${durationText}</div>` : ''}
+        </div>
+      </div>`;
+  }).join('');
 }
 
 </script>
