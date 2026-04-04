@@ -130,12 +130,28 @@
   @media (max-width: 480px) { .role-grid { grid-template-columns: 1fr; } }
   .role-btn {
     background: rgba(20,40,90,0.55); border: 1px solid rgba(100,150,255,0.15);
-    border-radius: 13px; padding: 13px 14px; cursor: pointer; transition: all 0.22s; text-align: left; color: var(--text);
+    border-radius: 13px; padding: 13px 14px; cursor: pointer; transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1); text-align: left; color: var(--text);
+    position: relative; overflow: hidden;
   }
-  .role-btn:hover { border-color: rgba(44,95,212,0.35); background: rgba(74,111,212,0.07); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(74,111,212,0.12); }
-  .role-btn.active { border-color: rgba(44,95,212,0.55); background: rgba(44,95,212,0.08); box-shadow: 0 0 0 1px rgba(44,95,212,0.2) inset, 0 4px 20px rgba(44,95,212,0.15); }
-  .role-name { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 12px; color: var(--text); line-height: 1.3; }
-  .role-count { font-family: 'Montserrat', sans-serif; font-size: 10px; color: var(--text3); margin-top: 4px; }
+  .role-btn::before {
+    content: ''; position: absolute; inset: 0; border-radius: 12px;
+    background: linear-gradient(135deg, rgba(100,153,255,0.08) 0%, rgba(44,95,212,0.04) 100%);
+    opacity: 0; transition: opacity 0.2s;
+  }
+  .role-btn:hover {
+    border-color: rgba(100,153,255,0.55);
+    background: rgba(44,95,212,0.12);
+    transform: translateY(-3px) scale(1.025);
+    box-shadow: 0 8px 24px rgba(44,95,212,0.22), 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+  }
+  .role-btn:hover::before { opacity: 1; }
+  .role-btn:hover .role-name { color: #a8c8ff; }
+  .role-btn:hover .role-count { color: var(--text2); }
+  .role-btn:active { transform: translateY(-1px) scale(1.01); transition-duration: 0.1s; }
+  .role-btn.active { border-color: rgba(44,95,212,0.65); background: rgba(44,95,212,0.12); box-shadow: 0 0 0 1px rgba(44,95,212,0.25) inset, 0 6px 24px rgba(44,95,212,0.2); transform: translateY(-1px); }
+  .role-btn.active::before { opacity: 1; }
+  .role-name { font-family: 'Montserrat', sans-serif; font-weight: 600; font-size: 12px; color: var(--text); line-height: 1.3; transition: color 0.2s; }
+  .role-count { font-family: 'Montserrat', sans-serif; font-size: 10px; color: var(--text3); margin-top: 4px; transition: color 0.2s; }
 
   /* Skill form */
   .skill-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
@@ -227,7 +243,7 @@
   /* Tags */
   .tag { display: inline-flex; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 3px 10px; font-size: 11px; font-family: 'Montserrat', sans-serif; color: var(--text2); white-space: nowrap; }
   .dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 6px; flex-shrink: 0; }
-  .divider { height: 1px; background: rgba(255,255,255,0.06); margin: 20px 0; }
+  .divider { height: 1px; background: rgba(255,255,255,0.06); margin: 28px 0; }
 
   /* Results page */
   .results-page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 12px; }
@@ -238,7 +254,7 @@
 
   .score-hero {
     background: rgba(20,36,80,0.6); border: 1px solid rgba(100,150,255,0.18);
-    border-radius: 22px; padding: 36px; margin-bottom: 20px;
+    border-radius: 22px; padding: 36px; margin-bottom: 28px;
     position: relative; overflow: hidden;
     display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: center;
     backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
@@ -246,8 +262,7 @@
   }
   .score-hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(44,95,212,0.7), rgba(155,143,212,0.6), transparent); }
   .score-hero::after { content: ''; position: absolute; top: -80px; right: -80px; width: 280px; height: 280px; background: radial-gradient(circle, rgba(44,95,212,0.1) 0%, transparent 70%); pointer-events: none; }
-  @media (max-width: 600px) { .score-hero { grid-template-columns: 1fr; text-align: center; } }
-  .score-circle { position: relative; width: 150px; height: 150px; flex-shrink: 0; margin: 0 auto; filter: drop-shadow(0 0 18px rgba(44,95,212,0.3)); }
+  @media (max-width: 600px) { .score-hero { grid-template-columns: 1fr; text-align: center; } }  .score-circle { position: relative; width: 150px; height: 150px; flex-shrink: 0; margin: 0 auto; filter: drop-shadow(0 0 18px rgba(44,95,212,0.3)); }
   .score-svg { transform: rotate(-90deg); }
   .score-track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 10; }
   .score-fill { fill: none; stroke-width: 10; stroke-linecap: round; }
@@ -260,7 +275,7 @@
   .progress-bar-fill { height: 100%; border-radius: 100px; width: 0%; transition: width 1.2s cubic-bezier(0.4,0,0.2,1); }
   .progress-label { display: flex; justify-content: space-between; font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--text3); }
 
-  .stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 20px; }
+  .stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 24px; }
   @media (max-width: 600px) { .stat-row { grid-template-columns: 1fr; } }
   .stat-box {
     background: rgba(20,36,80,0.55); border: 1px solid rgba(100,150,255,0.16);
@@ -271,7 +286,7 @@
   .stat-label { font-family: 'Montserrat', sans-serif; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text3); margin-bottom: 6px; font-weight: 500; }
   .stat-value { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 30px; }
 
-  .results-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; align-items: start; }
+  .results-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 24px; align-items: start; }
   @media (max-width: 700px) { .results-bottom { grid-template-columns: 1fr; } }
   .section-card {
     background: rgba(20,36,80,0.55); border: 1px solid rgba(100,150,255,0.16);
@@ -307,7 +322,7 @@
   .good-msg { font-size: 13px; color: var(--green); font-style: italic; padding: 8px 0; }
 
   /* Tier explanation */
-  .tier-section { margin-top: 0; }
+  .tier-section { margin-top: 8px; }
   .tier-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 12px; }
   .tier-item { background: rgba(20,40,90,0.5); border: 1px solid rgba(100,150,255,0.15); border-radius: 16px; padding: 18px 20px; transition: all 0.2s; }
   .tier-item:hover { border-color: rgba(255,255,255,0.12); background: rgba(255,255,255,0.05); }
@@ -334,7 +349,7 @@
   }
 
   /* Why These Skills Matter */
-  .why-section { margin-top: 16px; }
+  .why-section { margin-top: 24px; }
   .why-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
   .why-item {
     background: rgba(20,40,90,0.55); border: 1px solid rgba(100,150,255,0.15);
@@ -358,7 +373,7 @@
   @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
 
   /* Career Path Insights */
-  .insights-card { margin-bottom: 16px; }
+  .insights-card { margin-bottom: 24px; }
   .insights-primary {
     display: flex; align-items: center; gap: 16px;
     background: rgba(44,95,212,0.07); border: 1px solid rgba(44,95,212,0.2);
@@ -842,6 +857,55 @@
   .reveal-stagger.visible > *:nth-child(5) { transition-delay: 0.33s; opacity:1; transform:none; }
   .reveal-stagger.visible > *:nth-child(n+6) { transition-delay: 0.38s; opacity:1; transform:none; }
 
+
+  /* ── Learn Resources ── */
+  .learn-skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 14px;
+  }
+  .learn-skill-card {
+    background: rgba(16,28,65,0.7);
+    border: 1px solid rgba(100,150,255,0.16);
+    border-radius: 14px;
+    padding: 16px 18px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .learn-skill-header {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  }
+  .learn-skill-name {
+    font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3;
+  }
+  .learn-skill-tier {
+    font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+    padding: 2px 7px; border-radius: 6px; flex-shrink: 0;
+    background: rgba(224,80,96,0.12); color: var(--red); border: 1px solid rgba(224,80,96,0.2);
+  }
+  .learn-row-label {
+    font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.3px;
+    color: var(--text3); margin-bottom: 6px;
+  }
+  .learn-links {
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .learn-link {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 10px; border-radius: 8px; font-size: 11px; font-weight: 500;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(100,150,255,0.12);
+    color: var(--text2); text-decoration: none; transition: all 0.17s; line-height: 1.3;
+  }
+  .learn-link:hover {
+    background: rgba(44,95,212,0.14); border-color: rgba(44,95,212,0.35);
+    color: var(--text); transform: translateX(2px);
+  }
+  .learn-link-badge {
+    font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.7px;
+    padding: 2px 5px; border-radius: 4px; flex-shrink: 0; white-space: nowrap;
+  }
+  .learn-link-name { flex: 1; }
+  .learn-link-arrow { font-size: 10px; color: var(--text3); flex-shrink: 0; }
+
 </style>
 </head>
 <body>
@@ -1022,6 +1086,12 @@
         <div class="section-title"><span class="s-icon" style="color:var(--yellow)">—</span> Top 3 to Learn Next</div>
         <div class="priority-list" id="priority-list"></div>
       </div>
+    </div>
+
+    <!-- Where to Learn -->
+    <div class="section-card reveal" id="learn-resources-section" style="display:none;">
+      <div class="section-title"><span class="s-icon" style="color:var(--accent2)">—</span> Where to Learn — Critical Skills</div>
+      <div id="learn-resources-list"></div>
     </div>
 
     <!-- Tier Explanation -->
@@ -1815,6 +1885,7 @@ function buildResultsHTML({ score, missing, matched, catResults, priorities }) {
   buildRoadmap(matched, missing, selectedRole);
   buildSimulator(matched, missing, selectedRole, score);
   buildAdvisor(selectedRole, score, missing, matched);
+  buildLearnResources(missing);
 
   const pc = ['#f5c842','#fb923c','#a78bfa'];
   document.getElementById('priority-list').innerHTML = priorities.length === 0
@@ -2887,6 +2958,1004 @@ function triggerRevealSequence() {
   // Rest observed on scroll
   initRevealObserver();
 }
+
+/* ═══ WHERE TO LEARN — CRITICAL SKILLS ═══ */
+const LEARN_RESOURCES = {
+  "SQL": [
+    { name: "SQLZoo",          type: "Interactive", url: "https://sqlzoo.net" },
+    { name: "Mode SQL Tutorial", type: "Guide",    url: "https://mode.com/sql-tutorial" },
+    { name: "CS50 SQL",        type: "Course",     url: "https://cs50.harvard.edu/sql" },
+  ],
+  "Python": [
+    { name: "Python.org Docs",     type: "Docs",       url: "https://docs.python.org/3/tutorial" },
+    { name: "Automate the Boring Stuff", type: "Book", url: "https://automatetheboringstuff.com" },
+    { name: "freeCodeCamp Python", type: "Course",     url: "https://www.freecodecamp.org/learn/scientific-computing-with-python" },
+  ],
+  "Statistics": [
+    { name: "Khan Academy Stats",  type: "Course",  url: "https://www.khanacademy.org/math/statistics-probability" },
+    { name: "StatQuest (YouTube)", type: "Video",   url: "https://www.youtube.com/@statquest" },
+    { name: "Think Stats (free)",  type: "Book",    url: "https://greenteapress.com/wp/think-stats-2e" },
+  ],
+  "Data Cleaning": [
+    { name: "Kaggle: Data Cleaning", type: "Course", url: "https://www.kaggle.com/learn/data-cleaning" },
+    { name: "Pandas Docs",           type: "Docs",   url: "https://pandas.pydata.org/docs/user_guide" },
+  ],
+  "Data Visualization": [
+    { name: "Kaggle: Data Viz",      type: "Course", url: "https://www.kaggle.com/learn/data-visualization" },
+    { name: "D3.js Tutorials",       type: "Guide",  url: "https://d3js.org" },
+    { name: "Storytelling with Data", type: "Book",  url: "https://www.storytellingwithdata.com" },
+  ],
+  "Excel / Google Sheets": [
+    { name: "GCFGlobal Excel",      type: "Course",     url: "https://edu.gcfglobal.org/en/excel" },
+    { name: "ExcelJet",             type: "Reference",  url: "https://exceljet.net" },
+  ],
+  "JavaScript": [
+    { name: "javascript.info",      type: "Guide",   url: "https://javascript.info" },
+    { name: "freeCodeCamp JS",      type: "Course",  url: "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures" },
+    { name: "Eloquent JavaScript",  type: "Book",    url: "https://eloquentjavascript.net" },
+  ],
+  "HTML & CSS": [
+    { name: "MDN Web Docs",         type: "Docs",    url: "https://developer.mozilla.org/en-US/docs/Learn" },
+    { name: "The Odin Project",     type: "Course",  url: "https://www.theodinproject.com" },
+    { name: "freeCodeCamp HTML",    type: "Course",  url: "https://www.freecodecamp.org/learn/responsive-web-design" },
+  ],
+  "React": [
+    { name: "react.dev (official)", type: "Docs",    url: "https://react.dev/learn" },
+    { name: "Scrimba React Course", type: "Course",  url: "https://scrimba.com/learn/learnreact" },
+  ],
+  "TypeScript": [
+    { name: "TypeScript Handbook",  type: "Docs",    url: "https://www.typescriptlang.org/docs/handbook" },
+    { name: "Matt Pocock TS Tips",  type: "Video",   url: "https://www.youtube.com/@mattpocockuk" },
+  ],
+  "Responsive Design": [
+    { name: "MDN Responsive Design", type: "Docs",  url: "https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design" },
+    { name: "web.dev Learn CSS",     type: "Guide",  url: "https://web.dev/learn/css" },
+  ],
+  "Data Structures & Algorithms": [
+    { name: "NeetCode",             type: "Practice", url: "https://neetcode.io" },
+    { name: "CS50x",                type: "Course",   url: "https://cs50.harvard.edu/x" },
+    { name: "Visualgo",             type: "Visual",   url: "https://visualgo.net" },
+  ],
+  "Object-Oriented Programming": [
+    { name: "Refactoring.Guru",     type: "Guide",   url: "https://refactoring.guru/design-patterns" },
+    { name: "CS50P Python OOP",     type: "Course",  url: "https://cs50.harvard.edu/python" },
+  ],
+  "Python / Java / C++": [
+    { name: "The Odin Project",     type: "Course",  url: "https://www.theodinproject.com" },
+    { name: "Codecademy",           type: "Course",  url: "https://www.codecademy.com" },
+    { name: "Exercism",             type: "Practice", url: "https://exercism.org" },
+  ],
+  "REST APIs": [
+    { name: "REST API Tutorial",    type: "Guide",   url: "https://restfulapi.net" },
+    { name: "Postman Learning",     type: "Docs",    url: "https://learning.postman.com" },
+  ],
+  "System Design": [
+    { name: "System Design Primer", type: "Guide",   url: "https://github.com/donnemartin/system-design-primer" },
+    { name: "ByteByteGo",           type: "Video",   url: "https://www.youtube.com/@ByteByteGo" },
+  ],
+  "Python / Node.js / Java": [
+    { name: "The Odin Project",     type: "Course",  url: "https://www.theodinproject.com" },
+    { name: "Node.js Docs",         type: "Docs",    url: "https://nodejs.org/en/learn/getting-started/introduction-to-nodejs" },
+  ],
+  "Authentication & Security": [
+    { name: "OWASP Top Ten",        type: "Guide",   url: "https://owasp.org/www-project-top-ten" },
+    { name: "JWT.io",               type: "Docs",    url: "https://jwt.io/introduction" },
+  ],
+  "SQL Databases": [
+    { name: "SQLZoo",               type: "Interactive", url: "https://sqlzoo.net" },
+    { name: "PostgreSQL Tutorial",  type: "Guide",       url: "https://www.postgresqltutorial.com" },
+  ],
+  "Statistics & Probability": [
+    { name: "Khan Academy Stats",   type: "Course",  url: "https://www.khanacademy.org/math/statistics-probability" },
+    { name: "StatQuest (YouTube)",  type: "Video",   url: "https://www.youtube.com/@statquest" },
+  ],
+  "Linear Algebra": [
+    { name: "3Blue1Brown Essence of Linear Algebra", type: "Video", url: "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" },
+    { name: "MIT OCW 18.06",        type: "Course",  url: "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010" },
+  ],
+  "Scikit-learn": [
+    { name: "Scikit-learn Docs",    type: "Docs",    url: "https://scikit-learn.org/stable/getting_started.html" },
+    { name: "Kaggle ML Course",     type: "Course",  url: "https://www.kaggle.com/learn/intro-to-machine-learning" },
+  ],
+  "Deep Learning (PyTorch/TF)": [
+    { name: "fast.ai",              type: "Course",  url: "https://course.fast.ai" },
+    { name: "PyTorch Docs",         type: "Docs",    url: "https://pytorch.org/tutorials" },
+    { name: "Deep Learning Specialization", type: "Course", url: "https://www.coursera.org/specializations/deep-learning" },
+  ],
+  "Feature Engineering": [
+    { name: "Kaggle Feature Engineering", type: "Course", url: "https://www.kaggle.com/learn/feature-engineering" },
+  ],
+  "Model Evaluation": [
+    { name: "Scikit-learn Model Evaluation", type: "Docs", url: "https://scikit-learn.org/stable/modules/model_evaluation.html" },
+  ],
+  "C++ / C#": [
+    { name: "learncpp.com",         type: "Guide",   url: "https://www.learncpp.com" },
+    { name: "Microsoft C# Docs",    type: "Docs",    url: "https://learn.microsoft.com/en-us/dotnet/csharp" },
+  ],
+  "Unity / Unreal Engine": [
+    { name: "Unity Learn",          type: "Course",  url: "https://learn.unity.com" },
+    { name: "Unreal Online Learning", type: "Course", url: "https://dev.epicgames.com/community/learning" },
+    { name: "Brackeys (YouTube)",   type: "Video",   url: "https://www.youtube.com/@Brackeys" },
+  ],
+  "Game Design Principles": [
+    { name: "Game Design Concepts (free)", type: "Course", url: "https://gamedesignconcepts.wordpress.com" },
+    { name: "GDC Vault (free talks)", type: "Video", url: "https://gdcvault.com/free" },
+  ],
+  "Linear Algebra & Maths": [
+    { name: "3Blue1Brown Essence of Linear Algebra", type: "Video", url: "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" },
+    { name: "Khan Academy",         type: "Course",  url: "https://www.khanacademy.org/math/linear-algebra" },
+  ],
+  "Performance Optimisation": [
+    { name: "Unity Optimization Tips", type: "Docs",  url: "https://docs.unity3d.com/Manual/BestPracticeUnderstandingPerformanceInUnity.html" },
+    { name: "Catlike Coding",          type: "Guide", url: "https://catlikecoding.com" },
+  ],
+  "Linux / Shell Scripting": [
+    { name: "The Linux Command Line (free)", type: "Book",   url: "https://linuxcommand.org/tlcl.php" },
+    { name: "OverTheWire: Bandit",           type: "Practice", url: "https://overthewire.org/wargames/bandit" },
+  ],
+  "Docker / Kubernetes": [
+    { name: "Docker Getting Started",  type: "Docs",    url: "https://docs.docker.com/get-started" },
+    { name: "KubeByExample",           type: "Guide",   url: "https://kubebyexample.com" },
+    { name: "TechWorld with Nana",     type: "Video",   url: "https://www.youtube.com/@TechWorldwithNana" },
+  ],
+  "CI/CD (Jenkins/GitHub Actions)": [
+    { name: "GitHub Actions Docs",   type: "Docs",    url: "https://docs.github.com/en/actions" },
+    { name: "DevOps Bootcamp (Nana)", type: "Video",  url: "https://www.youtube.com/@TechWorldwithNana" },
+  ],
+  "Cloud Platforms (AWS/GCP/Azure)": [
+    { name: "AWS Skill Builder (free)", type: "Course", url: "https://skillbuilder.aws" },
+    { name: "Google Cloud Skills Boost", type: "Course", url: "https://cloudskillsboost.google" },
+    { name: "Microsoft Learn Azure",    type: "Course", url: "https://learn.microsoft.com/en-us/training/azure" },
+  ],
+  "Infrastructure as Code (Terraform)": [
+    { name: "Terraform Tutorials",  type: "Docs",    url: "https://developer.hashicorp.com/terraform/tutorials" },
+  ],
+  "Infrastructure as Code (Terraform/CDK)": [
+    { name: "Terraform Tutorials",  type: "Docs",    url: "https://developer.hashicorp.com/terraform/tutorials" },
+    { name: "AWS CDK Workshop",     type: "Guide",   url: "https://cdkworkshop.com" },
+  ],
+  "Network Security": [
+    { name: "CompTIA Security+ Study", type: "Guide",  url: "https://www.professormesser.com/security-plus/sy0-701/sy0-701-video/sy0-701-comptia-security-study-course" },
+    { name: "TryHackMe",               type: "Practice", url: "https://tryhackme.com" },
+  ],
+  "Threat Detection & Analysis": [
+    { name: "TryHackMe SOC Path",   type: "Practice", url: "https://tryhackme.com/paths" },
+    { name: "Cyber Defenders",      type: "Practice", url: "https://cyberdefenders.org" },
+  ],
+  "Vulnerability Assessment": [
+    { name: "TryHackMe",            type: "Practice", url: "https://tryhackme.com" },
+    { name: "HackTheBox",           type: "Practice", url: "https://www.hackthebox.com" },
+  ],
+  "Incident Response": [
+    { name: "NIST SP 800-61",       type: "Guide",   url: "https://csrc.nist.gov/publications/detail/sp/800-61/rev-2/final" },
+    { name: "TryHackMe IR Rooms",   type: "Practice", url: "https://tryhackme.com" },
+  ],
+  "Linux / Windows Administration": [
+    { name: "The Linux Command Line (free)", type: "Book", url: "https://linuxcommand.org/tlcl.php" },
+    { name: "TryHackMe Linux Fundamentals", type: "Course", url: "https://tryhackme.com/module/linux-fundamentals" },
+  ],
+  "AWS / Azure / GCP (Advanced)": [
+    { name: "AWS Skill Builder",     type: "Course",  url: "https://skillbuilder.aws" },
+    { name: "A Cloud Guru",          type: "Course",  url: "https://acloudguru.com" },
+  ],
+  "Cloud Architecture Design": [
+    { name: "AWS Well-Architected",  type: "Guide",   url: "https://aws.amazon.com/architecture/well-architected" },
+    { name: "Google Cloud Architecture Center", type: "Guide", url: "https://cloud.google.com/architecture" },
+  ],
+  "Networking (VPC, DNS, Load Balancing)": [
+    { name: "AWS Networking Fundamentals", type: "Video", url: "https://www.youtube.com/watch?v=hiKPPy584Mg" },
+    { name: "Networking Fundamentals (Practical)", type: "Video", url: "https://www.youtube.com/@PracticalNetworking" },
+  ],
+  "Security & IAM": [
+    { name: "AWS IAM Docs",          type: "Docs",    url: "https://docs.aws.amazon.com/IAM/latest/UserGuide" },
+    { name: "OWASP Top Ten",         type: "Guide",   url: "https://owasp.org/www-project-top-ten" },
+  ],
+  "Kubernetes / Container Orchestration": [
+    { name: "Kubernetes Docs",       type: "Docs",    url: "https://kubernetes.io/docs/tutorials" },
+    { name: "KodeKloud",             type: "Course",  url: "https://kodekloud.com" },
+  ],
+  "Cost Optimisation": [
+    { name: "AWS Cost Optimization Hub", type: "Docs", url: "https://aws.amazon.com/aws-cost-management/aws-cost-optimization" },
+  ],
+  "LLM APIs (OpenAI / Anthropic / Gemini)": [
+    { name: "OpenAI Docs",           type: "Docs",    url: "https://platform.openai.com/docs" },
+    { name: "Anthropic Docs",        type: "Docs",    url: "https://docs.anthropic.com" },
+    { name: "DeepLearning.AI Short Courses", type: "Course", url: "https://www.deeplearning.ai/short-courses" },
+  ],
+  "Prompt Engineering": [
+    { name: "Anthropic Prompt Engineering Guide", type: "Docs", url: "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" },
+    { name: "DeepLearning.AI: ChatGPT Prompt Engineering", type: "Course", url: "https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers" },
+  ],
+  "RAG (Retrieval-Augmented Generation)": [
+    { name: "DeepLearning.AI: Building RAG", type: "Course", url: "https://www.deeplearning.ai/short-courses/building-and-evaluating-advanced-rag" },
+    { name: "LangChain RAG Docs",    type: "Docs",    url: "https://python.langchain.com/docs/tutorials/rag" },
+  ],
+  "LangChain / LlamaIndex": [
+    { name: "LangChain Docs",        type: "Docs",    url: "https://python.langchain.com/docs/introduction" },
+    { name: "LlamaIndex Docs",       type: "Docs",    url: "https://docs.llamaindex.ai" },
+  ],
+  "Vector Databases (Pinecone / Chroma)": [
+    { name: "Pinecone Learning Center", type: "Guide", url: "https://www.pinecone.io/learn" },
+    { name: "Chroma Docs",           type: "Docs",    url: "https://docs.trychroma.com" },
+  ],
+  "REST APIs / FastAPI": [
+    { name: "FastAPI Docs",          type: "Docs",    url: "https://fastapi.tiangolo.com" },
+    { name: "RESTful API Tutorial",  type: "Guide",   url: "https://restfulapi.net" },
+  ],
+  "Evaluation & Testing of LLMs": [
+    { name: "DeepLearning.AI: Evaluating LLMs", type: "Course", url: "https://www.deeplearning.ai/short-courses/evaluating-debugging-generative-ai" },
+  ],
+  "Manual Testing": [
+    { name: "ISTQB Foundation Syllabus", type: "Guide", url: "https://www.istqb.org/certifications/certified-tester-foundation-level" },
+    { name: "Guru99 Software Testing",   type: "Guide", url: "https://www.guru99.com/software-testing.html" },
+  ],
+  "Test Case Writing": [
+    { name: "Guru99 Test Case Guide",    type: "Guide", url: "https://www.guru99.com/test-case.html" },
+  ],
+  "Selenium / Playwright": [
+    { name: "Playwright Docs",       type: "Docs",    url: "https://playwright.dev/docs/intro" },
+    { name: "Selenium Docs",         type: "Docs",    url: "https://www.selenium.dev/documentation" },
+  ],
+  "API Testing (Postman)": [
+    { name: "Postman Learning Center", type: "Docs",  url: "https://learning.postman.com/docs/introduction/overview" },
+  ],
+  "Bug Reporting & Tracking (Jira)": [
+    { name: "Atlassian Jira Training", type: "Course", url: "https://training.atlassian.com/free-training-catalog" },
+  ],
+};
+
+/* ═══ LEARN DATA (Learn + Certs + Test) ═══ */
+const LEARN_DATA = {
+  "SQL": {
+    learn: [
+      { name: "SQLZoo — interactive exercises",        type: "Interactive", url: "https://sqlzoo.net" },
+      { name: "Mode SQL Tutorial",                     type: "Guide",       url: "https://mode.com/sql-tutorial" },
+      { name: "CS50 SQL (Harvard, free)",              type: "Course",      url: "https://cs50.harvard.edu/sql" },
+    ],
+    certs: [
+      { name: "Google Data Analytics Certificate",    type: "Cert", url: "https://grow.google/certificates/data-analytics" },
+      { name: "IBM SQL for Data Science (Coursera)",  type: "Cert", url: "https://www.coursera.org/learn/sql-for-data-science" },
+    ],
+    test: [
+      { name: "HackerRank SQL Challenges",            type: "Test",    url: "https://www.hackerrank.com/domains/sql" },
+      { name: "LeetCode Database Problems",           type: "Practice", url: "https://leetcode.com/problemset/database" },
+    ],
+  },
+  "Python": {
+    learn: [
+      { name: "Automate the Boring Stuff (free)",     type: "Book",    url: "https://automatetheboringstuff.com" },
+      { name: "CS50P — Python (Harvard, free)",       type: "Course",  url: "https://cs50.harvard.edu/python" },
+      { name: "freeCodeCamp Scientific Python",       type: "Course",  url: "https://www.freecodecamp.org/learn/scientific-computing-with-python" },
+    ],
+    certs: [
+      { name: "PCEP — Certified Entry-Level Python",  type: "Cert", url: "https://pythoninstitute.org/pcep" },
+      { name: "Google IT Automation with Python",     type: "Cert", url: "https://grow.google/certificates/it-automation-python" },
+    ],
+    test: [
+      { name: "HackerRank Python Challenges",         type: "Test",    url: "https://www.hackerrank.com/domains/python" },
+      { name: "Exercism Python Track",                type: "Practice", url: "https://exercism.org/tracks/python" },
+    ],
+  },
+  "Statistics": {
+    learn: [
+      { name: "Khan Academy — Statistics & Probability", type: "Course", url: "https://www.khanacademy.org/math/statistics-probability" },
+      { name: "StatQuest with Josh Starmer (YouTube)",   type: "Video",  url: "https://www.youtube.com/@statquest" },
+      { name: "Think Stats 2e (free book)",              type: "Book",   url: "https://greenteapress.com/wp/think-stats-2e" },
+    ],
+    certs: [
+      { name: "IBM Statistics for Data Science (Coursera)", type: "Cert", url: "https://www.coursera.org/learn/statistics-for-data-science-python" },
+    ],
+    test: [
+      { name: "Khan Academy practice exercises",      type: "Test", url: "https://www.khanacademy.org/math/statistics-probability" },
+    ],
+  },
+  "Data Cleaning": {
+    learn: [
+      { name: "Kaggle: Data Cleaning Course",         type: "Course",  url: "https://www.kaggle.com/learn/data-cleaning" },
+      { name: "Pandas Official Docs",                 type: "Docs",    url: "https://pandas.pydata.org/docs/user_guide" },
+    ],
+    certs: [
+      { name: "Kaggle Data Cleaning Certificate",     type: "Cert", url: "https://www.kaggle.com/learn/data-cleaning" },
+    ],
+    test: [
+      { name: "Kaggle Notebooks — practice datasets", type: "Practice", url: "https://www.kaggle.com/datasets" },
+    ],
+  },
+  "Data Visualization": {
+    learn: [
+      { name: "Kaggle: Data Visualization Course",    type: "Course", url: "https://www.kaggle.com/learn/data-visualization" },
+      { name: "Storytelling with Data (book)",        type: "Book",   url: "https://www.storytellingwithdata.com" },
+    ],
+    certs: [
+      { name: "Tableau Desktop Specialist",           type: "Cert", url: "https://www.tableau.com/learn/certification/desktop-specialist" },
+      { name: "Power BI Data Analyst (PL-300)",       type: "Cert", url: "https://learn.microsoft.com/en-us/certifications/power-bi-data-analyst-associate" },
+    ],
+    test: [
+      { name: "Tableau Public — build & share",       type: "Practice", url: "https://public.tableau.com" },
+    ],
+  },
+  "Excel / Google Sheets": {
+    learn: [
+      { name: "GCFGlobal Excel Training (free)",      type: "Course",    url: "https://edu.gcfglobal.org/en/excel" },
+      { name: "ExcelJet — formula reference",         type: "Reference", url: "https://exceljet.net" },
+    ],
+    certs: [
+      { name: "Microsoft Office Specialist: Excel",   type: "Cert", url: "https://learn.microsoft.com/en-us/certifications/mos-excel-2019" },
+    ],
+    test: [
+      { name: "Excel practice exercises — Excel Easy", type: "Practice", url: "https://www.excel-easy.com/examples.html" },
+    ],
+  },
+  "JavaScript": {
+    learn: [
+      { name: "javascript.info — modern JS guide",    type: "Guide",  url: "https://javascript.info" },
+      { name: "Eloquent JavaScript (free book)",      type: "Book",   url: "https://eloquentjavascript.net" },
+      { name: "freeCodeCamp JS Algorithms",           type: "Course", url: "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures" },
+    ],
+    certs: [
+      { name: "freeCodeCamp JS Certification",        type: "Cert", url: "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures" },
+    ],
+    test: [
+      { name: "HackerRank JS Challenges",             type: "Test",    url: "https://www.hackerrank.com/domains/tutorials/10-days-of-javascript" },
+      { name: "Exercism JavaScript Track",            type: "Practice", url: "https://exercism.org/tracks/javascript" },
+    ],
+  },
+  "HTML & CSS": {
+    learn: [
+      { name: "MDN Learn Web Development",            type: "Docs",   url: "https://developer.mozilla.org/en-US/docs/Learn" },
+      { name: "The Odin Project",                     type: "Course", url: "https://www.theodinproject.com" },
+      { name: "web.dev Learn CSS",                    type: "Guide",  url: "https://web.dev/learn/css" },
+    ],
+    certs: [
+      { name: "freeCodeCamp Responsive Web Design",   type: "Cert", url: "https://www.freecodecamp.org/learn/2022/responsive-web-design" },
+    ],
+    test: [
+      { name: "Frontend Mentor — real projects",      type: "Practice", url: "https://www.frontendmentor.io" },
+      { name: "CSS Challenges — CSS Battle",          type: "Test",     url: "https://cssbattle.dev" },
+    ],
+  },
+  "React": {
+    learn: [
+      { name: "react.dev — official tutorial",        type: "Docs",   url: "https://react.dev/learn" },
+      { name: "Scrimba React Course",                 type: "Course", url: "https://scrimba.com/learn/learnreact" },
+    ],
+    certs: [
+      { name: "Meta Front-End Developer Certificate", type: "Cert", url: "https://www.coursera.org/professional-certificates/meta-front-end-developer" },
+    ],
+    test: [
+      { name: "Frontend Mentor — React challenges",   type: "Practice", url: "https://www.frontendmentor.io" },
+    ],
+  },
+  "TypeScript": {
+    learn: [
+      { name: "TypeScript Handbook (official)",       type: "Docs",  url: "https://www.typescriptlang.org/docs/handbook" },
+      { name: "Total TypeScript by Matt Pocock",      type: "Video", url: "https://www.totaltypescript.com" },
+    ],
+    certs: [
+      { name: "TypeScript Fundamentals (LinkedIn Learning)", type: "Cert", url: "https://www.linkedin.com/learning/typescript-essential-training-14687057" },
+    ],
+    test: [
+      { name: "TypeScript Exercises",                 type: "Practice", url: "https://typescript-exercises.github.io" },
+    ],
+  },
+  "Responsive Design": {
+    learn: [
+      { name: "MDN Responsive Design Guide",          type: "Docs",   url: "https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Responsive_Design" },
+      { name: "web.dev Responsive Web",               type: "Guide",  url: "https://web.dev/responsive-web-design-basics" },
+    ],
+    certs: [
+      { name: "freeCodeCamp Responsive Web Design",   type: "Cert", url: "https://www.freecodecamp.org/learn/2022/responsive-web-design" },
+    ],
+    test: [
+      { name: "Frontend Mentor — layout challenges",  type: "Practice", url: "https://www.frontendmentor.io/challenges?types=free&difficulties=1" },
+    ],
+  },
+  "Data Structures & Algorithms": {
+    learn: [
+      { name: "NeetCode — structured roadmap",        type: "Guide",  url: "https://neetcode.io/roadmap" },
+      { name: "CS50x (Harvard, free)",                type: "Course", url: "https://cs50.harvard.edu/x" },
+      { name: "Visualgo — visual DS&A",               type: "Visual", url: "https://visualgo.net" },
+    ],
+    certs: [
+      { name: "Google Coding Challenges Prep",        type: "Cert", url: "https://grow.google/certificates/data-analytics" },
+      { name: "HackerRank Problem Solving Certificate", type: "Cert", url: "https://www.hackerrank.com/skills-verification/problem_solving_basic" },
+    ],
+    test: [
+      { name: "LeetCode — interview problems",        type: "Practice", url: "https://leetcode.com" },
+      { name: "HackerRank Problem Solving",           type: "Test",     url: "https://www.hackerrank.com/domains/algorithms" },
+    ],
+  },
+  "Object-Oriented Programming": {
+    learn: [
+      { name: "Refactoring.Guru — design patterns",   type: "Guide",  url: "https://refactoring.guru/design-patterns" },
+      { name: "CS50P (Harvard Python + OOP)",         type: "Course", url: "https://cs50.harvard.edu/python" },
+    ],
+    certs: [
+      { name: "Oracle Java SE Foundations",           type: "Cert", url: "https://education.oracle.com/java-se-8-foundations" },
+    ],
+    test: [
+      { name: "Exercism OOP challenges",              type: "Practice", url: "https://exercism.org" },
+    ],
+  },
+  "Python / Java / C++": {
+    learn: [
+      { name: "The Odin Project",                     type: "Course", url: "https://www.theodinproject.com" },
+      { name: "Codecademy language courses",          type: "Course", url: "https://www.codecademy.com" },
+    ],
+    certs: [
+      { name: "Oracle Java SE Programmer",            type: "Cert", url: "https://education.oracle.com/java-se-11-programmer-i" },
+      { name: "PCEP — Python Certified Entry",        type: "Cert", url: "https://pythoninstitute.org/pcep" },
+    ],
+    test: [
+      { name: "Exercism — language tracks",           type: "Practice", url: "https://exercism.org" },
+      { name: "HackerRank 30 Days of Code",           type: "Practice", url: "https://www.hackerrank.com/domains/tutorials/30-days-of-code" },
+    ],
+  },
+  "REST APIs": {
+    learn: [
+      { name: "RESTful API Tutorial",                 type: "Guide", url: "https://restfulapi.net" },
+      { name: "Postman Learning Center",              type: "Docs",  url: "https://learning.postman.com" },
+    ],
+    certs: [
+      { name: "Postman API Fundamentals Student Expert", type: "Cert", url: "https://academy.postman.com/postman-api-fundamentals-student-expert-certification-1" },
+    ],
+    test: [
+      { name: "Postman — public API practice",        type: "Practice", url: "https://www.postman.com/explore" },
+    ],
+  },
+  "System Design": {
+    learn: [
+      { name: "System Design Primer (GitHub)",        type: "Guide", url: "https://github.com/donnemartin/system-design-primer" },
+      { name: "ByteByteGo (YouTube)",                 type: "Video", url: "https://www.youtube.com/@ByteByteGo" },
+    ],
+    certs: [
+      { name: "AWS Solutions Architect Associate",    type: "Cert", url: "https://aws.amazon.com/certification/certified-solutions-architect-associate" },
+    ],
+    test: [
+      { name: "Pramp — system design mock interviews", type: "Practice", url: "https://www.pramp.com" },
+    ],
+  },
+  "Python / Node.js / Java": {
+    learn: [
+      { name: "Node.js Official Learn Guide",         type: "Docs",   url: "https://nodejs.org/en/learn/getting-started/introduction-to-nodejs" },
+      { name: "The Odin Project — Node path",         type: "Course", url: "https://www.theodinproject.com/paths/full-stack-javascript" },
+    ],
+    certs: [
+      { name: "OpenJS Node.js Application Developer", type: "Cert", url: "https://training.linuxfoundation.org/certification/jsnad" },
+    ],
+    test: [
+      { name: "HackerRank Node.js",                   type: "Test", url: "https://www.hackerrank.com/skills-verification/node_js" },
+    ],
+  },
+  "Authentication & Security": {
+    learn: [
+      { name: "OWASP Top Ten",                        type: "Guide", url: "https://owasp.org/www-project-top-ten" },
+      { name: "JWT.io Introduction",                  type: "Docs",  url: "https://jwt.io/introduction" },
+    ],
+    certs: [
+      { name: "CompTIA Security+",                    type: "Cert", url: "https://www.comptia.org/certifications/security" },
+    ],
+    test: [
+      { name: "TryHackMe — web security rooms",       type: "Practice", url: "https://tryhackme.com/hacktivities?tab=practice" },
+    ],
+  },
+  "SQL Databases": {
+    learn: [
+      { name: "PostgreSQL Tutorial",                  type: "Guide",       url: "https://www.postgresqltutorial.com" },
+      { name: "SQLZoo — interactive",                 type: "Interactive", url: "https://sqlzoo.net" },
+    ],
+    certs: [
+      { name: "Oracle Database SQL Certified Associate", type: "Cert", url: "https://education.oracle.com/oracle-database-sql-certified-associate" },
+    ],
+    test: [
+      { name: "LeetCode Database Problems",           type: "Practice", url: "https://leetcode.com/problemset/database" },
+    ],
+  },
+  "Statistics & Probability": {
+    learn: [
+      { name: "Khan Academy Stats",                   type: "Course", url: "https://www.khanacademy.org/math/statistics-probability" },
+      { name: "StatQuest (YouTube)",                  type: "Video",  url: "https://www.youtube.com/@statquest" },
+    ],
+    certs: [
+      { name: "IBM Statistics for Data Science",      type: "Cert", url: "https://www.coursera.org/learn/statistics-for-data-science-python" },
+    ],
+    test: [
+      { name: "Khan Academy exercises",               type: "Test", url: "https://www.khanacademy.org/math/statistics-probability" },
+    ],
+  },
+  "Linear Algebra": {
+    learn: [
+      { name: "3Blue1Brown — Essence of Linear Algebra", type: "Video", url: "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" },
+      { name: "MIT 18.06 Linear Algebra (OCW)",          type: "Course", url: "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010" },
+    ],
+    certs: [
+      { name: "Mathematics for ML Specialization",    type: "Cert", url: "https://www.coursera.org/specializations/mathematics-machine-learning" },
+    ],
+    test: [
+      { name: "MIT OpenCourseWare problem sets",      type: "Practice", url: "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/pages/assignments" },
+    ],
+  },
+  "Scikit-learn": {
+    learn: [
+      { name: "Scikit-learn — Getting Started",       type: "Docs",   url: "https://scikit-learn.org/stable/getting_started.html" },
+      { name: "Kaggle Intro to Machine Learning",     type: "Course", url: "https://www.kaggle.com/learn/intro-to-machine-learning" },
+    ],
+    certs: [
+      { name: "Kaggle ML Certificate",                type: "Cert", url: "https://www.kaggle.com/learn/intro-to-machine-learning" },
+    ],
+    test: [
+      { name: "Kaggle competitions — tabular data",   type: "Practice", url: "https://www.kaggle.com/competitions?listOption=active&hostSegmentIdFilter=5" },
+    ],
+  },
+  "Deep Learning (PyTorch/TF)": {
+    learn: [
+      { name: "fast.ai Practical Deep Learning",      type: "Course", url: "https://course.fast.ai" },
+      { name: "PyTorch Official Tutorials",           type: "Docs",   url: "https://pytorch.org/tutorials" },
+      { name: "Deep Learning Specialization (Coursera)", type: "Course", url: "https://www.coursera.org/specializations/deep-learning" },
+    ],
+    certs: [
+      { name: "TensorFlow Developer Certificate",     type: "Cert", url: "https://www.tensorflow.org/certificate" },
+      { name: "Deep Learning Specialization Cert",    type: "Cert", url: "https://www.coursera.org/specializations/deep-learning" },
+    ],
+    test: [
+      { name: "Kaggle competitions — deep learning",  type: "Practice", url: "https://www.kaggle.com/competitions" },
+    ],
+  },
+  "Feature Engineering": {
+    learn: [
+      { name: "Kaggle Feature Engineering Course",    type: "Course", url: "https://www.kaggle.com/learn/feature-engineering" },
+    ],
+    certs: [
+      { name: "Kaggle Feature Engineering Certificate", type: "Cert", url: "https://www.kaggle.com/learn/feature-engineering" },
+    ],
+    test: [
+      { name: "Kaggle practice datasets",             type: "Practice", url: "https://www.kaggle.com/datasets" },
+    ],
+  },
+  "Model Evaluation": {
+    learn: [
+      { name: "Scikit-learn: Model Evaluation",       type: "Docs",   url: "https://scikit-learn.org/stable/modules/model_evaluation.html" },
+      { name: "Kaggle Intermediate ML",               type: "Course", url: "https://www.kaggle.com/learn/intermediate-machine-learning" },
+    ],
+    certs: [
+      { name: "Kaggle Intermediate ML Certificate",   type: "Cert", url: "https://www.kaggle.com/learn/intermediate-machine-learning" },
+    ],
+    test: [
+      { name: "Kaggle competitions — scored metrics",  type: "Practice", url: "https://www.kaggle.com/competitions" },
+    ],
+  },
+  "C++ / C#": {
+    learn: [
+      { name: "learncpp.com",                         type: "Guide",  url: "https://www.learncpp.com" },
+      { name: "Microsoft C# Documentation",           type: "Docs",   url: "https://learn.microsoft.com/en-us/dotnet/csharp" },
+    ],
+    certs: [
+      { name: "Microsoft Certified: .NET Fundamentals", type: "Cert", url: "https://learn.microsoft.com/en-us/certifications/dotnet-fundamentals" },
+    ],
+    test: [
+      { name: "HackerRank C++ Challenges",            type: "Test",    url: "https://www.hackerrank.com/domains/cpp" },
+      { name: "Exercism C# Track",                    type: "Practice", url: "https://exercism.org/tracks/csharp" },
+    ],
+  },
+  "Unity / Unreal Engine": {
+    learn: [
+      { name: "Unity Learn (official)",               type: "Course", url: "https://learn.unity.com" },
+      { name: "Unreal Online Learning",               type: "Course", url: "https://dev.epicgames.com/community/learning" },
+      { name: "Brackeys — Unity YouTube",             type: "Video",  url: "https://www.youtube.com/@Brackeys" },
+    ],
+    certs: [
+      { name: "Unity Certified User: Programmer",     type: "Cert", url: "https://unity.com/products/unity-certifications/user-programmer" },
+      { name: "Unreal Authorized Instructor Training", type: "Cert", url: "https://dev.epicgames.com/community/learning/courses" },
+    ],
+    test: [
+      { name: "Unity Microgames — build & submit",    type: "Practice", url: "https://learn.unity.com/project/unity-micro-game" },
+    ],
+  },
+  "Game Design Principles": {
+    learn: [
+      { name: "Game Design Concepts (free course)",   type: "Course", url: "https://gamedesignconcepts.wordpress.com" },
+      { name: "GDC Vault — free talks",               type: "Video",  url: "https://gdcvault.com/free" },
+    ],
+    certs: [
+      { name: "CalArts Game Design Specialization",   type: "Cert", url: "https://www.coursera.org/specializations/game-design" },
+    ],
+    test: [
+      { name: "Game Jam — itch.io",                   type: "Practice", url: "https://itch.io/jams" },
+    ],
+  },
+  "Linear Algebra & Maths": {
+    learn: [
+      { name: "3Blue1Brown Linear Algebra",           type: "Video", url: "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" },
+      { name: "Khan Academy Linear Algebra",          type: "Course", url: "https://www.khanacademy.org/math/linear-algebra" },
+    ],
+    certs: [
+      { name: "Mathematics for Machine Learning",     type: "Cert", url: "https://www.coursera.org/specializations/mathematics-machine-learning" },
+    ],
+    test: [
+      { name: "Khan Academy exercises",               type: "Test", url: "https://www.khanacademy.org/math/linear-algebra" },
+    ],
+  },
+  "Performance Optimisation": {
+    learn: [
+      { name: "Unity Optimization Best Practices",    type: "Docs", url: "https://docs.unity3d.com/Manual/BestPracticeUnderstandingPerformanceInUnity.html" },
+      { name: "Catlike Coding Tutorials",             type: "Guide", url: "https://catlikecoding.com" },
+    ],
+    certs: [
+      { name: "Unity Certified Expert: Programmer",   type: "Cert", url: "https://unity.com/products/unity-certifications/expert-programmer" },
+    ],
+    test: [
+      { name: "Unity Profiler — profile your own project", type: "Practice", url: "https://docs.unity3d.com/Manual/Profiler.html" },
+    ],
+  },
+  "Linux / Shell Scripting": {
+    learn: [
+      { name: "The Linux Command Line (free book)",   type: "Book",    url: "https://linuxcommand.org/tlcl.php" },
+      { name: "OverTheWire: Bandit — wargame",        type: "Practice", url: "https://overthewire.org/wargames/bandit" },
+    ],
+    certs: [
+      { name: "Linux Foundation Certified SysAdmin",  type: "Cert", url: "https://training.linuxfoundation.org/certification/lfcs" },
+      { name: "CompTIA Linux+",                       type: "Cert", url: "https://www.comptia.org/certifications/linux" },
+    ],
+    test: [
+      { name: "OverTheWire Bandit challenges",        type: "Practice", url: "https://overthewire.org/wargames/bandit" },
+      { name: "HackerRank Linux Shell",               type: "Test",     url: "https://www.hackerrank.com/domains/shell" },
+    ],
+  },
+  "Docker / Kubernetes": {
+    learn: [
+      { name: "Docker Getting Started",               type: "Docs",   url: "https://docs.docker.com/get-started" },
+      { name: "Kubernetes Official Tutorials",        type: "Docs",   url: "https://kubernetes.io/docs/tutorials" },
+      { name: "TechWorld with Nana (YouTube)",        type: "Video",  url: "https://www.youtube.com/@TechWorldwithNana" },
+    ],
+    certs: [
+      { name: "Certified Kubernetes Administrator (CKA)", type: "Cert", url: "https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka" },
+      { name: "Docker Certified Associate",           type: "Cert", url: "https://training.mirantis.com/certification/dca-certification-exam" },
+    ],
+    test: [
+      { name: "KillerCoda — K8s scenarios",           type: "Practice", url: "https://killercoda.com" },
+      { name: "Play with Docker",                     type: "Practice", url: "https://labs.play-with-docker.com" },
+    ],
+  },
+  "CI/CD (Jenkins/GitHub Actions)": {
+    learn: [
+      { name: "GitHub Actions Docs",                  type: "Docs",   url: "https://docs.github.com/en/actions" },
+      { name: "DevOps Bootcamp with Nana",            type: "Video",  url: "https://www.youtube.com/@TechWorldwithNana" },
+    ],
+    certs: [
+      { name: "GitHub Actions Certification",         type: "Cert", url: "https://examregistration.github.com/certification/ACTIONS" },
+      { name: "Jenkins Certified Engineer",           type: "Cert", url: "https://www.cloudbees.com/jenkins/certification" },
+    ],
+    test: [
+      { name: "GitHub Actions — build your own workflow", type: "Practice", url: "https://github.com/skills/hello-github-actions" },
+    ],
+  },
+  "Cloud Platforms (AWS/GCP/Azure)": {
+    learn: [
+      { name: "AWS Skill Builder (free tier)",        type: "Course", url: "https://skillbuilder.aws" },
+      { name: "Google Cloud Skills Boost",            type: "Course", url: "https://cloudskillsboost.google" },
+      { name: "Microsoft Learn Azure",                type: "Course", url: "https://learn.microsoft.com/en-us/training/azure" },
+    ],
+    certs: [
+      { name: "AWS Certified Cloud Practitioner",     type: "Cert", url: "https://aws.amazon.com/certification/certified-cloud-practitioner" },
+      { name: "Google Associate Cloud Engineer",      type: "Cert", url: "https://cloud.google.com/learn/certification/cloud-engineer" },
+      { name: "AZ-900 Azure Fundamentals",            type: "Cert", url: "https://learn.microsoft.com/en-us/certifications/azure-fundamentals" },
+    ],
+    test: [
+      { name: "AWS Free Tier — hands-on labs",        type: "Practice", url: "https://aws.amazon.com/free" },
+      { name: "A Cloud Guru Sandbox Environments",    type: "Practice", url: "https://acloudguru.com/platform/cloud-sandbox-playgrounds" },
+    ],
+  },
+  "Infrastructure as Code (Terraform)": {
+    learn: [
+      { name: "Terraform Official Tutorials",         type: "Docs",   url: "https://developer.hashicorp.com/terraform/tutorials" },
+    ],
+    certs: [
+      { name: "HashiCorp Certified: Terraform Associate", type: "Cert", url: "https://www.hashicorp.com/certification/terraform-associate" },
+    ],
+    test: [
+      { name: "Terraform Up & Running exercises",     type: "Practice", url: "https://www.terraformupandrunning.com" },
+    ],
+  },
+  "Infrastructure as Code (Terraform/CDK)": {
+    learn: [
+      { name: "Terraform Official Tutorials",         type: "Docs",  url: "https://developer.hashicorp.com/terraform/tutorials" },
+      { name: "AWS CDK Workshop",                     type: "Guide", url: "https://cdkworkshop.com" },
+    ],
+    certs: [
+      { name: "HashiCorp Terraform Associate",        type: "Cert", url: "https://www.hashicorp.com/certification/terraform-associate" },
+      { name: "AWS Solutions Architect Associate",    type: "Cert", url: "https://aws.amazon.com/certification/certified-solutions-architect-associate" },
+    ],
+    test: [
+      { name: "Terraform Playground on Instruqt",     type: "Practice", url: "https://play.instruqt.com/hashicorp" },
+    ],
+  },
+  "Network Security": {
+    learn: [
+      { name: "Professor Messer Security+ Study",     type: "Course",  url: "https://www.professormesser.com/security-plus/sy0-701/sy0-701-video/sy0-701-comptia-security-study-course" },
+      { name: "TryHackMe Network Security path",      type: "Practice", url: "https://tryhackme.com/paths" },
+    ],
+    certs: [
+      { name: "CompTIA Security+",                    type: "Cert", url: "https://www.comptia.org/certifications/security" },
+      { name: "CompTIA Network+",                     type: "Cert", url: "https://www.comptia.org/certifications/network" },
+    ],
+    test: [
+      { name: "TryHackMe — network rooms",            type: "Practice", url: "https://tryhackme.com/hacktivities?tab=practice" },
+      { name: "Hack The Box — network challenges",    type: "Practice", url: "https://www.hackthebox.com" },
+    ],
+  },
+  "Threat Detection & Analysis": {
+    learn: [
+      { name: "TryHackMe SOC Level 1 Path",           type: "Course",  url: "https://tryhackme.com/path/outline/soclevel1" },
+      { name: "Cyber Defenders Labs",                 type: "Practice", url: "https://cyberdefenders.org" },
+    ],
+    certs: [
+      { name: "CompTIA CySA+",                        type: "Cert", url: "https://www.comptia.org/certifications/cybersecurity-analyst" },
+      { name: "BTL1 — Blue Team Labs One",            type: "Cert", url: "https://www.securityblue.team/btl1" },
+    ],
+    test: [
+      { name: "Cyber Defenders — PCAP challenges",    type: "Practice", url: "https://cyberdefenders.org/blueteam-ctf-challenges" },
+    ],
+  },
+  "Vulnerability Assessment": {
+    learn: [
+      { name: "TryHackMe — vulnerability research",   type: "Practice", url: "https://tryhackme.com" },
+      { name: "Hack The Box — starting point",        type: "Practice", url: "https://www.hackthebox.com/starting-point" },
+    ],
+    certs: [
+      { name: "CEH — Certified Ethical Hacker",       type: "Cert", url: "https://www.eccouncil.org/programs/certified-ethical-hacker-ceh" },
+      { name: "CompTIA PenTest+",                     type: "Cert", url: "https://www.comptia.org/certifications/pentest" },
+    ],
+    test: [
+      { name: "HackTheBox — OWASP practice",          type: "Practice", url: "https://www.hackthebox.com" },
+      { name: "DVWA — Damn Vulnerable Web App",       type: "Practice", url: "https://dvwa.co.uk" },
+    ],
+  },
+  "Incident Response": {
+    learn: [
+      { name: "NIST SP 800-61 Rev 2 (free guide)",    type: "Guide",   url: "https://csrc.nist.gov/publications/detail/sp/800-61/rev-2/final" },
+      { name: "TryHackMe IR & Forensics rooms",       type: "Practice", url: "https://tryhackme.com" },
+    ],
+    certs: [
+      { name: "GCIH — GIAC Incident Handler",         type: "Cert", url: "https://www.giac.org/certifications/certified-incident-handler-gcih" },
+      { name: "BTL1 — Blue Team Labs One",            type: "Cert", url: "https://www.securityblue.team/btl1" },
+    ],
+    test: [
+      { name: "Cyber Defenders — IR labs",            type: "Practice", url: "https://cyberdefenders.org" },
+    ],
+  },
+  "Linux / Windows Administration": {
+    learn: [
+      { name: "The Linux Command Line (free book)",   type: "Book",    url: "https://linuxcommand.org/tlcl.php" },
+      { name: "TryHackMe Linux Fundamentals",         type: "Course",  url: "https://tryhackme.com/module/linux-fundamentals" },
+    ],
+    certs: [
+      { name: "CompTIA Linux+",                       type: "Cert", url: "https://www.comptia.org/certifications/linux" },
+      { name: "LFCS — Linux Foundation Sysadmin",     type: "Cert", url: "https://training.linuxfoundation.org/certification/lfcs" },
+    ],
+    test: [
+      { name: "OverTheWire Bandit challenges",        type: "Practice", url: "https://overthewire.org/wargames/bandit" },
+    ],
+  },
+  "AWS / Azure / GCP (Advanced)": {
+    learn: [
+      { name: "AWS Skill Builder",                    type: "Course", url: "https://skillbuilder.aws" },
+      { name: "A Cloud Guru",                         type: "Course", url: "https://acloudguru.com" },
+    ],
+    certs: [
+      { name: "AWS Solutions Architect Professional", type: "Cert", url: "https://aws.amazon.com/certification/certified-solutions-architect-professional" },
+      { name: "Google Professional Cloud Architect",  type: "Cert", url: "https://cloud.google.com/learn/certification/cloud-architect" },
+      { name: "AZ-305 Azure Solutions Architect",     type: "Cert", url: "https://learn.microsoft.com/en-us/certifications/azure-solutions-architect" },
+    ],
+    test: [
+      { name: "AWS Well-Architected Labs",            type: "Practice", url: "https://wellarchitectedlabs.com" },
+    ],
+  },
+  "Cloud Architecture Design": {
+    learn: [
+      { name: "AWS Well-Architected Framework",       type: "Guide", url: "https://aws.amazon.com/architecture/well-architected" },
+      { name: "Google Cloud Architecture Center",     type: "Guide", url: "https://cloud.google.com/architecture" },
+    ],
+    certs: [
+      { name: "AWS Solutions Architect Associate",    type: "Cert", url: "https://aws.amazon.com/certification/certified-solutions-architect-associate" },
+    ],
+    test: [
+      { name: "AWS Architecture — reference labs",    type: "Practice", url: "https://aws.amazon.com/architecture" },
+    ],
+  },
+  "Kubernetes / Container Orchestration": {
+    learn: [
+      { name: "Kubernetes Official Tutorials",        type: "Docs",   url: "https://kubernetes.io/docs/tutorials" },
+      { name: "KodeKloud K8s Courses",                type: "Course", url: "https://kodekloud.com" },
+    ],
+    certs: [
+      { name: "CKA — Certified Kubernetes Administrator", type: "Cert", url: "https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka" },
+      { name: "CKAD — Kubernetes Application Developer", type: "Cert", url: "https://training.linuxfoundation.org/certification/certified-kubernetes-application-developer-ckad" },
+    ],
+    test: [
+      { name: "KillerCoda — K8s interactive labs",    type: "Practice", url: "https://killercoda.com/killer-shell-ckad" },
+    ],
+  },
+  "Security & IAM": {
+    learn: [
+      { name: "AWS IAM User Guide",                   type: "Docs",  url: "https://docs.aws.amazon.com/IAM/latest/UserGuide" },
+      { name: "OWASP Top Ten",                        type: "Guide", url: "https://owasp.org/www-project-top-ten" },
+    ],
+    certs: [
+      { name: "AWS Security Specialty",               type: "Cert", url: "https://aws.amazon.com/certification/certified-security-specialty" },
+      { name: "CompTIA Security+",                    type: "Cert", url: "https://www.comptia.org/certifications/security" },
+    ],
+    test: [
+      { name: "TryHackMe Cloud Security rooms",       type: "Practice", url: "https://tryhackme.com" },
+    ],
+  },
+  "LLM APIs (OpenAI / Anthropic / Gemini)": {
+    learn: [
+      { name: "OpenAI API Docs",                      type: "Docs",   url: "https://platform.openai.com/docs" },
+      { name: "Anthropic API Docs",                   type: "Docs",   url: "https://docs.anthropic.com" },
+      { name: "DeepLearning.AI Short Courses",        type: "Course", url: "https://www.deeplearning.ai/short-courses" },
+    ],
+    certs: [
+      { name: "DeepLearning.AI — LLMOps Certificate", type: "Cert", url: "https://www.deeplearning.ai/short-courses/llmops" },
+    ],
+    test: [
+      { name: "OpenAI Playground — experiment",       type: "Practice", url: "https://platform.openai.com/playground" },
+    ],
+  },
+  "Prompt Engineering": {
+    learn: [
+      { name: "Anthropic Prompt Engineering Guide",   type: "Docs",   url: "https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" },
+      { name: "DeepLearning.AI: Prompt Engineering",  type: "Course", url: "https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers" },
+    ],
+    certs: [
+      { name: "DeepLearning.AI Prompt Engineering Cert", type: "Cert", url: "https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers" },
+    ],
+    test: [
+      { name: "PromptingGuide — practice exercises",  type: "Practice", url: "https://www.promptingguide.ai" },
+    ],
+  },
+  "RAG (Retrieval-Augmented Generation)": {
+    learn: [
+      { name: "DeepLearning.AI — Building RAG",       type: "Course", url: "https://www.deeplearning.ai/short-courses/building-and-evaluating-advanced-rag" },
+      { name: "LangChain RAG Tutorial",               type: "Docs",   url: "https://python.langchain.com/docs/tutorials/rag" },
+    ],
+    certs: [
+      { name: "DeepLearning.AI RAG Certificate",      type: "Cert", url: "https://www.deeplearning.ai/short-courses/building-and-evaluating-advanced-rag" },
+    ],
+    test: [
+      { name: "Build a RAG app — deploy to HuggingFace", type: "Practice", url: "https://huggingface.co/spaces" },
+    ],
+  },
+  "LangChain / LlamaIndex": {
+    learn: [
+      { name: "LangChain Documentation",             type: "Docs",   url: "https://python.langchain.com/docs/introduction" },
+      { name: "LlamaIndex Documentation",             type: "Docs",   url: "https://docs.llamaindex.ai" },
+    ],
+    certs: [
+      { name: "DeepLearning.AI LangChain Course",     type: "Cert", url: "https://www.deeplearning.ai/short-courses/langchain-for-llm-application-development" },
+    ],
+    test: [
+      { name: "LangSmith — trace and test chains",    type: "Practice", url: "https://www.langchain.com/langsmith" },
+    ],
+  },
+  "Selenium / Playwright": {
+    learn: [
+      { name: "Playwright Official Docs",             type: "Docs", url: "https://playwright.dev/docs/intro" },
+      { name: "Selenium Official Docs",               type: "Docs", url: "https://www.selenium.dev/documentation" },
+    ],
+    certs: [
+      { name: "ISTQB Test Automation Engineer",       type: "Cert", url: "https://www.istqb.org/certifications/test-automation-engineer" },
+    ],
+    test: [
+      { name: "Playwright Test Generator — record UI", type: "Practice", url: "https://playwright.dev/docs/codegen" },
+    ],
+  },
+  "Manual Testing": {
+    learn: [
+      { name: "Guru99 Software Testing Guide",        type: "Guide", url: "https://www.guru99.com/software-testing.html" },
+      { name: "ISTQB Foundation Syllabus",            type: "Guide", url: "https://www.istqb.org/certifications/certified-tester-foundation-level" },
+    ],
+    certs: [
+      { name: "ISTQB Foundation Level (CTFL)",        type: "Cert", url: "https://www.istqb.org/certifications/certified-tester-foundation-level" },
+    ],
+    test: [
+      { name: "The-Internet — practice test site",    type: "Practice", url: "https://the-internet.herokuapp.com" },
+    ],
+  },
+  "Test Case Writing": {
+    learn: [
+      { name: "Guru99 — How to Write Test Cases",     type: "Guide", url: "https://www.guru99.com/test-case.html" },
+    ],
+    certs: [
+      { name: "ISTQB CTFL",                           type: "Cert", url: "https://www.istqb.org/certifications/certified-tester-foundation-level" },
+    ],
+    test: [
+      { name: "Practice on open-source projects",     type: "Practice", url: "https://github.com/explore" },
+    ],
+  },
+  "API Testing (Postman)": {
+    learn: [
+      { name: "Postman Learning Center",              type: "Docs", url: "https://learning.postman.com/docs/introduction/overview" },
+    ],
+    certs: [
+      { name: "Postman API Fundamentals Student Expert", type: "Cert", url: "https://academy.postman.com/postman-api-fundamentals-student-expert-certification-1" },
+    ],
+    test: [
+      { name: "Postman Public APIs — explore",        type: "Practice", url: "https://www.postman.com/explore" },
+    ],
+  },
+  "Bug Reporting & Tracking (Jira)": {
+    learn: [
+      { name: "Atlassian Jira Free Training",         type: "Course", url: "https://training.atlassian.com/free-training-catalog" },
+    ],
+    certs: [
+      { name: "Atlassian Certified Jira Administrator", type: "Cert", url: "https://www.atlassian.com/university/certification" },
+    ],
+    test: [
+      { name: "Jira Software free tier — practice",   type: "Practice", url: "https://www.atlassian.com/software/jira/free" },
+    ],
+  },
+};
+
+function buildLearnResources(missing) {
+  const section = document.getElementById('learn-resources-section');
+  const list    = document.getElementById('learn-resources-list');
+  if (!section || !list) return;
+
+  const critical = missing.filter(s => s.weight >= 4);
+  if (critical.length === 0) { section.style.display = 'none'; return; }
+  section.style.display = '';
+
+  // Badge style helpers
+  const BADGE_STYLES = {
+    Course:       { bg: 'rgba(44,95,212,0.2)',   text: '#6699ff' },
+    Docs:         { bg: 'rgba(40,201,144,0.15)',  text: '#28c990' },
+    Guide:        { bg: 'rgba(232,184,75,0.15)',  text: '#e8b84b' },
+    Video:        { bg: 'rgba(224,80,96,0.15)',   text: '#e05060' },
+    Book:         { bg: 'rgba(160,130,255,0.15)', text: '#a78bfa' },
+    Interactive:  { bg: 'rgba(44,95,212,0.2)',    text: '#6699ff' },
+    Practice:     { bg: 'rgba(251,146,60,0.15)',  text: '#fb923c' },
+    Cert:         { bg: 'rgba(232,184,75,0.18)',  text: '#e8b84b' },
+    Test:         { bg: 'rgba(40,201,144,0.15)',  text: '#28c990' },
+  };
+
+  function linkHTML(r) {
+    const s = BADGE_STYLES[r.type] || { bg: 'rgba(100,150,255,0.1)', text: 'var(--text2)' };
+    return `<a class="learn-link" href="${r.url}" target="_blank" rel="noopener">
+      <span class="learn-link-badge" style="background:${s.bg};color:${s.text};">${r.type}</span>
+      <span class="learn-link-name">${r.name}</span>
+      <span class="learn-link-arrow">→</span>
+    </a>`;
+  }
+
+  function rowHTML(label, items) {
+    if (!items || items.length === 0) return '';
+    return `<div>
+      <div class="learn-row-label">${label}</div>
+      <div class="learn-links">${items.map(linkHTML).join('')}</div>
+    </div>`;
+  }
+
+  list.innerHTML = `<div class="learn-skills-grid">${critical.map(s => {
+    const data = LEARN_DATA[s.name] || {
+      learn: [
+        { name: 'freeCodeCamp — ' + s.name, type: 'Course', url: 'https://www.freecodecamp.org/news/search/?query=' + encodeURIComponent(s.name) },
+        { name: 'YouTube tutorials',         type: 'Video',  url: 'https://www.youtube.com/results?search_query=' + encodeURIComponent(s.name + ' tutorial') },
+      ],
+      certs: [],
+      test:  [{ name: 'HackerRank — ' + s.name, type: 'Test', url: 'https://www.hackerrank.com/skills-verification' }],
+    };
+    return `<div class="learn-skill-card">
+      <div class="learn-skill-header">
+        <div class="learn-skill-name">${s.name}</div>
+        <span class="learn-skill-tier">Critical</span>
+      </div>
+      ${rowHTML('Learn', data.learn)}
+      ${rowHTML('Certifications', data.certs)}
+      ${rowHTML('Test your skills', data.test)}
+    </div>`;
+  }).join('')}</div>`;
+}
+
 
 </script>
 </body>
