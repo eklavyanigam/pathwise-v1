@@ -1048,7 +1048,6 @@
       <div class="card-title"><span class="icon"></span> Account</div>
       <div class="auth-actions">
         <button id="login-google-btn" class="btn btn-add">Login with Google</button>
-        <button id="login-linkedin-btn" class="btn btn-add">Login with LinkedIn</button>
         <button id="guest-btn" class="btn btn-ghost">Continue as Guest</button>
         <button id="logout-btn" class="btn btn-clear" style="display:none;">Logout</button>
       </div>
@@ -1374,7 +1373,6 @@ window.PathwiseSupabaseReady = (async function () {
   const CONFIG = {
     supabaseUrl: 'https://isrvcqvakkzecucyjngd.supabase.co',
     supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlzcnZjcXZha2t6ZWN1Y3lqbmdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzODU3MjgsImV4cCI6MjA5MDk2MTcyOH0.S34nZVTlPD5yAK7g_IrNBl9jOW-JAz1KZLOk9byv4aU',
-    linkedInProvider: 'custom:linkedin',
     storageKey: 'pw_guest_progress'
   };
 
@@ -1556,16 +1554,6 @@ window.PathwiseSupabaseReady = (async function () {
     });
   }
 
-  async function signInWithLinkedIn() {
-    if (!supabase) throw bootError || new Error('Supabase is not configured.');
-    return supabase.auth.signInWithOAuth({
-      provider: CONFIG.linkedInProvider,
-      options: {
-        redirectTo: window.location.origin + window.location.pathname
-      }
-    });
-  }
-
   async function signUpWithEmail(email, password) {
     if (!supabase) throw bootError || new Error('Supabase is not configured.');
     return supabase.auth.signUp({
@@ -1608,15 +1596,6 @@ window.PathwiseSupabaseReady = (async function () {
       if (error) throw error;
     } catch (error) {
       alert(error.message || 'Google login failed.');
-    }
-  });
-
-  document.getElementById('login-linkedin-btn')?.addEventListener('click', async () => {
-    try {
-      const { error } = await signInWithLinkedIn();
-      if (error) throw error;
-    } catch (error) {
-      alert(error.message || 'LinkedIn login failed.');
     }
   });
 
@@ -1691,7 +1670,6 @@ window.PathwiseSupabaseReady = (async function () {
     saveProgress,
     updateProgress,
     signInWithGoogle,
-    signInWithLinkedIn,
     signInWithEmail,
     signUpWithEmail,
     continueAsGuest,
