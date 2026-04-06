@@ -94,6 +94,45 @@
     text.textContent = message;
   }
 
+  let noticeTimer = null;
+
+  function showTopNotice(kind, title, message, options) {
+    const notice = document.getElementById('top-notice');
+    const titleEl = document.getElementById('top-notice-title');
+    const messageEl = document.getElementById('top-notice-message');
+    if (!notice || !titleEl || !messageEl) return;
+
+    const opts = options || {};
+    if (noticeTimer) {
+      clearTimeout(noticeTimer);
+      noticeTimer = null;
+    }
+
+    notice.classList.remove('is-info', 'is-success', 'is-error');
+    notice.classList.add(kind === 'error' ? 'is-error' : kind === 'success' ? 'is-success' : 'is-info');
+    titleEl.textContent = title || 'Notice';
+    messageEl.textContent = message || '';
+    notice.classList.add('visible');
+
+    if (opts.autoClose !== false) {
+      const delay = typeof opts.duration === 'number' ? opts.duration : 4200;
+      noticeTimer = setTimeout(() => {
+        notice.classList.remove('visible');
+        noticeTimer = null;
+      }, delay);
+    }
+  }
+
+  function hideTopNotice() {
+    const notice = document.getElementById('top-notice');
+    if (!notice) return;
+    if (noticeTimer) {
+      clearTimeout(noticeTimer);
+      noticeTimer = null;
+    }
+    notice.classList.remove('visible');
+  }
+
   function renderProgressSnapshot(progress) {
     const title = document.getElementById('snapshot-title');
     const role = document.getElementById('snapshot-role');
@@ -315,10 +354,11 @@
 
   document.getElementById('login-google-btn')?.addEventListener('click', async () => {
     try {
+      showTopNotice('info', 'Google Sign In', 'Redirecting you to Google...');
       const { error } = await signInWithGoogle();
       if (error) throw error;
     } catch (error) {
-      alert(error.message || 'Google login failed.');
+      showTopNotice('error', 'Google Sign In Failed', error.message || 'Google login failed.');
     }
   });
 
@@ -326,12 +366,16 @@
     try {
       const email = document.getElementById('email-input').value.trim();
       const password = document.getElementById('password-input').value;
+      showTopNotice('info', 'Signing In', 'Checking your email and password...');
       const { error } = await signInWithEmail(email, password);
       if (error) throw error;
+      showTopNotice('success', 'Signed In', 'Welcome back. Restoring your analyzer...');
     } catch (error) {
-      alert(error.message || 'Email login failed.');
+      showTopNotice('error', 'Email Sign In Failed', error.message || 'Email login failed.');
     }
   });
+
+  document.getElementById('top-notice-close')?.addEventListener('click', hideTopNotice);
 
 document.getElementById('guest-btn')?.addEventListener('click', () => {
   continueAsGuest();
@@ -352,8 +396,9 @@ document.getElementById('account-trigger')?.addEventListener('click', () => {
     if (window.PathwiseApp?.hydrateProgress) {
       await window.PathwiseApp.hydrateProgress();
     }
+    showTopNotice('success', 'Signed Out', 'You are back in guest mode.');
   } catch (error) {
-    alert(error.message || 'Sign out failed.');
+    showTopNotice('error', 'Sign Out Failed', error.message || 'Sign out failed.');
   }
 });
 
@@ -419,6 +464,8 @@ document.addEventListener('click', (event) => {
     clearGuestProgress,
     renderSaveStatus,
     renderProgressSnapshot,
+    showTopNotice,
+    hideTopNotice,
     getPendingStep: function () { return state.pendingStep; },
     getBootError: function () { return bootError; }
   };

@@ -48,6 +48,79 @@
 
   #app { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 24px 100px; }
   .shell-only { display: none; }
+  .top-notice {
+    position: fixed;
+    top: 18px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    width: min(720px, calc(100vw - 32px));
+    z-index: 1200;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease, transform 0.22s ease;
+  }
+  .top-notice.visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+  }
+  .top-notice-inner {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 16px;
+    border-radius: 16px;
+    border: 1px solid rgba(100,140,255,0.18);
+    background: rgba(10,18,42,0.95);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.28);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+  .top-notice.is-info .top-notice-inner {
+    border-color: rgba(100,140,255,0.22);
+  }
+  .top-notice.is-success .top-notice-inner {
+    border-color: rgba(40,201,144,0.28);
+    background: rgba(10,24,36,0.95);
+  }
+  .top-notice.is-error .top-notice-inner {
+    border-color: rgba(224,80,96,0.32);
+    background: rgba(28,12,20,0.95);
+  }
+  .top-notice-copy {
+    flex: 1;
+    min-width: 0;
+  }
+  .top-notice-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 4px;
+  }
+  .top-notice-message {
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--text);
+  }
+  .top-notice-close {
+    border: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.06);
+    color: var(--text2);
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    transition: background 0.18s ease, color 0.18s ease;
+    flex-shrink: 0;
+  }
+  .top-notice-close:hover {
+    background: rgba(255,255,255,0.1);
+    color: white;
+  }
 
   .intro-hero {
     min-height: 100vh;
