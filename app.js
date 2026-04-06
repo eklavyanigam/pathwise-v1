@@ -75,15 +75,18 @@
     const accountMenu = document.getElementById('account-menu');
     const profileBtn = document.getElementById('account-profile-btn');
     const signoutBtn = document.getElementById('account-signout-btn');
+    const userLabel = document.getElementById('account-user-label');
     if (user) {
       state.guestMode = false;
       if (accountMenu) accountMenu.style.display = '';
       if (profileBtn) profileBtn.setAttribute('title', user.email || 'Profile');
       if (signoutBtn) signoutBtn.setAttribute('title', 'Sign out');
+      if (userLabel) userLabel.textContent = user.email || 'Signed in';
       return;
     }
     if (accountMenu) {
       accountMenu.style.display = 'none';
+      accountMenu.classList.remove('open');
     }
   }
   function renderSaveStatus(kind, message) {
@@ -522,10 +525,13 @@
     }
   });
 
-  document.getElementById('account-profile-btn')?.addEventListener('click', async () => {
-    const user = await getCurrentUser();
-    if (!user) return;
-    showTopNotice('info', 'Profile', user.email || 'Signed-in account');
+  document.getElementById('account-profile-btn')?.addEventListener('click', () => {
+    const menu = document.getElementById('account-menu');
+    const trigger = document.getElementById('account-profile-btn');
+    if (!menu || !trigger) return;
+    const willOpen = !menu.classList.contains('open');
+    menu.classList.toggle('open', willOpen);
+    trigger.setAttribute('aria-expanded', String(willOpen));
   });
 
   document.getElementById('password-toggle-btn')?.addEventListener('click', () => {
@@ -558,6 +564,16 @@ document.getElementById('guest-btn')?.addEventListener('click', () => {
     showTopNotice('success', 'Signed Out', 'You are back in guest mode.');
   } catch (error) {
     showTopNotice('error', 'Sign Out Failed', error.message || 'Sign out failed.');
+  }
+});
+
+document.addEventListener('click', (event) => {
+  const menu = document.getElementById('account-menu');
+  const trigger = document.getElementById('account-profile-btn');
+  if (!menu || !trigger) return;
+  if (!menu.contains(event.target)) {
+    menu.classList.remove('open');
+    trigger.setAttribute('aria-expanded', 'false');
   }
 });
 

@@ -133,16 +133,19 @@
       </div>
     </div>
     <div class="account-menu shell-only" id="account-menu" style="display:none;">
-      <button class="account-trigger account-profile-trigger" id="account-profile-btn" type="button" aria-label="Profile">
+      <button class="account-trigger account-profile-trigger" id="account-profile-btn" type="button" aria-label="Profile" aria-expanded="false">
         <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
           <path d="M12 12a4.25 4.25 0 1 0 0-8.5 4.25 4.25 0 0 0 0 8.5Zm0 1.75c-4.07 0-7.25 2.15-7.25 4.89 0 .48.39.86.86.86h12.78c.47 0 .86-.38.86-.86 0-2.74-3.18-4.89-7.25-4.89Z"/>
         </svg>
       </button>
-      <button class="account-trigger account-signout-trigger" id="account-signout-btn" type="button" aria-label="Sign out">
-        <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-          <path d="M10.75 3.75a.75.75 0 0 1 0 1.5H6.5A1.25 1.25 0 0 0 5.25 6.5v11A1.25 1.25 0 0 0 6.5 18.75h4.25a.75.75 0 0 1 0 1.5H6.5a2.75 2.75 0 0 1-2.75-2.75v-11A2.75 2.75 0 0 1 6.5 3.75h4.25Zm4.72 3.97a.75.75 0 0 1 1.06 0l3.72 3.72a.75.75 0 0 1 0 1.06l-3.72 3.72a.75.75 0 1 1-1.06-1.06l2.44-2.44H9.5a.75.75 0 0 1 0-1.5h8.41l-2.44-2.44a.75.75 0 0 1 0-1.06Z"/>
-        </svg>
-      </button>
+      <div class="account-dropdown" id="account-dropdown">
+        <div class="account-dropdown-profile" id="account-user-label">Signed in</div>
+        <button class="account-dropdown-item account-signout-trigger" id="account-signout-btn" type="button" aria-label="Sign out">
+          <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+            <path d="M10.75 3.75a.75.75 0 0 1 0 1.5H6.5A1.25 1.25 0 0 0 5.25 6.5v11A1.25 1.25 0 0 0 6.5 18.75h4.25a.75.75 0 0 1 0 1.5H6.5a2.75 2.75 0 0 1-2.75-2.75v-11A2.75 2.75 0 0 1 6.5 3.75h4.25Zm4.72 3.97a.75.75 0 0 1 1.06 0l3.72 3.72a.75.75 0 0 1 0 1.06l-3.72 3.72a.75.75 0 1 1-1.06-1.06l2.44-2.44H9.5a.75.75 0 0 1 0-1.5h8.41l-2.44-2.44a.75.75 0 0 1 0-1.06Z"/>
+          </svg>
+        </button>
+      </div>
     </div>
     <div class="header-stepper-shell" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
       <div class="stepper">
