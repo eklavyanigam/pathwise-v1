@@ -567,10 +567,6 @@ function goToStep(name) {
     return;
   }
 
-  if (window.PathwiseSupabaseReady) {
-    window.PathwiseSupabaseReady.then((api) => api.enterAnalyzer());
-  }
-
   // Gate: analysis and action require completed results
   if ((name === 'analysis' || name === 'action') && !lastResults) {
     // Visual shake on disabled step button
@@ -3461,4 +3457,5 @@ function buildLearnResources(missing) {
     </div>`;
   }).join('')}</div>`;
 }
+
 
