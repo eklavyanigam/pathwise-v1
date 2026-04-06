@@ -1,4 +1,4 @@
-window.PathwiseSupabaseReady = (async function () {
+﻿window.PathwiseSupabaseReady = (async function () {
   const CONFIG = {
     supabaseUrl: 'https://isrvcqvakkzecucyjngd.supabase.co',
     supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlzcnZjcXZha2t6ZWN1Y3lqbmdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzODU3MjgsImV4cCI6MjA5MDk2MTcyOH0.S34nZVTlPD5yAK7g_IrNBl9jOW-JAz1KZLOk9byv4aU',
@@ -347,12 +347,12 @@ window.PathwiseApp = {
     window.PathwiseSupabaseReady.then((api) => api.showIntro());
   }
 };
-/* ═══════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    DATA
-═══════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 const ROLES = {
   "Data Analyst": {
-    icon: "📊",
+    icon: "ðŸ“Š",
     skills: [
       { name: "SQL", weight: 5, category: "Databases" },
       { name: "Python", weight: 4, category: "Programming" },
@@ -366,7 +366,7 @@ const ROLES = {
     ]
   },
   "Frontend Developer": {
-    icon: "🎨",
+    icon: "ðŸŽ¨",
     skills: [
       { name: "HTML & CSS", weight: 5, category: "Core Web" },
       { name: "JavaScript", weight: 5, category: "Programming" },
@@ -380,7 +380,7 @@ const ROLES = {
     ]
   },
   "Software Developer": {
-    icon: "💻",
+    icon: "ðŸ’»",
     skills: [
       { name: "Data Structures & Algorithms", weight: 5, category: "CS Fundamentals" },
       { name: "Object-Oriented Programming", weight: 5, category: "CS Fundamentals" },
@@ -395,7 +395,7 @@ const ROLES = {
     ]
   },
   "Backend Developer": {
-    icon: "⚙️",
+    icon: "âš™ï¸",
     skills: [
       { name: "Python / Node.js / Java", weight: 5, category: "Programming" },
       { name: "REST APIs", weight: 5, category: "Architecture" },
@@ -409,7 +409,7 @@ const ROLES = {
     ]
   },
   "Machine Learning Engineer": {
-    icon: "🤖",
+    icon: "ðŸ¤–",
     skills: [
       { name: "Python", weight: 5, category: "Programming" },
       { name: "Statistics & Probability", weight: 5, category: "Mathematics" },
@@ -423,7 +423,7 @@ const ROLES = {
     ]
   },
   "QA Engineer": {
-    icon: "🧪",
+    icon: "ðŸ§ª",
     skills: [
       { name: "Manual Testing", weight: 5, category: "Testing" },
       { name: "Test Case Writing", weight: 5, category: "Testing" },
@@ -438,7 +438,7 @@ const ROLES = {
     ]
   },
   "Full Stack Developer": {
-    icon: "🔀",
+    icon: "ðŸ”€",
     skills: [
       { name: "HTML & CSS", weight: 5, category: "Frontend" },
       { name: "JavaScript", weight: 5, category: "Frontend" },
@@ -453,7 +453,7 @@ const ROLES = {
     ]
   },
   "Game Developer": {
-    icon: "🎮",
+    icon: "ðŸŽ®",
     skills: [
       { name: "C++ / C#", weight: 5, category: "Programming" },
       { name: "Unity / Unreal Engine", weight: 5, category: "Game Engine" },
@@ -468,7 +468,7 @@ const ROLES = {
     ]
   },
   "DevOps Engineer": {
-    icon: "🔧",
+    icon: "ðŸ”§",
     skills: [
       { name: "Linux / Shell Scripting", weight: 5, category: "Systems" },
       { name: "Docker / Kubernetes", weight: 5, category: "Containers" },
@@ -482,7 +482,7 @@ const ROLES = {
     ]
   },
   "Cybersecurity Analyst": {
-    icon: "🛡️",
+    icon: "ðŸ›¡ï¸",
     skills: [
       { name: "Network Security", weight: 5, category: "Security" },
       { name: "Threat Detection & Analysis", weight: 5, category: "Security" },
@@ -496,7 +496,7 @@ const ROLES = {
     ]
   },
   "Cloud Architect": {
-    icon: "☁️",
+    icon: "â˜ï¸",
     skills: [
       { name: "AWS / Azure / GCP (Advanced)", weight: 5, category: "Cloud Platforms" },
       { name: "Cloud Architecture Design", weight: 5, category: "Architecture" },
@@ -511,7 +511,7 @@ const ROLES = {
     ]
   },
   "Gen AI Developer": {
-    icon: "🧠",
+    icon: "ðŸ§ ",
     skills: [
       { name: "Python", weight: 5, category: "Programming" },
       { name: "LLM APIs (OpenAI / Anthropic / Gemini)", weight: 5, category: "AI Tools" },
@@ -527,7 +527,7 @@ const ROLES = {
   },
 };
 
-/* All unique skill names across all roles — for the dropdown */
+/* All unique skill names across all roles â€” for the dropdown */
 const ALL_SKILL_SUGGESTIONS = [...new Set(
   Object.values(ROLES).flatMap(r => r.skills.map(s => s.name))
 )].sort();
@@ -544,19 +544,19 @@ const SCORE_COLORS = [
 const LEVEL_LABELS = { 1: "Beginner", 2: "Intermediate", 3: "Expert" };
 const LEVEL_CSS    = { 1: "lvl-beginner", 2: "lvl-intermediate", 3: "lvl-expert" };
 
-/* ═══ STATE ═══ */
+/* â•â•â• STATE â•â•â• */
 let selectedRole = "Data Analyst";
 let skills = [];
 let editId = null;
 let lastResults = null;
 let highlightedIndex = -1;
 
-/* ═══ HELPERS ═══ */
+/* â•â•â• HELPERS â•â•â• */
 function getScoreInfo(s) { return SCORE_COLORS.find(x => s < x.max) || SCORE_COLORS[SCORE_COLORS.length - 1]; }
 
-/* ═══ PAGE SWITCH ═══ */
-/* ═══ 3-STEP NAVIGATION ═══ */
-// Steps: 'setup' → 'analysis' → 'action'
+/* â•â•â• PAGE SWITCH â•â•â• */
+/* â•â•â• 3-STEP NAVIGATION â•â•â• */
+// Steps: 'setup' â†’ 'analysis' â†’ 'action'
 // Gating: analysis only unlocked after analyze(), action only after analysis viewed
 
 const STEP_ORDER = ['setup', 'analysis', 'action'];
@@ -635,7 +635,7 @@ function switchPage(name) {
   goToStep(map[name] || name);
 }
 
-/* ═══ COMBOBOX LOGIC ═══ */
+/* â•â•â• COMBOBOX LOGIC â•â•â• */
 const skillInput = document.getElementById('skill-input');
 const dropdown = document.getElementById('combo-dropdown');
 
@@ -658,7 +658,7 @@ function renderDropdown(data) {
   const otherItems = data.other || [];
   const total = roleItems.length + otherItems.length;
   if (total === 0) {
-    dropdown.innerHTML = '<div class="combo-no-match">No match — your custom skill will be added</div>';
+    dropdown.innerHTML = '<div class="combo-no-match">No match â€” your custom skill will be added</div>';
   } else {
     let html = '', idx = 0;
     if (roleItems.length > 0) {
@@ -750,7 +750,7 @@ document.addEventListener('click', e => {
   if (!wrap.contains(e.target) && e.target !== addB) closeDropdown();
 });
 
-/* ═══ ROLES ═══ */
+/* â•â•â• ROLES â•â•â• */
 function renderRoles() {
   const grid = document.getElementById('role-grid');
   grid.innerHTML = '';
@@ -775,7 +775,7 @@ function renderRequiredSkills() {
   });
 }
 
-/* ═══ SKILLS ═══ */
+/* â•â•â• SKILLS â•â•â• */
 function renderSkillList() {
   const c = document.getElementById('skill-list-container');
   document.getElementById('skill-counter').textContent = skills.length + ' skill' + (skills.length !== 1 ? 's' : '') + ' added';
@@ -797,8 +797,8 @@ function renderSkillList() {
     item.innerHTML = `
       <span class="skill-name-text">${s.name}</span>
       <span class="skill-level-badge ${lvlClass}">${LEVEL_LABELS[s.level]}</span>
-      <button class="btn btn-sm btn-ghost eb" data-id="${s.id}" title="Edit">✎</button>
-      <button class="btn btn-sm btn-ghost rb" data-id="${s.id}">✕</button>`;
+      <button class="btn btn-sm btn-ghost eb" data-id="${s.id}" title="Edit">âœŽ</button>
+      <button class="btn btn-sm btn-ghost rb" data-id="${s.id}">âœ•</button>`;
     list.appendChild(item);
   });
   c.innerHTML = '';
@@ -817,7 +817,7 @@ function addSkill() {
     document.getElementById('add-btn').textContent = '+ Add Skill';
   } else {
     if (skills.find(s => s.name.toLowerCase() === name.toLowerCase())) {
-      showToast('⚠ "' + name + '" is already in your skills list.');
+      showToast('âš  "' + name + '" is already in your skills list.');
       skillInput.select();
       renderDropdown(getFilteredSuggestions(skillInput.value));
       return;
@@ -866,16 +866,16 @@ function resetResults() {
   document.getElementById('step-analysis').disabled = true;
   document.getElementById('step-action').disabled   = true;
   document.getElementById('score-badge').style.display = 'none';
-  // Clear persisted results — user changed their inputs
+  // Clear persisted results â€” user changed their inputs
   try { localStorage.removeItem('pw_results'); } catch(e) {}
 }
 
-/* ═══ LOCALSTORAGE PERSIST ═══ */
+/* â•â•â• LOCALSTORAGE PERSIST â•â•â• */
 function saveState() {
   try {
     localStorage.setItem('pw_skills', JSON.stringify(skills));
     localStorage.setItem('pw_role', selectedRole);
-    // Do NOT auto-save results — only save explicit user inputs
+    // Do NOT auto-save results â€” only save explicit user inputs
   } catch(e) {}
 }
 
@@ -1027,7 +1027,7 @@ async function loadState() {
   }
 }
 
-/* ═══ ANALYZE ═══ */
+/* â•â•â• ANALYZE â•â•â• */
 async function analyze() {
   // Show loader
   const overlay = document.getElementById('loading-overlay');
@@ -1035,19 +1035,19 @@ async function analyze() {
   const pctEl   = document.getElementById('loader-pct');
   const logEl   = document.getElementById('terminal-log');
 
-  // Terminal log lines — [delay_ms, percent, type, prompt, cmd, text]
+  // Terminal log lines â€” [delay_ms, percent, type, prompt, cmd, text]
   const termLines = [
     [0,    0,   'boot',   '>',  'init',            'Booting Pathwise Analyzer...'],
     [120,  8,   'info',   '$',  'load-profile',    `Loading user profile [${skills.length} skills detected]`],
-    [260,  18,  'info',   '$',  'fetch-role-data', `Fetching role schema → ${selectedRole}`],
+    [260,  18,  'info',   '$',  'fetch-role-data', `Fetching role schema â†’ ${selectedRole}`],
     [420,  28,  'run',    '>>>', 'match-skills',   'Running skill-match algorithm...'],
     [600,  40,  'data',   '  ', '',                'Comparing against 47 industry benchmarks'],
     [750,  52,  'run',    '>>>', 'calc-weights',   'Calculating weighted tier scores...'],
-    [900,  62,  'data',   '  ', '',                'Critical: weight×1.0  Supporting: weight×1.0  Optional: weight×0.6'],
+    [900,  62,  'data',   '  ', '',                'Critical: weightÃ—1.0  Supporting: weightÃ—1.0  Optional: weightÃ—0.6'],
     [1050, 72,  'run',    '>>>', 'gap-analysis',   'Running gap analysis + penalty model...'],
     [1200, 82,  'run',    '>>>', 'gen-insights',   'Generating insights + learning roadmap...'],
     [1340, 91,  'run',    '>>>', 'build-report',   'Compiling readiness report...'],
-    [1480, 98,  'done',   '✓',  '',                'Analysis complete. Loading results...'],
+    [1480, 98,  'done',   'âœ“',  '',                'Analysis complete. Loading results...'],
   ];
 
   // Clear log
@@ -1095,13 +1095,13 @@ async function analyze() {
     }, delay);
   });
 
-  // Pause so the user can read it — actual compute happens after
+  // Pause so the user can read it â€” actual compute happens after
   await new Promise(r => setTimeout(r, 1600));
 
   // Do the actual computation
   const role = ROLES[selectedRole];
-  // ── NEW SCORING SYSTEM ──────────────────────────────────────
-  // Tiers:  Critical w≥4  |  Supporting w=3  |  Optional w≤2
+  // â”€â”€ NEW SCORING SYSTEM â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // Tiers:  Critical wâ‰¥4  |  Supporting w=3  |  Optional wâ‰¤2
   //
   // 1. Level multipliers with diminishing returns for beginner spam:
   //    Beginner: 0.30  |  Intermediate: 0.65  |  Expert: 1.00
@@ -1113,14 +1113,14 @@ async function analyze() {
   // 3. Critical skill bonus: if ALL critical skills are owned (any level),
   //    add +8 pts to final score.
   //
-  // 4. Supporting skills: contribute at face value × level multiplier.
+  // 4. Supporting skills: contribute at face value Ã— level multiplier.
   //
-  // 5. Optional skills: contribute at 60% of face value × level multiplier
-  //    (diminishing returns — they shouldn't inflate score much).
+  // 5. Optional skills: contribute at 60% of face value Ã— level multiplier
+  //    (diminishing returns â€” they shouldn't inflate score much).
   //
-  // Formula: rawScore = sum(weight × levelMult × tierFactor) / totalPossible × 100
-  //          finalScore = rawScore − criticalPenalty + criticalBonus
-  // ────────────────────────────────────────────────────────────
+  // Formula: rawScore = sum(weight Ã— levelMult Ã— tierFactor) / totalPossible Ã— 100
+  //          finalScore = rawScore âˆ’ criticalPenalty + criticalBonus
+  // â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const LEVEL_MULT  = { 1: 0.30, 2: 0.65, 3: 1.00 };
   const TIER_FACTOR = (w) => w >= 4 ? 1.0 : w === 3 ? 1.0 : 0.6;
 
@@ -1272,9 +1272,9 @@ function animateResults(score) {
   numEl.textContent = '0';
   pf.style.width = '0%';
 
-  // No glow animation on circle — prevents jitter
+  // No glow animation on circle â€” prevents jitter
 
-  // Animate number, arc, and bar in sync — elastic easing
+  // Animate number, arc, and bar in sync â€” elastic easing
   const duration = 1400;
   let start = null;
   function easeOutExpo(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); }
@@ -1306,7 +1306,7 @@ function animateResults(score) {
 }
 
 
-/* ═══ CUSTOM LEVEL DROPDOWN ═══ */
+/* â•â•â• CUSTOM LEVEL DROPDOWN â•â•â• */
 (function() {
   const trigger   = document.getElementById('level-trigger');
   const ddrop     = document.getElementById('level-dropdown');
@@ -1347,12 +1347,11 @@ function animateResults(score) {
   window._resetLevelDropdown = () => setLevel('1');
 })();
 
-/* ═══ INIT ═══ */
+/* â•â•â• INIT â•â•â• */
 window.PathwiseSupabaseReady.then((api) => {
-  if (api.getSession()) {
+  const session = api.getSession();
+  if (session?.user) {
     api.enterAnalyzer();
-  } else {
-    api.showIntro();
   }
 });
 
@@ -1381,7 +1380,7 @@ renderSkillList();
 
 
 
-/* ═══ PORTFOLIO PROJECTS DATA ═══ */
+/* â•â•â• PORTFOLIO PROJECTS DATA â•â•â• */
 const PORTFOLIO_PROJECTS = {
   "Data Analyst": [
     {
@@ -1394,12 +1393,12 @@ const PORTFOLIO_PROJECTS = {
       title: "Customer Churn Prediction Analysis",
       skills: ["Python", "Statistics", "Data Cleaning", "Business Intelligence"],
       build: "Use a public telecom or SaaS churn dataset. Clean the data, run exploratory analysis, build a logistic regression model, and present findings in a clear written report with visualisations.",
-      why: "Churn analysis demonstrates end-to-end data skills — querying, cleaning, modelling, and communicating. It appears in real analyst interviews at companies of every size."
+      why: "Churn analysis demonstrates end-to-end data skills â€” querying, cleaning, modelling, and communicating. It appears in real analyst interviews at companies of every size."
     },
     {
       title: "SQL Portfolio: Answering Business Questions",
       skills: ["SQL", "Business Intelligence", "Communication"],
-      build: "Use a public database (e.g. the Northwind DB or a public e-commerce dataset). Write 10–15 progressively complex SQL queries that answer real business questions. Publish them on GitHub with explanations.",
+      build: "Use a public database (e.g. the Northwind DB or a public e-commerce dataset). Write 10â€“15 progressively complex SQL queries that answer real business questions. Publish them on GitHub with explanations.",
       why: "SQL proficiency is tested in virtually every data analyst interview. A public GitHub repo of well-commented SQL shows both technical and communication skills."
     }
   ],
@@ -1408,19 +1407,19 @@ const PORTFOLIO_PROJECTS = {
       title: "Personal Finance Tracker App",
       skills: ["React", "TypeScript", "HTML & CSS", "Responsive Design"],
       build: "Build a single-page React app where users can log income/expenses by category, see a running balance, and view a monthly summary chart. Make it fully responsive and deploy it on Vercel.",
-      why: "A deployed, functional app with real CRUD operations shows you can build product — not just landing pages. Interviewers can actually click around and test it."
+      why: "A deployed, functional app with real CRUD operations shows you can build product â€” not just landing pages. Interviewers can actually click around and test it."
     },
     {
       title: "Component Library with Storybook",
       skills: ["React", "TypeScript", "Accessibility", "Testing (Jest/RTL)"],
-      build: "Build a small design system: 8–10 reusable components (Button, Card, Modal, Input, etc.) with TypeScript props, accessibility attributes, and stories in Storybook. Write Jest tests for each.",
-      why: "Every serious frontend team uses a component library. Building one proves you understand abstraction, testing, and accessibility — three things juniors typically skip."
+      build: "Build a small design system: 8â€“10 reusable components (Button, Card, Modal, Input, etc.) with TypeScript props, accessibility attributes, and stories in Storybook. Write Jest tests for each.",
+      why: "Every serious frontend team uses a component library. Building one proves you understand abstraction, testing, and accessibility â€” three things juniors typically skip."
     },
     {
       title: "Real-Time Collaborative Whiteboard",
       skills: ["JavaScript", "React", "Performance Optimization", "TypeScript"],
       build: "Build a shared canvas using HTML5 Canvas and WebSockets (or a service like Pusher). Users on the same room link can draw simultaneously. Focus on smooth performance and real-time sync.",
-      why: "Demonstrates advanced JavaScript, state management, and performance thinking — all in one. It stands out in portfolios because most juniors stick to CRUD apps."
+      why: "Demonstrates advanced JavaScript, state management, and performance thinking â€” all in one. It stands out in portfolios because most juniors stick to CRUD apps."
     }
   ],
   "Software Developer": [
@@ -1428,19 +1427,19 @@ const PORTFOLIO_PROJECTS = {
       title: "CLI Task Manager with Persistent Storage",
       skills: ["Python / Java / C++", "Data Structures & Algorithms", "Unit Testing"],
       build: "Build a command-line task manager in Python or Java. Support add/list/complete/delete commands, store tasks in a JSON file, and write unit tests for all operations. Publish on GitHub.",
-      why: "A well-tested CLI tool shows algorithmic thinking, file I/O, and software craftsmanship — all skills that come up in technical interviews at every level."
+      why: "A well-tested CLI tool shows algorithmic thinking, file I/O, and software craftsmanship â€” all skills that come up in technical interviews at every level."
     },
     {
       title: "REST API with Full Test Coverage",
       skills: ["REST APIs", "Unit Testing", "SQL / Databases", "CI/CD Pipelines"],
       build: "Build a REST API (e.g. a book tracking or recipe API) with CRUD endpoints, a SQL database, input validation, and 80%+ test coverage. Add a GitHub Actions CI pipeline that runs tests on every push.",
-      why: "APIs with tests and CI are how professional developers actually work. This project proves you understand the full development lifecycle — not just writing code."
+      why: "APIs with tests and CI are how professional developers actually work. This project proves you understand the full development lifecycle â€” not just writing code."
     },
     {
       title: "Algorithm Visualiser",
       skills: ["Data Structures & Algorithms", "JavaScript", "System Design"],
       build: "Build a web page that animates sorting algorithms (bubble, merge, quicksort) and path-finding (BFS, Dijkstra) with speed controls. Implement each algorithm from scratch in JavaScript.",
-      why: "Forces deep understanding of the algorithms that come up in every technical interview. Interviewers love seeing this — it shows you can both implement and explain your work."
+      why: "Forces deep understanding of the algorithms that come up in every technical interview. Interviewers love seeing this â€” it shows you can both implement and explain your work."
     }
   ],
   "Backend Developer": [
@@ -1448,13 +1447,13 @@ const PORTFOLIO_PROJECTS = {
       title: "URL Shortener with Analytics API",
       skills: ["Python / Node.js / Java", "REST APIs", "SQL Databases", "Authentication & Security"],
       build: "Build a URL shortener service with JWT auth, rate limiting, click tracking per link, and a dashboard endpoint showing analytics. Deploy on Railway or Render with a proper README.",
-      why: "URL shorteners are a classic system design interview question. Building a real one — with auth, rate limiting, and analytics — shows backend depth in a compact project."
+      why: "URL shorteners are a classic system design interview question. Building a real one â€” with auth, rate limiting, and analytics â€” shows backend depth in a compact project."
     },
     {
       title: "Real-Time Chat API with WebSockets",
       skills: ["Python / Node.js / Java", "NoSQL Databases", "Docker / Containers", "Authentication & Security"],
       build: "Build a multi-room chat backend with WebSocket connections, JWT-based auth, and MongoDB for message persistence. Containerise with Docker and document the API with Swagger/OpenAPI.",
-      why: "Chat APIs demonstrate concurrent connections, database design, auth, and containerisation in one project — covering the most commonly tested backend concepts."
+      why: "Chat APIs demonstrate concurrent connections, database design, auth, and containerisation in one project â€” covering the most commonly tested backend concepts."
     },
     {
       title: "Event-Driven Notification Service",
@@ -1468,19 +1467,19 @@ const PORTFOLIO_PROJECTS = {
       title: "End-to-End ML Pipeline with Deployment",
       skills: ["Python", "Scikit-learn", "MLOps / Deployment", "Feature Engineering"],
       build: "Train a classification model (e.g. spam detection or heart disease prediction) with full preprocessing, feature engineering, cross-validation, and model selection. Deploy as a REST API using FastAPI and host on Hugging Face Spaces or Railway.",
-      why: "Most ML portfolios stop at a Jupyter notebook. Deploying an actual endpoint shows you understand the full pipeline — and that's exactly what ML engineer roles demand."
+      why: "Most ML portfolios stop at a Jupyter notebook. Deploying an actual endpoint shows you understand the full pipeline â€” and that's exactly what ML engineer roles demand."
     },
     {
       title: "Deep Learning Image Classifier",
       skills: ["Deep Learning (PyTorch/TF)", "Python", "Model Evaluation", "Feature Engineering"],
       build: "Train a CNN (or fine-tune ResNet/EfficientNet) on a custom image dataset. Write a full evaluation report with confusion matrix, per-class metrics, and error analysis. Document training decisions and tradeoffs.",
-      why: "Deep learning projects are expected in any ML portfolio. Writing a serious evaluation report — not just accuracy — shows the rigour that separates candidates at interview."
+      why: "Deep learning projects are expected in any ML portfolio. Writing a serious evaluation report â€” not just accuracy â€” shows the rigour that separates candidates at interview."
     },
     {
       title: "Recommendation System",
       skills: ["Python", "Statistics & Probability", "SQL / Data Processing", "Model Evaluation"],
       build: "Build a collaborative filtering recommender using the MovieLens or similar public dataset. Implement user-based and item-based approaches, evaluate with RMSE and precision@k, and write a blog-style writeup.",
-      why: "Recommendation systems appear in interviews at e-commerce, streaming, and marketplace companies. Understanding the maths behind them — and being able to explain it — is a major differentiator."
+      why: "Recommendation systems appear in interviews at e-commerce, streaming, and marketplace companies. Understanding the maths behind them â€” and being able to explain it â€” is a major differentiator."
     }
   ],
   "QA Engineer": [
@@ -1494,13 +1493,13 @@ const PORTFOLIO_PROJECTS = {
       title: "API Test Framework from Scratch",
       skills: ["API Testing (Postman)", "Python / Java (Scripting)", "SQL / Database Testing"],
       build: "Build a REST API test framework using Python (pytest + requests) or Postman/Newman. Cover auth flows, CRUD operations, edge cases, and data validation against the database. Generate HTML reports.",
-      why: "API testing is where most QA roles spend their time. A custom framework — not just Postman collections — proves you can code, which is required for most senior QA positions."
+      why: "API testing is where most QA roles spend their time. A custom framework â€” not just Postman collections â€” proves you can code, which is required for most senior QA positions."
     },
     {
       title: "Bug Report Portfolio with Root Cause Analysis",
       skills: ["Manual Testing", "Test Case Writing", "Bug Reporting & Tracking (Jira)"],
-      build: "Manually test 2–3 real open-source apps or staging environments. Write 10+ detailed Jira-style bug reports with steps to reproduce, expected vs actual behaviour, severity ratings, and root cause hypotheses. Publish as a PDF or Notion doc.",
-      why: "Clear bug reports are the core QA skill. A portfolio of well-written reports — with root cause analysis — shows thinking ability that automation alone cannot demonstrate."
+      build: "Manually test 2â€“3 real open-source apps or staging environments. Write 10+ detailed Jira-style bug reports with steps to reproduce, expected vs actual behaviour, severity ratings, and root cause hypotheses. Publish as a PDF or Notion doc.",
+      why: "Clear bug reports are the core QA skill. A portfolio of well-written reports â€” with root cause analysis â€” shows thinking ability that automation alone cannot demonstrate."
     }
   ],
   "Full Stack Developer": [
@@ -1514,7 +1513,7 @@ const PORTFOLIO_PROJECTS = {
       title: "Real-Time Collaborative Document Editor",
       skills: ["HTML & CSS", "JavaScript", "REST APIs", "NoSQL Databases"],
       build: "Build a Google Docs-style editor where multiple users can type simultaneously (using CRDTs or OT with WebSockets). Persist documents to MongoDB. Add basic formatting toolbar.",
-      why: "Real-time collaboration is technically demanding — it touches frontend state, WebSockets, data consistency, and backend persistence all at once. It immediately stands out."
+      why: "Real-time collaboration is technically demanding â€” it touches frontend state, WebSockets, data consistency, and backend persistence all at once. It immediately stands out."
     },
     {
       title: "Developer Portfolio with CMS",
@@ -1528,13 +1527,13 @@ const PORTFOLIO_PROJECTS = {
       title: "2D Platformer in Unity",
       skills: ["C++ / C#", "Unity / Unreal Engine", "Game Design Principles", "Version Control (Git)"],
       build: "Build a 2D platformer with at least 3 levels, a character controller, enemies with basic AI (patrol + attack), collectables, and a score system. Publish on itch.io and source on GitHub.",
-      why: "A published itch.io game is the game dev equivalent of a live website. It shows you can take a project from concept to shipped — the most important signal for any game studio."
+      why: "A published itch.io game is the game dev equivalent of a live website. It shows you can take a project from concept to shipped â€” the most important signal for any game studio."
     },
     {
       title: "3D Physics Sandbox",
       skills: ["C++ / C#", "Physics Simulation", "Linear Algebra & Maths", "Performance Optimisation"],
       build: "Build an Unreal or Unity scene with custom physics interactions: destructible objects, fluid-like particle behaviour, and a player character that can push/stack/throw rigidbodies. Profile and document your performance optimisations.",
-      why: "Physics programming is one of the most technically tested areas in game dev interviews. A sandbox that shows custom physics work — and your optimisation process — is powerful evidence."
+      why: "Physics programming is one of the most technically tested areas in game dev interviews. A sandbox that shows custom physics work â€” and your optimisation process â€” is powerful evidence."
     },
     {
       title: "Custom Shader Showcase",
@@ -1554,7 +1553,7 @@ const PORTFOLIO_PROJECTS = {
       title: "Infrastructure as Code with Terraform",
       skills: ["Infrastructure as Code (Terraform)", "Cloud Platforms (AWS/GCP/Azure)", "Security Best Practices", "Networking Basics"],
       build: "Write Terraform modules to provision a full cloud environment: VPC, subnets, security groups, EC2/Cloud Run instances, and a managed database. Apply least-privilege IAM policies and document the architecture.",
-      why: "IaC is expected in every senior DevOps role. A well-structured Terraform project on GitHub — with modules, state management, and security — shows professional-level infrastructure thinking."
+      why: "IaC is expected in every senior DevOps role. A well-structured Terraform project on GitHub â€” with modules, state management, and security â€” shows professional-level infrastructure thinking."
     },
     {
       title: "Zero-Downtime Deployment Pipeline",
@@ -1574,13 +1573,13 @@ const PORTFOLIO_PROJECTS = {
       title: "Vulnerability Assessment Report",
       skills: ["Vulnerability Assessment", "Network Security", "Python / Scripting", "Compliance & Frameworks (NIST/ISO)"],
       build: "Run a full vulnerability scan on a deliberately vulnerable VM (Metasploitable or DVWA). Document findings in a professional pentest-style report: scope, methodology, findings with CVSS scores, and remediation recommendations mapped to NIST controls.",
-      why: "A professional-quality vulnerability report shows you can communicate risk to stakeholders — the core output of most cybersecurity analyst roles."
+      why: "A professional-quality vulnerability report shows you can communicate risk to stakeholders â€” the core output of most cybersecurity analyst roles."
     },
     {
       title: "Incident Response Playbook + Tabletop Simulation",
       skills: ["Incident Response", "Threat Detection & Analysis", "SIEM Tools (Splunk/QRadar)", "Compliance & Frameworks (NIST/ISO)"],
       build: "Write a detailed IR playbook for 3 scenarios (ransomware, phishing, insider threat). Run a self-directed tabletop exercise for each, documenting your detection, containment, and recovery decisions. Publish as a PDF portfolio piece.",
-      why: "IR planning is a core competency tested in every blue-team interview. A published playbook signals structured thinking and preparation — exactly what security teams want."
+      why: "IR planning is a core competency tested in every blue-team interview. A published playbook signals structured thinking and preparation â€” exactly what security teams want."
     }
   ],
   "Cloud Architect": [
@@ -1600,7 +1599,7 @@ const PORTFOLIO_PROJECTS = {
       title: "FinOps Dashboard: Cloud Cost Analysis",
       skills: ["Cost Optimisation", "Multi-cloud Strategy", "Cloud Architecture Design", "DevOps / CI/CD Integration"],
       build: "Use AWS Cost Explorer or GCP Billing APIs to build a cost analysis dashboard. Identify waste (idle resources, oversized instances), implement tagging policies, and write a report estimating savings. Implement at least 2 cost optimisation changes.",
-      why: "Cloud cost overruns are a major pain point for every organisation. A candidate who can demonstrate real cost-saving analysis stands out immediately — especially for senior and architect-level roles."
+      why: "Cloud cost overruns are a major pain point for every organisation. A candidate who can demonstrate real cost-saving analysis stands out immediately â€” especially for senior and architect-level roles."
     }
   ],
   "Gen AI Developer": [
@@ -1608,13 +1607,13 @@ const PORTFOLIO_PROJECTS = {
       title: "RAG-Powered Document Q&A App",
       skills: ["LLM APIs (OpenAI / Anthropic / Gemini)", "RAG (Retrieval-Augmented Generation)", "Vector Databases (Pinecone / Chroma)", "REST APIs / FastAPI"],
       build: "Build an app that lets users upload PDFs and ask questions about them. Chunk and embed documents into a vector database, retrieve relevant chunks, and pass them to an LLM. Build a FastAPI backend and a simple frontend. Deploy it publicly.",
-      why: "RAG is the most in-demand Gen AI pattern in industry right now. A deployed, working RAG app immediately signals you understand the full stack — not just prompt engineering."
+      why: "RAG is the most in-demand Gen AI pattern in industry right now. A deployed, working RAG app immediately signals you understand the full stack â€” not just prompt engineering."
     },
     {
       title: "LLM-Powered Coding Assistant",
       skills: ["Prompt Engineering", "LangChain / LlamaIndex", "Evaluation & Testing of LLMs", "Python"],
       build: "Build a coding assistant using LangChain that can explain code, suggest refactors, and answer programming questions. Implement conversation memory, tool use (e.g. run code), and a systematic evaluation suite comparing prompt variants.",
-      why: "This project combines prompt engineering, tool use, memory management, and evaluation — covering the four most tested Gen AI concepts in a single coherent product."
+      why: "This project combines prompt engineering, tool use, memory management, and evaluation â€” covering the four most tested Gen AI concepts in a single coherent product."
     },
     {
       title: "Fine-Tuned Domain-Specific Chatbot",
@@ -1634,12 +1633,12 @@ const PORTFOLIO_PROJECTS = {
       title: "API Test Framework from Scratch",
       skills: ["API Testing (Postman)", "Python / Java (Scripting)", "SQL / Database Testing"],
       build: "Build a REST API test framework using pytest + requests. Cover auth flows, CRUD operations, and edge cases. Generate HTML reports.",
-      why: "API testing is where most QA roles spend their time. A custom framework proves you can code — required for most senior QA positions."
+      why: "API testing is where most QA roles spend their time. A custom framework proves you can code â€” required for most senior QA positions."
     },
     {
       title: "Bug Report Portfolio",
       skills: ["Manual Testing", "Test Case Writing", "Bug Reporting & Tracking (Jira)"],
-      build: "Manually test 2–3 real open-source apps. Write 10+ detailed Jira-style bug reports with steps, severity, and root cause analysis. Publish as a PDF.",
+      build: "Manually test 2â€“3 real open-source apps. Write 10+ detailed Jira-style bug reports with steps, severity, and root cause analysis. Publish as a PDF.",
       why: "Clear bug reports are the core QA skill. A portfolio of well-written reports demonstrates thinking ability that automation alone cannot."
     }
   ]
@@ -1667,7 +1666,7 @@ function getPortfolioProjects(role, missing, matched) {
   return scored.slice(0, 3);
 }
 
-/* ═══ WHY THESE SKILLS MATTER ═══ */
+/* â•â•â• WHY THESE SKILLS MATTER â•â•â• */
 const SKILL_REASONS = {
   "SQL": "The lingua franca of data. Every database, BI tool, and analytics platform requires SQL to query and manipulate data.",
   "Python": "The most versatile language in tech. Used for scripting, automation, data analysis, machine learning, and backend development.",
@@ -1676,7 +1675,7 @@ const SKILL_REASONS = {
   "Statistics": "The foundation of data analysis and ML. Without statistics, you can't interpret results or validate models.",
   "Tableau / Power BI": "Industry-standard BI tools used by analysts worldwide to build dashboards and self-serve reports.",
   "Data Cleaning": "80% of a data analyst's job is cleaning messy data. This skill is non-negotiable in practice.",
-  "Business Intelligence": "Connects data to business decisions — exactly what employers want from a data analyst.",
+  "Business Intelligence": "Connects data to business decisions â€” exactly what employers want from a data analyst.",
   "Communication": "Technical skills only create value if you can explain findings clearly to non-technical stakeholders.",
   "HTML & CSS": "The building blocks of every webpage. Without them, you can't lay out or style any web interface.",
   "JavaScript": "The language of the web. Every interactive element on any website runs on JavaScript.",
@@ -1707,7 +1706,7 @@ const SKILL_REASONS = {
   "Scikit-learn": "The go-to Python library for classical ML. Used in data science roles worldwide for rapid model prototyping.",
   "Deep Learning (PyTorch/TF)": "Powers computer vision, NLP, and generative AI. Increasingly expected even for non-research ML roles.",
   "Feature Engineering": "Often more impactful than the model itself. Transforming raw data into meaningful features is a core ML skill.",
-  "Model Evaluation": "Building a model is step one. Knowing if it actually works — and why — requires rigorous evaluation skills.",
+  "Model Evaluation": "Building a model is step one. Knowing if it actually works â€” and why â€” requires rigorous evaluation skills.",
   "SQL / Data Processing": "ML engineers deal with large datasets daily. Efficient data querying and processing is a practical must-have.",
   "MLOps / Deployment": "A model no one can use is worthless. Deploying, monitoring, and maintaining models in production is a growing skill gap.",
   "Figma": "The industry-standard design tool. If you can't use Figma, you can't collaborate with modern design teams.",
@@ -1779,7 +1778,7 @@ const SKILL_REASONS = {
   "API Testing (Postman)": "Most modern apps are API-driven. Testing APIs directly catches bugs before they reach the UI layer.",
   "Bug Reporting & Tracking (Jira)": "A bug only gets fixed if it's reported clearly. Jira is the industry-standard tool for tracking issues through to resolution.",
   "SQL / Database Testing": "Data integrity bugs are often invisible in the UI. Direct database testing catches them at the source.",
-  "Performance Testing (JMeter)": "Functional correctness isn't enough — systems must handle real-world load. Performance testing prevents production failures.",
+  "Performance Testing (JMeter)": "Functional correctness isn't enough â€” systems must handle real-world load. Performance testing prevents production failures.",
   "Python / Java (Scripting)": "Writing automation scripts requires programming ability. Even functional testers need scripting basics to work in modern teams.",
   "React / Vue / Angular": "Full stack developers must own the frontend too. Proficiency in a modern framework is expected on both sides of the stack.",
   "Node.js / Python / Java": "Server-side programming is half the job. Full stack developers write business logic, APIs, and database queries daily.",
@@ -1796,7 +1795,7 @@ const SKILL_REASONS = {
 
   "C++ / C#": "The two dominant languages in game development. C++ powers Unreal Engine and performance-critical systems; C# is the scripting language for Unity.",
   "Unity / Unreal Engine": "The industry-standard game engines. Unity dominates indie and mobile; Unreal powers AAA titles. Employers expect proficiency in at least one.",
-  "Game Design Principles": "Great code doesn't make a great game — design does. Understanding player psychology, loop design, and level design separates engineers from game developers.",
+  "Game Design Principles": "Great code doesn't make a great game â€” design does. Understanding player psychology, loop design, and level design separates engineers from game developers.",
   "Linear Algebra & Maths": "Game development is applied mathematics. Vectors, matrices, and trigonometry are used constantly for movement, collisions, and 3D transformations.",
   "Physics Simulation": "Realistic physics make games feel alive. Rigidbodies, collisions, and constraints are core gameplay mechanics in most genres.",
   "3D Modelling Basics (Blender)": "Game developers who understand the 3D pipeline work better with artists and can prototype assets independently.",
@@ -1817,12 +1816,12 @@ function buildWhySection(matched, missing, role) {
   const whyGrid = document.getElementById('why-grid');
   if (!whyGrid) return;
   const allRoleSkills = ROLES[role].skills;
-  // Show all role skills with reasons — matched first, then missing
+  // Show all role skills with reasons â€” matched first, then missing
   const sorted = [...matched.map(s => ({...s, has: true})), ...missing.map(s => ({...s, has: false}))];
   whyGrid.innerHTML = sorted.map(s => {
     const reason = SKILL_REASONS[s.name] || `A core competency for the ${role} role, valued by employers across the industry.`;
     const dotColor = s.weight >= 5 ? '#f06060' : s.weight === 4 ? '#fb923c' : '#f5c842';
-    const statusIcon = s.has ? '+' : '–';
+    const statusIcon = s.has ? '+' : 'â€“';
     const statusColor = s.has ? 'var(--green)' : 'var(--red)';
     return `
       <div class="why-item">
@@ -1838,7 +1837,7 @@ function buildWhySection(matched, missing, role) {
 }
 
 
-/* ═══ CAREER PATH INSIGHTS ═══ */
+/* â•â•â• CAREER PATH INSIGHTS â•â•â• */
 
 function scoreRoleForSkills(roleName) {
   const role = ROLES[roleName];
@@ -1892,7 +1891,7 @@ function buildInsights(currentRole, currentScore) {
         <div class="insights-primary-role">${currentRole}</div>
         <div class="insights-primary-sub">
           ${currentScore >= 75
-            ? "You're a strong candidate — start applying with confidence."
+            ? "You're a strong candidate â€” start applying with confidence."
             : currentScore >= 50
             ? "Good progress. Keep building the missing skills to close the gap."
             : "Focus on the top 3 priority skills to move up a tier quickly."}
@@ -1979,7 +1978,7 @@ function renderPortfolioProjects(role, missing, matched) {
   `;
 }
 
-/* ═══ TOAST ═══ */
+/* â•â•â• TOAST â•â•â• */
 let toastTimer = null;
 function showToast(msg, type = 'error') {
   const t = document.getElementById('skill-toast');
@@ -1990,13 +1989,13 @@ function showToast(msg, type = 'error') {
   toastTimer = setTimeout(() => { t.style.display = 'none'; }, 3000);
 }
 
-/* ═══ SKILL LEARNING ROADMAP ═══ */
+/* â•â•â• SKILL LEARNING ROADMAP â•â•â• */
 const ROADMAP_DURATIONS = {
-  1: { label: "~2–4 weeks", weeks: 3 },
-  2: { label: "~1–2 months", weeks: 6 },
-  3: { label: "~2–3 months", weeks: 10 },
-  4: { label: "~3–5 months", weeks: 16 },
-  5: { label: "~5–8 months", weeks: 26 },
+  1: { label: "~2â€“4 weeks", weeks: 3 },
+  2: { label: "~1â€“2 months", weeks: 6 },
+  3: { label: "~2â€“3 months", weeks: 10 },
+  4: { label: "~3â€“5 months", weeks: 16 },
+  5: { label: "~5â€“8 months", weeks: 26 },
 };
 
 function buildRoadmap(matched, missing, role) {
@@ -2014,34 +2013,34 @@ function buildRoadmap(matched, missing, role) {
     {
       id: 1,
       icon: '01',
-      label: 'Phase 1 — Start Here',
+      label: 'Phase 1 â€” Start Here',
       title: 'Critical Foundations',
       color: 'var(--accent)',
       skills: critical.slice(0, 4),
-      note: critical.length === 0 ? 'All critical skills covered ✓' : null,
+      note: critical.length === 0 ? 'All critical skills covered âœ“' : null,
     },
     {
       id: 2,
       icon: '02',
-      label: 'Phase 2 — Build Depth',
+      label: 'Phase 2 â€” Build Depth',
       title: 'Supporting Skills',
       color: 'var(--yellow)',
       skills: important.slice(0, 4),
-      note: important.length === 0 ? 'All supporting skills covered ✓' : null,
+      note: important.length === 0 ? 'All supporting skills covered âœ“' : null,
     },
     {
       id: 3,
       icon: '03',
-      label: 'Phase 3 — Strengthen',
+      label: 'Phase 3 â€” Strengthen',
       title: 'Level Up Existing Skills',
       color: 'var(--green)',
       skills: owned.filter(s => s.userLevel < 3).slice(0, 4),
-      note: owned.filter(s => s.userLevel < 3).length === 0 ? 'All matched skills at Expert level ✓' : null,
+      note: owned.filter(s => s.userLevel < 3).length === 0 ? 'All matched skills at Expert level âœ“' : null,
     },
     {
       id: 4,
       icon: '04',
-      label: 'Phase 4 — Stand Out',
+      label: 'Phase 4 â€” Stand Out',
       title: 'Advanced & Extra Skills',
       color: 'var(--purple)',
       skills: [...critical.slice(4), ...important.slice(4)].slice(0, 4),
@@ -2051,14 +2050,14 @@ function buildRoadmap(matched, missing, role) {
 
   timeline.innerHTML = phases.map(phase => {
     const totalWeeks = phase.skills.reduce((sum, s) => sum + (ROADMAP_DURATIONS[s.weight]?.weeks || 4), 0);
-    const durationText = totalWeeks === 0 ? '' : totalWeeks <= 4 ? '~1 month' : totalWeeks <= 10 ? '~2–3 months' : totalWeeks <= 20 ? '~3–5 months' : '~5+ months';
+    const durationText = totalWeeks === 0 ? '' : totalWeeks <= 4 ? '~1 month' : totalWeeks <= 10 ? '~2â€“3 months' : totalWeeks <= 20 ? '~3â€“5 months' : '~5+ months';
 
     const skillsHTML = phase.note
       ? `<span style="font-size:12px;color:var(--green);font-style:italic;">${phase.note}</span>`
       : phase.skills.map(s => {
           const isOwned = matched.find(m => m.name === s.name);
           return `<span class="roadmap-skill-tag ${isOwned ? 'owned' : 'missing'}">
-            <span class="roadmap-skill-check">${isOwned ? '+' : '·'}</span>
+            <span class="roadmap-skill-check">${isOwned ? '+' : 'Â·'}</span>
             ${s.name}
           </span>`;
         }).join('');
@@ -2070,14 +2069,14 @@ function buildRoadmap(matched, missing, role) {
           <div class="roadmap-phase-label">${phase.label}</div>
           <div class="roadmap-phase-title">${phase.title}</div>
           <div class="roadmap-skills-list">${skillsHTML}</div>
-          ${durationText ? `<div class="roadmap-duration">⏱ Estimated time: ${durationText}</div>` : ''}
+          ${durationText ? `<div class="roadmap-duration">â± Estimated time: ${durationText}</div>` : ''}
         </div>
       </div>`;
   }).join('');
 }
 
 
-/* ═══ SKILL DEPENDENCIES ═══ */
+/* â•â•â• SKILL DEPENDENCIES â•â•â• */
 const SKILL_DEPS = {
   "React":                      ["JavaScript", "HTML & CSS"],
   "TypeScript":                 ["JavaScript"],
@@ -2111,7 +2110,7 @@ const SKILL_DEPS = {
   "Cloud Architecture Design":  ["AWS / Azure / GCP (Advanced)", "Networking (VPC, DNS, Load Balancing)"],
 };
 
-/* ═══ DECISION ENGINE (Upgraded Simulator) ═══ */
+/* â•â•â• DECISION ENGINE (Upgraded Simulator) â•â•â• */
 let simBaseScore = 0;
 let simBaseTotalWeight = 0;
 let simBaseMatchedWeight = 0;
@@ -2169,14 +2168,14 @@ function buildSimulator(matched, missing, role, baseScore) {
 function renderSimulator() {
   /* Owned skills */
   document.getElementById('sim-owned-grid').innerHTML = simMatchedSkills.length === 0
-    ? '<span style="font-size:12px;color:var(--text3);font-style:italic;">None yet — add your skills on the Setup page.</span>'
+    ? '<span style="font-size:12px;color:var(--text3);font-style:italic;">None yet â€” add your skills on the Setup page.</span>'
     : simMatchedSkills.map(s => `
         <span class="sim-owned-tag">
           ${s.name}
           <span style="font-family:'Montserrat',sans-serif;font-size:9px;opacity:0.6;margin-left:2px;">Lv${s.userLevel}</span>
         </span>`).join('');
 
-  /* Sort missing skills by IMPACT SCORE = gain × weight × (1 + unlockScore×0.4) */
+  /* Sort missing skills by IMPACT SCORE = gain Ã— weight Ã— (1 + unlockScoreÃ—0.4) */
   const scored = simMissingSkills.map(s => {
     const gain    = simSkillGain(s);
     const unlock  = simUnlockScore(s.name, simMatchedSkills);
@@ -2197,7 +2196,7 @@ function renderSimulator() {
     const gainPts = Math.round((s.gain / simBaseTotalWeight) * 100);
     const reason  = SKILL_REASONS[s.name] || `Important for the ${simCurrentRole} role.`;
     const depWarning = s.missingDeps.length > 0 && !isLearned
-      ? `<div style="font-size:10px;color:var(--yellow);font-family:'Montserrat',sans-serif;margin-top:4px;">⚠ Needs: ${s.missingDeps.slice(0,2).join(', ')}</div>`
+      ? `<div style="font-size:10px;color:var(--yellow);font-family:'Montserrat',sans-serif;margin-top:4px;">âš  Needs: ${s.missingDeps.slice(0,2).join(', ')}</div>`
       : '';
     const unlockNote = s.unlock > 0
       ? `<span style="font-family:'Montserrat',sans-serif;font-size:9px;color:var(--accent2);background:rgba(44,95,212,0.12);padding:1px 5px;border-radius:8px;margin-left:4px;">unlocks ${s.unlock}</span>`
@@ -2206,7 +2205,7 @@ function renderSimulator() {
     return `
       <div class="sim-skill-card ${isLearned ? 'learned' : ''} ${rank < 3 ? 'high-impact' : ''}"
            id="sim-card-${key}" onclick="simToggle('${s.name.replace(/'/g,"\'")}')">
-        <div class="sim-toggle" id="sim-toggle-${key}">${isLearned ? '✓' : ''}</div>
+        <div class="sim-toggle" id="sim-toggle-${key}">${isLearned ? 'âœ“' : ''}</div>
         <div class="sim-skill-info" style="flex:1;min-width:0;">
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
             ${rank < 3 ? '<span style="font-family:Montserrat,sans-serif;font-size:9px;color:var(--accent2);background:rgba(44,95,212,0.15);padding:1px 5px;border-radius:8px;">Top Pick</span>' : ''}
@@ -2217,7 +2216,7 @@ function renderSimulator() {
             <span style="font-family:'Montserrat',sans-serif;font-size:10px;color:${tierLabel.color};background:${tierLabel.color}18;padding:1px 7px;border-radius:10px;border:1px solid ${tierLabel.color}33;">${tierLabel.label}</span>
             <span class="sim-gain-badge" style="opacity:1;">+${gainPts}pts</span>
           </div>
-          <div style="font-size:11px;color:var(--text2);margin-top:5px;line-height:1.5;opacity:0.85;">${reason.length > 90 ? reason.slice(0,90)+'…' : reason}</div>
+          <div style="font-size:11px;color:var(--text2);margin-top:5px;line-height:1.5;opacity:0.85;">${reason.length > 90 ? reason.slice(0,90)+'â€¦' : reason}</div>
           ${depWarning}
         </div>
       </div>`;
@@ -2237,10 +2236,10 @@ function renderLearningOrder(scored) {
     const isLearned = simLearnedSkills.has(s.name);
     return `
       <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-        <div style="width:22px;height:22px;border-radius:50%;background:${isLearned?'var(--green)':'rgba(44,95,212,0.25)'};border:1.5px solid ${isLearned?'var(--green)':'rgba(44,95,212,0.5)'};display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-weight:800;font-size:11px;color:${isLearned?'white':'var(--accent2)'};flex-shrink:0;transition:all 0.3s;">${isLearned?'✓':(i+1)}</div>
+        <div style="width:22px;height:22px;border-radius:50%;background:${isLearned?'var(--green)':'rgba(44,95,212,0.25)'};border:1.5px solid ${isLearned?'var(--green)':'rgba(44,95,212,0.5)'};display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-weight:800;font-size:11px;color:${isLearned?'white':'var(--accent2)'};flex-shrink:0;transition:all 0.3s;">${isLearned?'âœ“':(i+1)}</div>
         <div style="flex:1;">
           <div style="font-size:13px;font-weight:600;color:${isLearned?'var(--green)':'var(--text)'};text-decoration:${isLearned?'line-through':'none'};margin-bottom:2px;transition:all 0.3s;">${s.name}</div>
-          <div style="font-family:'Montserrat',sans-serif;font-size:10px;color:var(--text2);">+${gainPts}pts to readiness${s.unlock>0?' · unlocks '+s.unlock+' more skill'+(s.unlock>1?'s':''):''}</div>
+          <div style="font-family:'Montserrat',sans-serif;font-size:10px;color:var(--text2);">+${gainPts}pts to readiness${s.unlock>0?' Â· unlocks '+s.unlock+' more skill'+(s.unlock>1?'s':''):''}</div>
         </div>
       </div>`;
   }).join('');
@@ -2280,18 +2279,18 @@ function simRecalculate() {
   const impact = document.getElementById('sim-impact');
   const gained = newScore - simBaseScore;
   if (simLearnedSkills.size === 0) {
-    impact.innerHTML = '<span style="color:var(--text2);">Select skills above — the engine ranks them by impact and shows your projected score.</span>';
+    impact.innerHTML = '<span style="color:var(--text2);">Select skills above â€” the engine ranks them by impact and shows your projected score.</span>';
     impact.className = 'sim-impact';
   } else {
     const sw = simLearnedSkills.size === 1 ? 'skill' : 'skills';
     if (gained >= 15) {
-      impact.innerHTML = `Learning ${simLearnedSkills.size} ${sw} pushes you to ${newScore}% — a +${gained}pt jump. That moves you up a readiness tier.`;
+      impact.innerHTML = `Learning ${simLearnedSkills.size} ${sw} pushes you to ${newScore}% â€” a +${gained}pt jump. That moves you up a readiness tier.`;
       impact.className = 'sim-impact boosted';
     } else if (gained > 0) {
-      impact.innerHTML = `${simLearnedSkills.size} ${sw} selected — projected readiness: ${newScore}% (+${gained}pts). Add the top-ranked missing skills for the biggest gains.`;
+      impact.innerHTML = `${simLearnedSkills.size} ${sw} selected â€” projected readiness: ${newScore}% (+${gained}pts). Add the top-ranked missing skills for the biggest gains.`;
       impact.className = 'sim-impact';
     } else {
-      impact.innerHTML = `These skills have minimal direct score impact here — focus on levelling up your existing skills instead.`;
+      impact.innerHTML = `These skills have minimal direct score impact here â€” focus on levelling up your existing skills instead.`;
       impact.className = 'sim-impact';
     }
   }
@@ -2332,11 +2331,11 @@ function simReset() {
   renderSimulator();
   simUpdateDisplay(simBaseScore, simBaseScore);
   const impact = document.getElementById('sim-impact');
-  impact.innerHTML = '<span style="color:var(--text2);">Select skills above — the engine ranks them by impact and shows your projected score.</span>';
+  impact.innerHTML = '<span style="color:var(--text2);">Select skills above â€” the engine ranks them by impact and shows your projected score.</span>';
   impact.className = 'sim-impact';
 }
 
-/* ═══ ADVISOR ═══ */
+/* â•â•â• ADVISOR â•â•â• */
 function buildAdvisor(role, score, missing, matched) {
   const wrap = document.getElementById('advisor-wrap');
   const body = document.getElementById('advisor-body');
@@ -2357,41 +2356,41 @@ function buildAdvisor(role, score, missing, matched) {
 
   // Summary
   const summary = score >= 85
-    ? `Strong profile for <strong>${role}</strong> at ${score}% — you've covered what most hiring managers need to see.`
+    ? `Strong profile for <strong>${role}</strong> at ${score}% â€” you've covered what most hiring managers need to see.`
     : score >= 65
     ? `Solid foundation at ${score}%, but interviewers will probe the remaining gaps.`
     : score >= 40
     ? `At ${score}%, you're heading in the right direction but not yet competitive for most ${role} openings.`
-    : `At ${score}%, you're early in the journey — that's fine, the path forward is clear.`;
+    : `At ${score}%, you're early in the journey â€” that's fine, the path forward is clear.`;
 
   // Weakness
   const weakness = criticalMissing.length >= 2
-    ? `Biggest gap: <strong>${criticalMissing.slice(0,2).map(s=>s.name).join('</strong> and <strong>')}</strong>${criticalMissing.length > 2 ? ` (+${criticalMissing.length-2} more critical skills)` : ''} — these are screened first.`
+    ? `Biggest gap: <strong>${criticalMissing.slice(0,2).map(s=>s.name).join('</strong> and <strong>')}</strong>${criticalMissing.length > 2 ? ` (+${criticalMissing.length-2} more critical skills)` : ''} â€” these are screened first.`
     : criticalMissing.length === 1
-    ? `Key missing skill: <strong>${criticalMissing[0].name}</strong> — employers treat this as near-mandatory.`
+    ? `Key missing skill: <strong>${criticalMissing[0].name}</strong> â€” employers treat this as near-mandatory.`
     : beginnerSkills.length > matched.length / 2 && matched.length > 2
-    ? `${beginnerSkills.length} skills at Beginner level — depth matters more than coverage at this stage.`
+    ? `${beginnerSkills.length} skills at Beginner level â€” depth matters more than coverage at this stage.`
     : topPriority
-    ? `Main gap: <strong>${topPriority.name}</strong> — without it many recruiters will screen you out early.`
+    ? `Main gap: <strong>${topPriority.name}</strong> â€” without it many recruiters will screen you out early.`
     : `No critical gaps. Focus on polishing depth and portfolio quality.`;
 
   // Next step
   const nextstep = criticalMissing.length > 0
-    ? `Build a project with <strong>${criticalMissing[0].name}</strong> — a live demo beats any certificate.`
+    ? `Build a project with <strong>${criticalMissing[0].name}</strong> â€” a live demo beats any certificate.`
     : beginnerSkills.length > 2
     ? `Level up <strong>${(beginnerSkills.find(s=>s.weight>=4)||beginnerSkills[0]).name}</strong> to Intermediate with one real, finished project.`
     : topPriority
-    ? `Add <strong>${topPriority.name}</strong> to your portfolio this month — project first, tutorials second.`
+    ? `Add <strong>${topPriority.name}</strong> to your portfolio this month â€” project first, tutorials second.`
     : `Polish your portfolio: live demos, clear READMEs, and documented decision-making.`;
 
   // Outlook
   const realistic = score >= 85
-    ? `Start applying now — 3–5 apps per week. Don't wait for 100%, it never comes.`
+    ? `Start applying now â€” 3â€“5 apps per week. Don't wait for 100%, it never comes.`
     : score >= 65
-    ? `Give it 6–8 weeks on your top gaps, then apply. Network in parallel.`
+    ? `Give it 6â€“8 weeks on your top gaps, then apply. Network in parallel.`
     : score >= 40
-    ? `3–4 months of focused work puts you in a competitive position. Set a project milestone, not a date.`
-    : `Use the next 3–5 months to build real skills. One shipped project outweighs five courses on any CV.`;
+    ? `3â€“4 months of focused work puts you in a competitive position. Set a project milestone, not a date.`
+    : `Use the next 3â€“5 months to build real skills. One shipped project outweighs five courses on any CV.`;
 
   body.innerHTML = [
     { cls:'summary',   icon:'', text: summary  },
@@ -2404,7 +2403,7 @@ function buildAdvisor(role, score, missing, matched) {
     </div>`).join('');
 }
 
-/* ═══ SCROLL REVEAL OBSERVER ═══ */
+/* â•â•â• SCROLL REVEAL OBSERVER â•â•â• */
 let revealObserver = null;
 
 function initRevealObserver() {
@@ -2436,7 +2435,7 @@ function triggerRevealSequence() {
   initRevealObserver();
 }
 
-/* ═══ WHERE TO LEARN — CRITICAL SKILLS ═══ */
+/* â•â•â• WHERE TO LEARN â€” CRITICAL SKILLS â•â•â• */
 const LEARN_RESOURCES = {
   "SQL": [
     { name: "SQLZoo",          type: "Interactive", url: "https://sqlzoo.net" },
@@ -2681,11 +2680,11 @@ const LEARN_RESOURCES = {
   ],
 };
 
-/* ═══ LEARN DATA (Learn + Certs + Test) ═══ */
+/* â•â•â• LEARN DATA (Learn + Certs + Test) â•â•â• */
 const LEARN_DATA = {
   "SQL": {
     learn: [
-      { name: "SQLZoo — interactive exercises",        type: "Interactive", url: "https://sqlzoo.net" },
+      { name: "SQLZoo â€” interactive exercises",        type: "Interactive", url: "https://sqlzoo.net" },
       { name: "Mode SQL Tutorial",                     type: "Guide",       url: "https://mode.com/sql-tutorial" },
       { name: "CS50 SQL (Harvard, free)",              type: "Course",      url: "https://cs50.harvard.edu/sql" },
     ],
@@ -2701,11 +2700,11 @@ const LEARN_DATA = {
   "Python": {
     learn: [
       { name: "Automate the Boring Stuff (free)",     type: "Book",    url: "https://automatetheboringstuff.com" },
-      { name: "CS50P — Python (Harvard, free)",       type: "Course",  url: "https://cs50.harvard.edu/python" },
+      { name: "CS50P â€” Python (Harvard, free)",       type: "Course",  url: "https://cs50.harvard.edu/python" },
       { name: "freeCodeCamp Scientific Python",       type: "Course",  url: "https://www.freecodecamp.org/learn/scientific-computing-with-python" },
     ],
     certs: [
-      { name: "PCEP — Certified Entry-Level Python",  type: "Cert", url: "https://pythoninstitute.org/pcep" },
+      { name: "PCEP â€” Certified Entry-Level Python",  type: "Cert", url: "https://pythoninstitute.org/pcep" },
       { name: "Google IT Automation with Python",     type: "Cert", url: "https://grow.google/certificates/it-automation-python" },
     ],
     test: [
@@ -2715,7 +2714,7 @@ const LEARN_DATA = {
   },
   "Statistics": {
     learn: [
-      { name: "Khan Academy — Statistics & Probability", type: "Course", url: "https://www.khanacademy.org/math/statistics-probability" },
+      { name: "Khan Academy â€” Statistics & Probability", type: "Course", url: "https://www.khanacademy.org/math/statistics-probability" },
       { name: "StatQuest with Josh Starmer (YouTube)",   type: "Video",  url: "https://www.youtube.com/@statquest" },
       { name: "Think Stats 2e (free book)",              type: "Book",   url: "https://greenteapress.com/wp/think-stats-2e" },
     ],
@@ -2735,7 +2734,7 @@ const LEARN_DATA = {
       { name: "Kaggle Data Cleaning Certificate",     type: "Cert", url: "https://www.kaggle.com/learn/data-cleaning" },
     ],
     test: [
-      { name: "Kaggle Notebooks — practice datasets", type: "Practice", url: "https://www.kaggle.com/datasets" },
+      { name: "Kaggle Notebooks â€” practice datasets", type: "Practice", url: "https://www.kaggle.com/datasets" },
     ],
   },
   "Data Visualization": {
@@ -2748,24 +2747,24 @@ const LEARN_DATA = {
       { name: "Power BI Data Analyst (PL-300)",       type: "Cert", url: "https://learn.microsoft.com/en-us/certifications/power-bi-data-analyst-associate" },
     ],
     test: [
-      { name: "Tableau Public — build & share",       type: "Practice", url: "https://public.tableau.com" },
+      { name: "Tableau Public â€” build & share",       type: "Practice", url: "https://public.tableau.com" },
     ],
   },
   "Excel / Google Sheets": {
     learn: [
       { name: "GCFGlobal Excel Training (free)",      type: "Course",    url: "https://edu.gcfglobal.org/en/excel" },
-      { name: "ExcelJet — formula reference",         type: "Reference", url: "https://exceljet.net" },
+      { name: "ExcelJet â€” formula reference",         type: "Reference", url: "https://exceljet.net" },
     ],
     certs: [
       { name: "Microsoft Office Specialist: Excel",   type: "Cert", url: "https://learn.microsoft.com/en-us/certifications/mos-excel-2019" },
     ],
     test: [
-      { name: "Excel practice exercises — Excel Easy", type: "Practice", url: "https://www.excel-easy.com/examples.html" },
+      { name: "Excel practice exercises â€” Excel Easy", type: "Practice", url: "https://www.excel-easy.com/examples.html" },
     ],
   },
   "JavaScript": {
     learn: [
-      { name: "javascript.info — modern JS guide",    type: "Guide",  url: "https://javascript.info" },
+      { name: "javascript.info â€” modern JS guide",    type: "Guide",  url: "https://javascript.info" },
       { name: "Eloquent JavaScript (free book)",      type: "Book",   url: "https://eloquentjavascript.net" },
       { name: "freeCodeCamp JS Algorithms",           type: "Course", url: "https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures" },
     ],
@@ -2787,20 +2786,20 @@ const LEARN_DATA = {
       { name: "freeCodeCamp Responsive Web Design",   type: "Cert", url: "https://www.freecodecamp.org/learn/2022/responsive-web-design" },
     ],
     test: [
-      { name: "Frontend Mentor — real projects",      type: "Practice", url: "https://www.frontendmentor.io" },
-      { name: "CSS Challenges — CSS Battle",          type: "Test",     url: "https://cssbattle.dev" },
+      { name: "Frontend Mentor â€” real projects",      type: "Practice", url: "https://www.frontendmentor.io" },
+      { name: "CSS Challenges â€” CSS Battle",          type: "Test",     url: "https://cssbattle.dev" },
     ],
   },
   "React": {
     learn: [
-      { name: "react.dev — official tutorial",        type: "Docs",   url: "https://react.dev/learn" },
+      { name: "react.dev â€” official tutorial",        type: "Docs",   url: "https://react.dev/learn" },
       { name: "Scrimba React Course",                 type: "Course", url: "https://scrimba.com/learn/learnreact" },
     ],
     certs: [
       { name: "Meta Front-End Developer Certificate", type: "Cert", url: "https://www.coursera.org/professional-certificates/meta-front-end-developer" },
     ],
     test: [
-      { name: "Frontend Mentor — React challenges",   type: "Practice", url: "https://www.frontendmentor.io" },
+      { name: "Frontend Mentor â€” React challenges",   type: "Practice", url: "https://www.frontendmentor.io" },
     ],
   },
   "TypeScript": {
@@ -2824,27 +2823,27 @@ const LEARN_DATA = {
       { name: "freeCodeCamp Responsive Web Design",   type: "Cert", url: "https://www.freecodecamp.org/learn/2022/responsive-web-design" },
     ],
     test: [
-      { name: "Frontend Mentor — layout challenges",  type: "Practice", url: "https://www.frontendmentor.io/challenges?types=free&difficulties=1" },
+      { name: "Frontend Mentor â€” layout challenges",  type: "Practice", url: "https://www.frontendmentor.io/challenges?types=free&difficulties=1" },
     ],
   },
   "Data Structures & Algorithms": {
     learn: [
-      { name: "NeetCode — structured roadmap",        type: "Guide",  url: "https://neetcode.io/roadmap" },
+      { name: "NeetCode â€” structured roadmap",        type: "Guide",  url: "https://neetcode.io/roadmap" },
       { name: "CS50x (Harvard, free)",                type: "Course", url: "https://cs50.harvard.edu/x" },
-      { name: "Visualgo — visual DS&A",               type: "Visual", url: "https://visualgo.net" },
+      { name: "Visualgo â€” visual DS&A",               type: "Visual", url: "https://visualgo.net" },
     ],
     certs: [
       { name: "Google Coding Challenges Prep",        type: "Cert", url: "https://grow.google/certificates/data-analytics" },
       { name: "HackerRank Problem Solving Certificate", type: "Cert", url: "https://www.hackerrank.com/skills-verification/problem_solving_basic" },
     ],
     test: [
-      { name: "LeetCode — interview problems",        type: "Practice", url: "https://leetcode.com" },
+      { name: "LeetCode â€” interview problems",        type: "Practice", url: "https://leetcode.com" },
       { name: "HackerRank Problem Solving",           type: "Test",     url: "https://www.hackerrank.com/domains/algorithms" },
     ],
   },
   "Object-Oriented Programming": {
     learn: [
-      { name: "Refactoring.Guru — design patterns",   type: "Guide",  url: "https://refactoring.guru/design-patterns" },
+      { name: "Refactoring.Guru â€” design patterns",   type: "Guide",  url: "https://refactoring.guru/design-patterns" },
       { name: "CS50P (Harvard Python + OOP)",         type: "Course", url: "https://cs50.harvard.edu/python" },
     ],
     certs: [
@@ -2861,10 +2860,10 @@ const LEARN_DATA = {
     ],
     certs: [
       { name: "Oracle Java SE Programmer",            type: "Cert", url: "https://education.oracle.com/java-se-11-programmer-i" },
-      { name: "PCEP — Python Certified Entry",        type: "Cert", url: "https://pythoninstitute.org/pcep" },
+      { name: "PCEP â€” Python Certified Entry",        type: "Cert", url: "https://pythoninstitute.org/pcep" },
     ],
     test: [
-      { name: "Exercism — language tracks",           type: "Practice", url: "https://exercism.org" },
+      { name: "Exercism â€” language tracks",           type: "Practice", url: "https://exercism.org" },
       { name: "HackerRank 30 Days of Code",           type: "Practice", url: "https://www.hackerrank.com/domains/tutorials/30-days-of-code" },
     ],
   },
@@ -2877,7 +2876,7 @@ const LEARN_DATA = {
       { name: "Postman API Fundamentals Student Expert", type: "Cert", url: "https://academy.postman.com/postman-api-fundamentals-student-expert-certification-1" },
     ],
     test: [
-      { name: "Postman — public API practice",        type: "Practice", url: "https://www.postman.com/explore" },
+      { name: "Postman â€” public API practice",        type: "Practice", url: "https://www.postman.com/explore" },
     ],
   },
   "System Design": {
@@ -2889,13 +2888,13 @@ const LEARN_DATA = {
       { name: "AWS Solutions Architect Associate",    type: "Cert", url: "https://aws.amazon.com/certification/certified-solutions-architect-associate" },
     ],
     test: [
-      { name: "Pramp — system design mock interviews", type: "Practice", url: "https://www.pramp.com" },
+      { name: "Pramp â€” system design mock interviews", type: "Practice", url: "https://www.pramp.com" },
     ],
   },
   "Python / Node.js / Java": {
     learn: [
       { name: "Node.js Official Learn Guide",         type: "Docs",   url: "https://nodejs.org/en/learn/getting-started/introduction-to-nodejs" },
-      { name: "The Odin Project — Node path",         type: "Course", url: "https://www.theodinproject.com/paths/full-stack-javascript" },
+      { name: "The Odin Project â€” Node path",         type: "Course", url: "https://www.theodinproject.com/paths/full-stack-javascript" },
     ],
     certs: [
       { name: "OpenJS Node.js Application Developer", type: "Cert", url: "https://training.linuxfoundation.org/certification/jsnad" },
@@ -2913,13 +2912,13 @@ const LEARN_DATA = {
       { name: "CompTIA Security+",                    type: "Cert", url: "https://www.comptia.org/certifications/security" },
     ],
     test: [
-      { name: "TryHackMe — web security rooms",       type: "Practice", url: "https://tryhackme.com/hacktivities?tab=practice" },
+      { name: "TryHackMe â€” web security rooms",       type: "Practice", url: "https://tryhackme.com/hacktivities?tab=practice" },
     ],
   },
   "SQL Databases": {
     learn: [
       { name: "PostgreSQL Tutorial",                  type: "Guide",       url: "https://www.postgresqltutorial.com" },
-      { name: "SQLZoo — interactive",                 type: "Interactive", url: "https://sqlzoo.net" },
+      { name: "SQLZoo â€” interactive",                 type: "Interactive", url: "https://sqlzoo.net" },
     ],
     certs: [
       { name: "Oracle Database SQL Certified Associate", type: "Cert", url: "https://education.oracle.com/oracle-database-sql-certified-associate" },
@@ -2942,7 +2941,7 @@ const LEARN_DATA = {
   },
   "Linear Algebra": {
     learn: [
-      { name: "3Blue1Brown — Essence of Linear Algebra", type: "Video", url: "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" },
+      { name: "3Blue1Brown â€” Essence of Linear Algebra", type: "Video", url: "https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" },
       { name: "MIT 18.06 Linear Algebra (OCW)",          type: "Course", url: "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010" },
     ],
     certs: [
@@ -2954,14 +2953,14 @@ const LEARN_DATA = {
   },
   "Scikit-learn": {
     learn: [
-      { name: "Scikit-learn — Getting Started",       type: "Docs",   url: "https://scikit-learn.org/stable/getting_started.html" },
+      { name: "Scikit-learn â€” Getting Started",       type: "Docs",   url: "https://scikit-learn.org/stable/getting_started.html" },
       { name: "Kaggle Intro to Machine Learning",     type: "Course", url: "https://www.kaggle.com/learn/intro-to-machine-learning" },
     ],
     certs: [
       { name: "Kaggle ML Certificate",                type: "Cert", url: "https://www.kaggle.com/learn/intro-to-machine-learning" },
     ],
     test: [
-      { name: "Kaggle competitions — tabular data",   type: "Practice", url: "https://www.kaggle.com/competitions?listOption=active&hostSegmentIdFilter=5" },
+      { name: "Kaggle competitions â€” tabular data",   type: "Practice", url: "https://www.kaggle.com/competitions?listOption=active&hostSegmentIdFilter=5" },
     ],
   },
   "Deep Learning (PyTorch/TF)": {
@@ -2975,7 +2974,7 @@ const LEARN_DATA = {
       { name: "Deep Learning Specialization Cert",    type: "Cert", url: "https://www.coursera.org/specializations/deep-learning" },
     ],
     test: [
-      { name: "Kaggle competitions — deep learning",  type: "Practice", url: "https://www.kaggle.com/competitions" },
+      { name: "Kaggle competitions â€” deep learning",  type: "Practice", url: "https://www.kaggle.com/competitions" },
     ],
   },
   "Feature Engineering": {
@@ -2998,7 +2997,7 @@ const LEARN_DATA = {
       { name: "Kaggle Intermediate ML Certificate",   type: "Cert", url: "https://www.kaggle.com/learn/intermediate-machine-learning" },
     ],
     test: [
-      { name: "Kaggle competitions — scored metrics",  type: "Practice", url: "https://www.kaggle.com/competitions" },
+      { name: "Kaggle competitions â€” scored metrics",  type: "Practice", url: "https://www.kaggle.com/competitions" },
     ],
   },
   "C++ / C#": {
@@ -3018,26 +3017,26 @@ const LEARN_DATA = {
     learn: [
       { name: "Unity Learn (official)",               type: "Course", url: "https://learn.unity.com" },
       { name: "Unreal Online Learning",               type: "Course", url: "https://dev.epicgames.com/community/learning" },
-      { name: "Brackeys — Unity YouTube",             type: "Video",  url: "https://www.youtube.com/@Brackeys" },
+      { name: "Brackeys â€” Unity YouTube",             type: "Video",  url: "https://www.youtube.com/@Brackeys" },
     ],
     certs: [
       { name: "Unity Certified User: Programmer",     type: "Cert", url: "https://unity.com/products/unity-certifications/user-programmer" },
       { name: "Unreal Authorized Instructor Training", type: "Cert", url: "https://dev.epicgames.com/community/learning/courses" },
     ],
     test: [
-      { name: "Unity Microgames — build & submit",    type: "Practice", url: "https://learn.unity.com/project/unity-micro-game" },
+      { name: "Unity Microgames â€” build & submit",    type: "Practice", url: "https://learn.unity.com/project/unity-micro-game" },
     ],
   },
   "Game Design Principles": {
     learn: [
       { name: "Game Design Concepts (free course)",   type: "Course", url: "https://gamedesignconcepts.wordpress.com" },
-      { name: "GDC Vault — free talks",               type: "Video",  url: "https://gdcvault.com/free" },
+      { name: "GDC Vault â€” free talks",               type: "Video",  url: "https://gdcvault.com/free" },
     ],
     certs: [
       { name: "CalArts Game Design Specialization",   type: "Cert", url: "https://www.coursera.org/specializations/game-design" },
     ],
     test: [
-      { name: "Game Jam — itch.io",                   type: "Practice", url: "https://itch.io/jams" },
+      { name: "Game Jam â€” itch.io",                   type: "Practice", url: "https://itch.io/jams" },
     ],
   },
   "Linear Algebra & Maths": {
@@ -3061,13 +3060,13 @@ const LEARN_DATA = {
       { name: "Unity Certified Expert: Programmer",   type: "Cert", url: "https://unity.com/products/unity-certifications/expert-programmer" },
     ],
     test: [
-      { name: "Unity Profiler — profile your own project", type: "Practice", url: "https://docs.unity3d.com/Manual/Profiler.html" },
+      { name: "Unity Profiler â€” profile your own project", type: "Practice", url: "https://docs.unity3d.com/Manual/Profiler.html" },
     ],
   },
   "Linux / Shell Scripting": {
     learn: [
       { name: "The Linux Command Line (free book)",   type: "Book",    url: "https://linuxcommand.org/tlcl.php" },
-      { name: "OverTheWire: Bandit — wargame",        type: "Practice", url: "https://overthewire.org/wargames/bandit" },
+      { name: "OverTheWire: Bandit â€” wargame",        type: "Practice", url: "https://overthewire.org/wargames/bandit" },
     ],
     certs: [
       { name: "Linux Foundation Certified SysAdmin",  type: "Cert", url: "https://training.linuxfoundation.org/certification/lfcs" },
@@ -3089,7 +3088,7 @@ const LEARN_DATA = {
       { name: "Docker Certified Associate",           type: "Cert", url: "https://training.mirantis.com/certification/dca-certification-exam" },
     ],
     test: [
-      { name: "KillerCoda — K8s scenarios",           type: "Practice", url: "https://killercoda.com" },
+      { name: "KillerCoda â€” K8s scenarios",           type: "Practice", url: "https://killercoda.com" },
       { name: "Play with Docker",                     type: "Practice", url: "https://labs.play-with-docker.com" },
     ],
   },
@@ -3103,7 +3102,7 @@ const LEARN_DATA = {
       { name: "Jenkins Certified Engineer",           type: "Cert", url: "https://www.cloudbees.com/jenkins/certification" },
     ],
     test: [
-      { name: "GitHub Actions — build your own workflow", type: "Practice", url: "https://github.com/skills/hello-github-actions" },
+      { name: "GitHub Actions â€” build your own workflow", type: "Practice", url: "https://github.com/skills/hello-github-actions" },
     ],
   },
   "Cloud Platforms (AWS/GCP/Azure)": {
@@ -3118,7 +3117,7 @@ const LEARN_DATA = {
       { name: "AZ-900 Azure Fundamentals",            type: "Cert", url: "https://learn.microsoft.com/en-us/certifications/azure-fundamentals" },
     ],
     test: [
-      { name: "AWS Free Tier — hands-on labs",        type: "Practice", url: "https://aws.amazon.com/free" },
+      { name: "AWS Free Tier â€” hands-on labs",        type: "Practice", url: "https://aws.amazon.com/free" },
       { name: "A Cloud Guru Sandbox Environments",    type: "Practice", url: "https://acloudguru.com/platform/cloud-sandbox-playgrounds" },
     ],
   },
@@ -3156,8 +3155,8 @@ const LEARN_DATA = {
       { name: "CompTIA Network+",                     type: "Cert", url: "https://www.comptia.org/certifications/network" },
     ],
     test: [
-      { name: "TryHackMe — network rooms",            type: "Practice", url: "https://tryhackme.com/hacktivities?tab=practice" },
-      { name: "Hack The Box — network challenges",    type: "Practice", url: "https://www.hackthebox.com" },
+      { name: "TryHackMe â€” network rooms",            type: "Practice", url: "https://tryhackme.com/hacktivities?tab=practice" },
+      { name: "Hack The Box â€” network challenges",    type: "Practice", url: "https://www.hackthebox.com" },
     ],
   },
   "Threat Detection & Analysis": {
@@ -3167,24 +3166,24 @@ const LEARN_DATA = {
     ],
     certs: [
       { name: "CompTIA CySA+",                        type: "Cert", url: "https://www.comptia.org/certifications/cybersecurity-analyst" },
-      { name: "BTL1 — Blue Team Labs One",            type: "Cert", url: "https://www.securityblue.team/btl1" },
+      { name: "BTL1 â€” Blue Team Labs One",            type: "Cert", url: "https://www.securityblue.team/btl1" },
     ],
     test: [
-      { name: "Cyber Defenders — PCAP challenges",    type: "Practice", url: "https://cyberdefenders.org/blueteam-ctf-challenges" },
+      { name: "Cyber Defenders â€” PCAP challenges",    type: "Practice", url: "https://cyberdefenders.org/blueteam-ctf-challenges" },
     ],
   },
   "Vulnerability Assessment": {
     learn: [
-      { name: "TryHackMe — vulnerability research",   type: "Practice", url: "https://tryhackme.com" },
-      { name: "Hack The Box — starting point",        type: "Practice", url: "https://www.hackthebox.com/starting-point" },
+      { name: "TryHackMe â€” vulnerability research",   type: "Practice", url: "https://tryhackme.com" },
+      { name: "Hack The Box â€” starting point",        type: "Practice", url: "https://www.hackthebox.com/starting-point" },
     ],
     certs: [
-      { name: "CEH — Certified Ethical Hacker",       type: "Cert", url: "https://www.eccouncil.org/programs/certified-ethical-hacker-ceh" },
+      { name: "CEH â€” Certified Ethical Hacker",       type: "Cert", url: "https://www.eccouncil.org/programs/certified-ethical-hacker-ceh" },
       { name: "CompTIA PenTest+",                     type: "Cert", url: "https://www.comptia.org/certifications/pentest" },
     ],
     test: [
-      { name: "HackTheBox — OWASP practice",          type: "Practice", url: "https://www.hackthebox.com" },
-      { name: "DVWA — Damn Vulnerable Web App",       type: "Practice", url: "https://dvwa.co.uk" },
+      { name: "HackTheBox â€” OWASP practice",          type: "Practice", url: "https://www.hackthebox.com" },
+      { name: "DVWA â€” Damn Vulnerable Web App",       type: "Practice", url: "https://dvwa.co.uk" },
     ],
   },
   "Incident Response": {
@@ -3193,11 +3192,11 @@ const LEARN_DATA = {
       { name: "TryHackMe IR & Forensics rooms",       type: "Practice", url: "https://tryhackme.com" },
     ],
     certs: [
-      { name: "GCIH — GIAC Incident Handler",         type: "Cert", url: "https://www.giac.org/certifications/certified-incident-handler-gcih" },
-      { name: "BTL1 — Blue Team Labs One",            type: "Cert", url: "https://www.securityblue.team/btl1" },
+      { name: "GCIH â€” GIAC Incident Handler",         type: "Cert", url: "https://www.giac.org/certifications/certified-incident-handler-gcih" },
+      { name: "BTL1 â€” Blue Team Labs One",            type: "Cert", url: "https://www.securityblue.team/btl1" },
     ],
     test: [
-      { name: "Cyber Defenders — IR labs",            type: "Practice", url: "https://cyberdefenders.org" },
+      { name: "Cyber Defenders â€” IR labs",            type: "Practice", url: "https://cyberdefenders.org" },
     ],
   },
   "Linux / Windows Administration": {
@@ -3207,7 +3206,7 @@ const LEARN_DATA = {
     ],
     certs: [
       { name: "CompTIA Linux+",                       type: "Cert", url: "https://www.comptia.org/certifications/linux" },
-      { name: "LFCS — Linux Foundation Sysadmin",     type: "Cert", url: "https://training.linuxfoundation.org/certification/lfcs" },
+      { name: "LFCS â€” Linux Foundation Sysadmin",     type: "Cert", url: "https://training.linuxfoundation.org/certification/lfcs" },
     ],
     test: [
       { name: "OverTheWire Bandit challenges",        type: "Practice", url: "https://overthewire.org/wargames/bandit" },
@@ -3236,7 +3235,7 @@ const LEARN_DATA = {
       { name: "AWS Solutions Architect Associate",    type: "Cert", url: "https://aws.amazon.com/certification/certified-solutions-architect-associate" },
     ],
     test: [
-      { name: "AWS Architecture — reference labs",    type: "Practice", url: "https://aws.amazon.com/architecture" },
+      { name: "AWS Architecture â€” reference labs",    type: "Practice", url: "https://aws.amazon.com/architecture" },
     ],
   },
   "Kubernetes / Container Orchestration": {
@@ -3245,11 +3244,11 @@ const LEARN_DATA = {
       { name: "KodeKloud K8s Courses",                type: "Course", url: "https://kodekloud.com" },
     ],
     certs: [
-      { name: "CKA — Certified Kubernetes Administrator", type: "Cert", url: "https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka" },
-      { name: "CKAD — Kubernetes Application Developer", type: "Cert", url: "https://training.linuxfoundation.org/certification/certified-kubernetes-application-developer-ckad" },
+      { name: "CKA â€” Certified Kubernetes Administrator", type: "Cert", url: "https://training.linuxfoundation.org/certification/certified-kubernetes-administrator-cka" },
+      { name: "CKAD â€” Kubernetes Application Developer", type: "Cert", url: "https://training.linuxfoundation.org/certification/certified-kubernetes-application-developer-ckad" },
     ],
     test: [
-      { name: "KillerCoda — K8s interactive labs",    type: "Practice", url: "https://killercoda.com/killer-shell-ckad" },
+      { name: "KillerCoda â€” K8s interactive labs",    type: "Practice", url: "https://killercoda.com/killer-shell-ckad" },
     ],
   },
   "Security & IAM": {
@@ -3272,10 +3271,10 @@ const LEARN_DATA = {
       { name: "DeepLearning.AI Short Courses",        type: "Course", url: "https://www.deeplearning.ai/short-courses" },
     ],
     certs: [
-      { name: "DeepLearning.AI — LLMOps Certificate", type: "Cert", url: "https://www.deeplearning.ai/short-courses/llmops" },
+      { name: "DeepLearning.AI â€” LLMOps Certificate", type: "Cert", url: "https://www.deeplearning.ai/short-courses/llmops" },
     ],
     test: [
-      { name: "OpenAI Playground — experiment",       type: "Practice", url: "https://platform.openai.com/playground" },
+      { name: "OpenAI Playground â€” experiment",       type: "Practice", url: "https://platform.openai.com/playground" },
     ],
   },
   "Prompt Engineering": {
@@ -3287,19 +3286,19 @@ const LEARN_DATA = {
       { name: "DeepLearning.AI Prompt Engineering Cert", type: "Cert", url: "https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers" },
     ],
     test: [
-      { name: "PromptingGuide — practice exercises",  type: "Practice", url: "https://www.promptingguide.ai" },
+      { name: "PromptingGuide â€” practice exercises",  type: "Practice", url: "https://www.promptingguide.ai" },
     ],
   },
   "RAG (Retrieval-Augmented Generation)": {
     learn: [
-      { name: "DeepLearning.AI — Building RAG",       type: "Course", url: "https://www.deeplearning.ai/short-courses/building-and-evaluating-advanced-rag" },
+      { name: "DeepLearning.AI â€” Building RAG",       type: "Course", url: "https://www.deeplearning.ai/short-courses/building-and-evaluating-advanced-rag" },
       { name: "LangChain RAG Tutorial",               type: "Docs",   url: "https://python.langchain.com/docs/tutorials/rag" },
     ],
     certs: [
       { name: "DeepLearning.AI RAG Certificate",      type: "Cert", url: "https://www.deeplearning.ai/short-courses/building-and-evaluating-advanced-rag" },
     ],
     test: [
-      { name: "Build a RAG app — deploy to HuggingFace", type: "Practice", url: "https://huggingface.co/spaces" },
+      { name: "Build a RAG app â€” deploy to HuggingFace", type: "Practice", url: "https://huggingface.co/spaces" },
     ],
   },
   "LangChain / LlamaIndex": {
@@ -3311,7 +3310,7 @@ const LEARN_DATA = {
       { name: "DeepLearning.AI LangChain Course",     type: "Cert", url: "https://www.deeplearning.ai/short-courses/langchain-for-llm-application-development" },
     ],
     test: [
-      { name: "LangSmith — trace and test chains",    type: "Practice", url: "https://www.langchain.com/langsmith" },
+      { name: "LangSmith â€” trace and test chains",    type: "Practice", url: "https://www.langchain.com/langsmith" },
     ],
   },
   "Selenium / Playwright": {
@@ -3323,7 +3322,7 @@ const LEARN_DATA = {
       { name: "ISTQB Test Automation Engineer",       type: "Cert", url: "https://www.istqb.org/certifications/test-automation-engineer" },
     ],
     test: [
-      { name: "Playwright Test Generator — record UI", type: "Practice", url: "https://playwright.dev/docs/codegen" },
+      { name: "Playwright Test Generator â€” record UI", type: "Practice", url: "https://playwright.dev/docs/codegen" },
     ],
   },
   "Manual Testing": {
@@ -3335,12 +3334,12 @@ const LEARN_DATA = {
       { name: "ISTQB Foundation Level (CTFL)",        type: "Cert", url: "https://www.istqb.org/certifications/certified-tester-foundation-level" },
     ],
     test: [
-      { name: "The-Internet — practice test site",    type: "Practice", url: "https://the-internet.herokuapp.com" },
+      { name: "The-Internet â€” practice test site",    type: "Practice", url: "https://the-internet.herokuapp.com" },
     ],
   },
   "Test Case Writing": {
     learn: [
-      { name: "Guru99 — How to Write Test Cases",     type: "Guide", url: "https://www.guru99.com/test-case.html" },
+      { name: "Guru99 â€” How to Write Test Cases",     type: "Guide", url: "https://www.guru99.com/test-case.html" },
     ],
     certs: [
       { name: "ISTQB CTFL",                           type: "Cert", url: "https://www.istqb.org/certifications/certified-tester-foundation-level" },
@@ -3357,7 +3356,7 @@ const LEARN_DATA = {
       { name: "Postman API Fundamentals Student Expert", type: "Cert", url: "https://academy.postman.com/postman-api-fundamentals-student-expert-certification-1" },
     ],
     test: [
-      { name: "Postman Public APIs — explore",        type: "Practice", url: "https://www.postman.com/explore" },
+      { name: "Postman Public APIs â€” explore",        type: "Practice", url: "https://www.postman.com/explore" },
     ],
   },
   "Bug Reporting & Tracking (Jira)": {
@@ -3368,7 +3367,7 @@ const LEARN_DATA = {
       { name: "Atlassian Certified Jira Administrator", type: "Cert", url: "https://www.atlassian.com/university/certification" },
     ],
     test: [
-      { name: "Jira Software free tier — practice",   type: "Practice", url: "https://www.atlassian.com/software/jira/free" },
+      { name: "Jira Software free tier â€” practice",   type: "Practice", url: "https://www.atlassian.com/software/jira/free" },
     ],
   },
 };
@@ -3430,7 +3429,7 @@ function buildLearnResources(missing) {
     return `<a class="learn-link" href="${r.url}" target="_blank" rel="noopener">
       <span class="learn-link-badge" style="background:${s.bg};color:${s.text};">${r.type}</span>
       <span class="learn-link-name">${r.name}</span>
-      <span class="learn-link-arrow">→</span>
+      <span class="learn-link-arrow">â†’</span>
     </a>`;
   }
 
@@ -3445,11 +3444,11 @@ function buildLearnResources(missing) {
   list.innerHTML = `<div class="learn-skills-grid">${critical.map(s => {
     const data = LEARN_DATA[s.name] || {
       learn: [
-        { name: 'freeCodeCamp — ' + s.name, type: 'Course', url: 'https://www.freecodecamp.org/news/search/?query=' + encodeURIComponent(s.name) },
+        { name: 'freeCodeCamp â€” ' + s.name, type: 'Course', url: 'https://www.freecodecamp.org/news/search/?query=' + encodeURIComponent(s.name) },
         { name: 'YouTube tutorials',         type: 'Video',  url: 'https://www.youtube.com/results?search_query=' + encodeURIComponent(s.name + ' tutorial') },
       ],
       certs: [],
-      test:  [{ name: 'HackerRank — ' + s.name, type: 'Test', url: 'https://www.hackerrank.com/skills-verification' }],
+      test:  [{ name: 'HackerRank â€” ' + s.name, type: 'Test', url: 'https://www.hackerrank.com/skills-verification' }],
     };
     return `<div class="learn-skill-card">
       <div class="learn-skill-header">
@@ -3462,3 +3461,4 @@ function buildLearnResources(missing) {
     </div>`;
   }).join('')}</div>`;
 }
+
