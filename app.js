@@ -1848,7 +1848,14 @@ function animateResults(score) {
 }
 
 function kickResultSpotlight() {
-  const targets = document.querySelectorAll('#page-analysis .score-hero, #page-analysis .stat-box, #page-analysis .section-card, #page-analysis .advisor-wrap, #page-action .simulator-wrap, #page-action .section-card, #page-action #portfolio-projects-block');
+  const targets = document.querySelectorAll(
+    '#page-analysis .score-hero, ' +
+    '#page-analysis .stat-box, ' +
+    '#page-analysis .section-card:not(#insights-section), ' +
+    '#page-analysis .advisor-wrap, ' +
+    '#page-action .section-card:not(#action-summary-card):not(.roadmap-section), ' +
+    '#page-action #portfolio-projects-block'
+  );
   targets.forEach((element, index) => {
     element.classList.remove('result-spotlight');
     element.style.animationDelay = `${Math.min(index * 45, 220)}ms`;
