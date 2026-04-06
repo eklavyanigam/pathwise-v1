@@ -427,6 +427,12 @@
   .form-input:hover {
     transform: translateY(-1px);
   }
+  .auth-actions .btn:disabled,
+  .auth-email-row .btn:disabled {
+    opacity: 0.55;
+    cursor: wait;
+    transform: none;
+  }
   .auth-provider-btn {
     display: inline-flex;
     align-items: center;
@@ -443,6 +449,13 @@
   .auth-provider-btn:hover {
     border-color: rgba(255,255,255,0.28);
     background: rgba(255,255,255,0.12);
+    box-shadow: none;
+  }
+  .auth-provider-btn:disabled:hover,
+  .auth-secondary-btn:disabled:hover,
+  .auth-primary-btn:disabled:hover {
+    border-color: inherit;
+    background: inherit;
     box-shadow: none;
   }
   .google-glyph {
