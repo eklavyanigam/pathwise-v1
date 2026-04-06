@@ -10,7 +10,8 @@
     guestMode: false,
     session: null,
     introDismissed: false,
-    lastSavedAt: null
+    lastSavedAt: null,
+    pendingStep: 'setup'
   };
 
   function setShellVisible(isVisible) {
@@ -19,21 +20,32 @@
     });
   }
 
-  function showIntro() {
+  function activatePage(name) {
     const current = document.querySelector('.page.active');
-    const intro = document.getElementById('page-intro');
-    if (current && current !== intro) current.classList.remove('active');
-    if (intro) intro.classList.add('active');
-    setShellVisible(false);
+    const next = document.getElementById('page-' + name);
+    if (current && current !== next) current.classList.remove('active');
+    if (next) next.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
-  function enterAnalyzer() {
+  function showIntro() {
+    activatePage('intro');
+    setShellVisible(false);
+  }
+
+  function enterAnalyzer(preferredStep) {
     state.introDismissed = true;
     setShellVisible(true);
+    const targetStep = isValidStepName(preferredStep) ? preferredStep : getSavedStep();
+    state.pendingStep = targetStep;
     if (typeof goToStep === 'function') {
-      goToStep('setup');
+      const nextStep = ((targetStep === 'analysis' || targetStep === 'action') && !lastResults)
+        ? 'setup'
+        : targetStep;
+      goToStep(nextStep);
+      return;
     }
+    activatePage('setup');
   }
 
   function renderAuthState(user, isGuest) {
@@ -278,6 +290,8 @@
     state.guestMode = true;
     state.currentProgressId = null;
     state.introDismissed = false;
+    state.pendingStep = 'setup';
+    persistStep('setup');
 
     if (supabase) {
       await supabase.auth.signOut();
@@ -292,7 +306,7 @@
     state.guestMode = true;
     renderAuthState(null, true);
     renderSaveStatus('saved', 'Guest progress saves in this browser');
-    enterAnalyzer();
+    enterAnalyzer(getSavedStep());
   }
 
   function getSession() {
@@ -361,7 +375,7 @@ document.addEventListener('click', (event) => {
         if (event === 'SIGNED_IN') {
           await mergeGuestProgressToDatabase();
         }
-        enterAnalyzer();
+        enterAnalyzer(getSavedStep());
       }
 
       renderAuthState(session?.user ?? null, !session?.user && state.guestMode);
@@ -378,7 +392,7 @@ document.addEventListener('click', (event) => {
     renderAuthState(session?.user ?? null, !session?.user);
     renderSaveStatus('saved', session?.user ? 'Cloud sync active' : 'Ready to save in this browser');
     if (session?.user) {
-      enterAnalyzer();
+      enterAnalyzer(getSavedStep());
     }
   } catch (error) {
     console.error('Failed to restore session', error);
@@ -405,6 +419,7 @@ document.addEventListener('click', (event) => {
     clearGuestProgress,
     renderSaveStatus,
     renderProgressSnapshot,
+    getPendingStep: function () { return state.pendingStep; },
     getBootError: function () { return bootError; }
   };
 })();
@@ -637,6 +652,26 @@ function getScoreInfo(s) { return SCORE_COLORS.find(x => s < x.max) || SCORE_COL
 
 const STEP_ORDER = ['setup', 'analysis', 'action'];
 
+function isValidStepName(name) {
+  return STEP_ORDER.includes(name);
+}
+
+function getSavedStep() {
+  try {
+    const saved = localStorage.getItem('pw_last_step');
+    return isValidStepName(saved) ? saved : 'setup';
+  } catch (error) {
+    return 'setup';
+  }
+}
+
+function persistStep(step) {
+  if (!isValidStepName(step)) return;
+  try {
+    localStorage.setItem('pw_last_step', step);
+  } catch (error) {}
+}
+
 function goToStep(name) {
   if (name === 'intro') {
     if (window.PathwiseApp?.showIntro) window.PathwiseApp.showIntro();
@@ -657,6 +692,7 @@ function goToStep(name) {
   const current = document.querySelector('.page.active');
   const next    = document.getElementById('page-' + name);
   if (!next) return;
+  persistStep(name);
 
   if (current && current !== next) {
     current.style.opacity = '0';
@@ -1124,6 +1160,10 @@ async function loadState() {
         buildResultsHTML(lastResults);
         const cta = document.getElementById('action-cta');
         if (cta) cta.style.display = '';
+        const resumeStep = api.getPendingStep ? api.getPendingStep() : getSavedStep();
+        if (resumeStep === 'analysis' || resumeStep === 'action') {
+          goToStep(resumeStep);
+        }
       }, 0);
     }
   } catch (e) {
