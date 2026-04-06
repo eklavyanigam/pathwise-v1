@@ -135,6 +135,27 @@
     notice.classList.remove('visible');
   }
 
+  function setButtonBusy(buttonId, busy, busyLabel) {
+    const button = document.getElementById(buttonId);
+    if (!button) return;
+    if (!button.dataset.defaultHtml) {
+      button.dataset.defaultHtml = button.innerHTML;
+    }
+    button.classList.toggle('is-busy', !!busy);
+    button.disabled = !!busy;
+    if (busy) {
+      button.textContent = busyLabel;
+    } else {
+      button.innerHTML = button.dataset.defaultHtml;
+    }
+  }
+
+  function setAuthButtonsBusy(mode) {
+    setButtonBusy('email-login-btn', mode === 'email', 'Signing In');
+    setButtonBusy('guest-btn', mode === 'guest', 'Opening');
+    setButtonBusy('login-google-btn', mode === 'google', 'Redirecting');
+  }
+
 
   function readGuestProgress() {
     try {
@@ -321,16 +342,19 @@
 
   document.getElementById('login-google-btn')?.addEventListener('click', async () => {
     try {
+      setAuthButtonsBusy('google');
       showTopNotice('info', 'Google Sign In', 'Redirecting you to Google...');
       const { error } = await signInWithGoogle();
       if (error) throw error;
     } catch (error) {
+      setAuthButtonsBusy('');
       showTopNotice('error', 'Google Sign In Failed', error.message || 'Google login failed.');
     }
   });
 
   document.getElementById('email-login-btn')?.addEventListener('click', async () => {
     try {
+      setAuthButtonsBusy('email');
       const email = document.getElementById('email-input').value.trim();
       const password = document.getElementById('password-input').value;
       showTopNotice('info', 'Signing In', 'Checking your email and password...');
@@ -338,6 +362,7 @@
       if (error) throw error;
       showTopNotice('success', 'Signed In', 'Welcome back. Restoring your analyzer...');
     } catch (error) {
+      setAuthButtonsBusy('');
       showTopNotice('error', 'Email Sign In Failed', error.message || 'Email login failed.');
     }
   });
@@ -345,7 +370,10 @@
   document.getElementById('top-notice-close')?.addEventListener('click', hideTopNotice);
 
 document.getElementById('guest-btn')?.addEventListener('click', () => {
+  setAuthButtonsBusy('guest');
+  showTopNotice('info', 'Guest Mode', 'Opening your analyzer in this browser...');
   continueAsGuest();
+  setTimeout(() => setAuthButtonsBusy(''), 420);
 });
 
 document.getElementById('account-trigger')?.addEventListener('click', () => {
@@ -395,6 +423,7 @@ document.addEventListener('click', (event) => {
       }
 
       renderAuthState(session?.user ?? null, !session?.user && state.guestMode);
+      setAuthButtonsBusy('');
       renderSaveStatus('saved', session?.user ? 'Cloud sync active' : (state.guestMode ? 'Guest progress saves in this browser' : 'Ready to save in this browser'));
 
       if (window.PathwiseApp?.hydrateProgress) {
@@ -410,22 +439,26 @@ document.addEventListener('click', (event) => {
       state.guestMode = false;
       setResumeMode('account');
       renderAuthState(session.user, false);
+      setAuthButtonsBusy('');
       renderSaveStatus('saved', 'Cloud sync active');
       enterAnalyzer(getSavedStep());
     } else if (resumeMode === 'guest') {
       state.guestMode = true;
       renderAuthState(null, true);
+      setAuthButtonsBusy('');
       renderSaveStatus('saved', 'Guest progress saves in this browser');
       enterAnalyzer(getSavedStep());
     } else {
       state.guestMode = false;
       renderAuthState(null, false);
+      setAuthButtonsBusy('');
       renderSaveStatus('saved', 'Ready to save in this browser');
       showIntro();
     }
   } catch (error) {
     console.error('Failed to restore session', error);
     renderAuthState(null, false);
+    setAuthButtonsBusy('');
     renderSaveStatus('error', 'Could not restore session');
     showIntro();
   }
@@ -769,8 +802,8 @@ function goToStep(name) {
 
   if (current && current !== next) {
     current.style.opacity = '0';
-    current.style.transform = 'translateY(-8px)';
-    current.style.transition = 'opacity 0.18s ease, transform 0.18s ease';
+    current.style.transform = 'translateY(-10px) scale(0.995)';
+    current.style.transition = 'opacity 0.26s cubic-bezier(0.22,1,0.36,1), transform 0.26s cubic-bezier(0.22,1,0.36,1)';
     setTimeout(() => {
       current.classList.remove('active');
       current.style.opacity = '';
@@ -1469,6 +1502,8 @@ function buildResultsHTML({ score, missing, matched, catResults, priorities }) {
   document.getElementById('priority-list').innerHTML = priorities.length === 0
     ? `<div class="good-msg">No gaps to fill.</div>`
     : priorities.map((s, i) => `<div class="priority-item" style="animation-delay:${i*40}ms"><div class="priority-num" style="background:${pc[i]}20;color:${pc[i]};border-radius:6px;">#${i+1}</div><div class="priority-info"><div class="priority-name">${s.name}</div><div class="priority-cat">${s.category}</div></div><span class="skill-level-badge" style="font-size:10px;padding:2px 8px;">wt ${s.weight}</span></div>`).join('');
+
+  kickResultSpotlight();
 }
 
 function animateResults(score) {
@@ -1514,6 +1549,75 @@ function animateResults(score) {
       setTimeout(() => { b.style.width = b.dataset.target + '%'; }, i * 60);
     });
   }, duration * 0.7);
+}
+
+function kickResultSpotlight() {
+  const targets = document.querySelectorAll('#page-analysis .score-hero, #page-analysis .stat-box, #page-analysis .section-card, #page-analysis .advisor-wrap, #page-action .simulator-wrap, #page-action .section-card, #page-action #portfolio-projects-block');
+  targets.forEach((element, index) => {
+    element.classList.remove('result-spotlight');
+    element.style.animationDelay = `${Math.min(index * 45, 220)}ms`;
+    requestAnimationFrame(() => {
+      element.classList.add('result-spotlight');
+    });
+  });
+}
+
+function buildShareSummary() {
+  if (!lastResults) return '';
+  const topSkills = lastResults.priorities && lastResults.priorities.length
+    ? lastResults.priorities.map((skill) => skill.name).join(', ')
+    : 'No major gaps identified';
+  const matchedCount = lastResults.matched ? lastResults.matched.length : 0;
+  const missingCount = lastResults.missing ? lastResults.missing.length : 0;
+  return [
+    `Pathwise Career Readiness Summary`,
+    ``,
+    `Role: ${selectedRole}`,
+    `Readiness Score: ${lastResults.score}%`,
+    `Matched Skills: ${matchedCount}`,
+    `Missing Skills: ${missingCount}`,
+    `Top Skills To Learn Next: ${topSkills}`,
+    ``,
+    `Generated from Pathwise on ${new Date().toLocaleString()}`
+  ].join('\n');
+}
+
+async function copySummaryToClipboard() {
+  if (!lastResults) return;
+  const button = document.getElementById('copy-summary-btn');
+  try {
+    setButtonBusy('copy-summary-btn', true, 'Copying');
+    await navigator.clipboard.writeText(buildShareSummary());
+    const api = await window.PathwiseSupabaseReady;
+    api.showTopNotice('success', 'Summary Copied', 'Your roadmap summary is ready to paste.');
+  } catch (error) {
+    const api = await window.PathwiseSupabaseReady;
+    api.showTopNotice('error', 'Copy Failed', 'Clipboard access was blocked. Try download instead.');
+  } finally {
+    setButtonBusy('copy-summary-btn', false);
+    if (button) button.blur();
+  }
+}
+
+function downloadSummaryFile() {
+  if (!lastResults) return;
+  setButtonBusy('download-summary-btn', true, 'Preparing');
+  try {
+    const blob = new Blob([buildShareSummary()], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `pathwise-${selectedRole.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-summary.txt`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+    window.PathwiseSupabaseReady.then((api) => {
+      api.showTopNotice('success', 'Summary Downloaded', 'Your action-plan summary has been downloaded.');
+    });
+  } finally {
+    setTimeout(() => setButtonBusy('download-summary-btn', false), 320);
+  }
 }
 
 
@@ -1591,6 +1695,9 @@ document.addEventListener('keydown', e => {
     if (skills.length > 0) analyze();
   }
 });
+
+document.getElementById('copy-summary-btn')?.addEventListener('click', copySummaryToClipboard);
+document.getElementById('download-summary-btn')?.addEventListener('click', downloadSummaryFile);
 
 renderRoles();
 renderRoleScope();
