@@ -311,6 +311,36 @@
     return supabase.auth.signInWithPassword({ email, password });
   }
 
+  async function signInOrCreateWithEmail(email, password) {
+    if (!supabase) throw bootError || new Error('Supabase is not configured.');
+
+    const signInResult = await supabase.auth.signInWithPassword({ email, password });
+    if (!signInResult.error) {
+      return { ...signInResult, mode: 'signin' };
+    }
+
+    const signInMessage = (signInResult.error.message || '').toLowerCase();
+    const canCreate =
+      signInMessage.includes('invalid login credentials') ||
+      signInMessage.includes('user not found') ||
+      signInMessage.includes('email not confirmed');
+
+    if (!canCreate) {
+      return { ...signInResult, mode: 'signin_error' };
+    }
+
+    const signUpResult = await supabase.auth.signUp({ email, password });
+    if (signUpResult.error) {
+      return { ...signUpResult, mode: 'signup_error' };
+    }
+
+    const hasSession = !!signUpResult.data?.session;
+    return {
+      ...signUpResult,
+      mode: hasSession ? 'signup_signed_in' : 'signup_check_email'
+    };
+  }
+
   async function signOut() {
     state.guestMode = false;
     state.currentProgressId = null;
@@ -357,13 +387,23 @@
       setAuthButtonsBusy('email');
       const email = document.getElementById('email-input').value.trim();
       const password = document.getElementById('password-input').value;
-      showTopNotice('info', 'Signing In', 'Checking your email and password...');
-      const { error } = await signInWithEmail(email, password);
-      if (error) throw error;
-      showTopNotice('success', 'Signed In', 'Welcome back. Restoring your analyzer...');
+      if (!email || !password) {
+        throw new Error('Enter both email and password to continue.');
+      }
+      showTopNotice('info', 'Checking Account', 'Signing in or creating your account...');
+      const result = await signInOrCreateWithEmail(email, password);
+      if (result.error) throw result.error;
+
+      if (result.mode === 'signin') {
+        showTopNotice('success', 'Signed In', 'Welcome back. Restoring your analyzer...');
+      } else if (result.mode === 'signup_signed_in') {
+        showTopNotice('success', 'Account Created', 'Your account is ready. Opening the analyzer...');
+      } else {
+        showTopNotice('success', 'Account Created', 'Check your email to confirm your account, then sign in.');
+      }
     } catch (error) {
       setAuthButtonsBusy('');
-      showTopNotice('error', 'Email Sign In Failed', error.message || 'Email login failed.');
+      showTopNotice('error', 'Email Access Failed', error.message || 'Email sign in failed.');
     }
   });
 
@@ -473,6 +513,7 @@ document.addEventListener('click', (event) => {
     updateProgress,
     signInWithGoogle,
     signInWithEmail,
+    signInOrCreateWithEmail,
     continueAsGuest,
     signOut,
     enterAnalyzer,
