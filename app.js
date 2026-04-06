@@ -45,7 +45,7 @@
   function activatePage(name) {
     const current = document.querySelector('.page.active');
     const next = document.getElementById('page-' + name);
-    const skipAnimation = name === 'setup' && current && current.id !== 'page-intro';
+    const skipAnimation = name === 'setup';
     if (current && current !== next) current.classList.remove('active');
     if (next) {
       next.classList.toggle('no-page-animate', !!skipAnimation);
@@ -2558,6 +2558,7 @@ const ROADMAP_DURATIONS = {
 function buildRoadmap(matched, missing, role) {
   const timeline = document.getElementById('roadmap-timeline');
   if (!timeline) return;
+  const section = timeline.closest('.roadmap-section');
 
   const allRoleSkills = ROLES[role].skills;
 
@@ -2630,6 +2631,22 @@ function buildRoadmap(matched, missing, role) {
         </div>
       </div>`;
   }).join('');
+
+  if (section) {
+    requestAnimationFrame(() => {
+      section.classList.remove('visible');
+      requestAnimationFrame(() => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.92) {
+          section.classList.add('visible');
+        } else if (revealObserver) {
+          revealObserver.observe(section);
+        } else {
+          section.classList.add('visible');
+        }
+      });
+    });
+  }
 }
 
 
