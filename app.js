@@ -742,10 +742,14 @@ function persistStep(step) {
 
 function renderHeaderPage(name) {
   const context = document.querySelector('.header-context');
+  const brand = document.getElementById('header-brand-mini');
+  const pageCopy = document.getElementById('header-page-copy');
   const statusWrap = document.querySelector('.header-status-wrap');
   const el = document.getElementById('header-page-title');
   if (context) context.style.display = name === 'setup' ? '' : 'none';
   if (statusWrap) statusWrap.style.display = name === 'setup' ? 'flex' : 'none';
+  if (brand) brand.style.display = name === 'setup' ? 'flex' : 'none';
+  if (pageCopy) pageCopy.style.display = name === 'setup' ? 'none' : 'flex';
   if (!el) return;
   const labels = {
     setup: 'Setup',

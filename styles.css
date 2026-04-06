@@ -227,6 +227,33 @@
     gap: 6px;
     min-width: 150px;
   }
+  .header-brand-mini {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .header-brand-mini .logo-mark {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    font-size: 20px;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.12) inset, 0 5px 18px rgba(44,95,212,0.34), 0 2px 8px rgba(0,0,0,0.4);
+  }
+  .header-brand-mini .logo-text {
+    font-size: 21px;
+    line-height: 1;
+  }
+  .header-brand-mini .logo-sub {
+    margin-top: 4px;
+    font-size: 10px;
+    letter-spacing: 1.4px;
+    color: #8fa5e6;
+  }
+  .header-page-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
   .header-context-label {
     font-size: 10px;
     text-transform: uppercase;
@@ -487,20 +514,21 @@
     flex-wrap: wrap;
   }
   .role-scope-label {
-    font-size: 10px;
+    font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 1.4px;
-    color: var(--text3);
+    letter-spacing: 1.9px;
+    color: #9db5ff;
+    font-weight: 700;
   }
   .role-scope-title {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 700;
     color: var(--text);
   }
   .role-scope-copy {
     margin: 0;
-    color: var(--text2);
-    font-size: 13px;
+    color: #d0daf8;
+    font-size: 13.5px;
     line-height: 1.65;
   }
   .role-scope-outlook {
