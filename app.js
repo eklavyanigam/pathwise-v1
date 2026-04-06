@@ -152,6 +152,8 @@
 
   function setAuthButtonsBusy(mode) {
     setButtonBusy('email-login-btn', mode === 'email', 'Signing In');
+    setButtonBusy('email-signup-btn', mode === 'signup', 'Creating');
+    setButtonBusy('forgot-password-btn', mode === 'reset', 'Sending');
     setButtonBusy('guest-btn', mode === 'guest', 'Opening');
     setButtonBusy('login-google-btn', mode === 'google', 'Redirecting');
   }
@@ -311,73 +313,16 @@
     return supabase.auth.signInWithPassword({ email, password });
   }
 
-  async function ensureEmailSession(email, password) {
+  async function signUpWithEmail(email, password) {
     if (!supabase) throw bootError || new Error('Supabase is not configured.');
-
-    for (let attempt = 0; attempt < 4; attempt++) {
-      const sessionResult = await supabase.auth.getSession();
-      const activeSession = sessionResult.data?.session ?? null;
-      if (activeSession?.user) {
-        return { data: { session: activeSession }, error: null };
-      }
-
-      const retrySignIn = await supabase.auth.signInWithPassword({ email, password });
-      if (!retrySignIn.error && retrySignIn.data?.session?.user) {
-        return retrySignIn;
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, 300));
-    }
-
-    return {
-      data: { session: null },
-      error: new Error('We could not finish the email session. Please try Sign In once more.')
-    };
+    return supabase.auth.signUp({ email, password });
   }
 
-  async function signInOrCreateWithEmail(email, password) {
+  async function sendPasswordReset(email) {
     if (!supabase) throw bootError || new Error('Supabase is not configured.');
-
-    const signInResult = await supabase.auth.signInWithPassword({ email, password });
-    if (!signInResult.error) {
-      const sessionResult = signInResult.data?.session?.user ? signInResult : await ensureEmailSession(email, password);
-      return { ...sessionResult, mode: 'signin' };
-    }
-
-    const signInMessage = (signInResult.error.message || '').toLowerCase();
-    const canCreate =
-      signInMessage.includes('invalid login credentials') ||
-      signInMessage.includes('user not found') ||
-      signInMessage.includes('email not confirmed');
-
-    if (!canCreate) {
-      return { ...signInResult, mode: 'signin_error' };
-    }
-
-    const signUpResult = await supabase.auth.signUp({ email, password });
-    if (signUpResult.error) {
-      const signUpMessage = (signUpResult.error.message || '').toLowerCase();
-      if (signUpMessage.includes('user already registered')) {
-        const retrySignIn = await ensureEmailSession(email, password);
-        if (!retrySignIn.error) {
-          return { ...retrySignIn, mode: 'signin' };
-        }
-      }
-      return { ...signUpResult, mode: 'signup_error' };
-    }
-
-    const hasSession = !!signUpResult.data?.session;
-    if (!hasSession) {
-      const retryAfterSignUp = await ensureEmailSession(email, password);
-      if (!retryAfterSignUp.error) {
-        return { ...retryAfterSignUp, mode: 'signup_signed_in' };
-      }
-    }
-
-    return {
-      ...signUpResult,
-      mode: hasSession ? 'signup_signed_in' : 'signup_check_email'
-    };
+    return supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + window.location.pathname
+    });
   }
 
   async function signOut() {
@@ -429,35 +374,62 @@
       if (!email || !password) {
         throw new Error('Enter both email and password to continue.');
       }
-      showTopNotice('info', 'Checking Account', 'Signing in or creating your account...');
-      const result = await signInOrCreateWithEmail(email, password);
+      showTopNotice('info', 'Signing In', 'Checking your email and password...');
+      const result = await signInWithEmail(email, password);
+      if (result.error) throw result.error;
+      showTopNotice('success', 'Signed In', 'Opening your analyzer...');
+      setAuthButtonsBusy('');
+      setTimeout(() => {
+        window.location.assign(window.location.pathname);
+      }, 280);
+    } catch (error) {
+      setAuthButtonsBusy('');
+      showTopNotice('error', 'Email Access Failed', error.message || 'Email sign in failed.');
+    }
+  });
+
+  document.getElementById('email-signup-btn')?.addEventListener('click', async () => {
+    try {
+      setAuthButtonsBusy('signup');
+      const email = document.getElementById('email-input').value.trim();
+      const password = document.getElementById('password-input').value;
+      if (!email || !password) {
+        throw new Error('Enter both email and password to create your account.');
+      }
+      showTopNotice('info', 'Creating Account', 'Setting up your account...');
+      const result = await signUpWithEmail(email, password);
       if (result.error) throw result.error;
 
-      if (result.mode === 'signin') {
-        showTopNotice('success', 'Signed In', 'Welcome back. Restoring your analyzer...');
-      } else if (result.mode === 'signup_signed_in') {
-        showTopNotice('success', 'Account Created', 'Your account is ready. Opening the analyzer...');
+      if (result.data?.session?.user) {
+        showTopNotice('success', 'Account Created', 'Opening your analyzer...');
+        setAuthButtonsBusy('');
+        setTimeout(() => {
+          window.location.assign(window.location.pathname);
+        }, 280);
       } else {
         setAuthButtonsBusy('');
         showTopNotice('success', 'Account Created', 'Check your email to confirm your account, then sign in.');
       }
-
-      if (result.data?.session?.user) {
-        state.session = result.data.session;
-        state.guestMode = false;
-        setResumeMode('account');
-        renderAuthState(result.data.session.user, false);
-        setAuthButtonsBusy('');
-        renderSaveStatus('saved', 'Cloud sync active');
-        showTopNotice('success', 'Success', 'Opening your analyzer...');
-        setTimeout(() => {
-          window.location.assign(window.location.pathname);
-        }, 280);
-        return;
-      }
     } catch (error) {
       setAuthButtonsBusy('');
-      showTopNotice('error', 'Email Access Failed', error.message || 'Email sign in failed.');
+      showTopNotice('error', 'Create Account Failed', error.message || 'Could not create your account.');
+    }
+  });
+
+  document.getElementById('forgot-password-btn')?.addEventListener('click', async () => {
+    try {
+      setAuthButtonsBusy('reset');
+      const email = document.getElementById('email-input').value.trim();
+      if (!email) {
+        throw new Error('Enter your email first, then try password reset.');
+      }
+      const result = await sendPasswordReset(email);
+      if (result.error) throw result.error;
+      showTopNotice('success', 'Reset Email Sent', 'Check your inbox for a password reset link.');
+    } catch (error) {
+      showTopNotice('error', 'Reset Failed', error.message || 'Could not send the password reset email.');
+    } finally {
+      setAuthButtonsBusy('');
     }
   });
 
@@ -579,7 +551,8 @@ document.addEventListener('click', (event) => {
     updateProgress,
     signInWithGoogle,
     signInWithEmail,
-    signInOrCreateWithEmail,
+    signUpWithEmail,
+    sendPasswordReset,
     continueAsGuest,
     signOut,
     enterAnalyzer,
