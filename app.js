@@ -1565,65 +1565,6 @@ function kickResultSpotlight() {
   });
 }
 
-function buildShareSummary() {
-  if (!lastResults) return '';
-  const topSkills = lastResults.priorities && lastResults.priorities.length
-    ? lastResults.priorities.map((skill) => skill.name).join(', ')
-    : 'No major gaps identified';
-  const matchedCount = lastResults.matched ? lastResults.matched.length : 0;
-  const missingCount = lastResults.missing ? lastResults.missing.length : 0;
-  return [
-    `Pathwise Career Readiness Summary`,
-    ``,
-    `Role: ${selectedRole}`,
-    `Readiness Score: ${lastResults.score}%`,
-    `Matched Skills: ${matchedCount}`,
-    `Missing Skills: ${missingCount}`,
-    `Top Skills To Learn Next: ${topSkills}`,
-    ``,
-    `Generated from Pathwise on ${new Date().toLocaleString()}`
-  ].join('\n');
-}
-
-async function copySummaryToClipboard() {
-  if (!lastResults) return;
-  const button = document.getElementById('copy-summary-btn');
-  try {
-    setButtonBusy('copy-summary-btn', true, 'Copying');
-    await navigator.clipboard.writeText(buildShareSummary());
-    const api = await window.PathwiseSupabaseReady;
-    api.showTopNotice('success', 'Summary Copied', 'Your roadmap summary is ready to paste.');
-  } catch (error) {
-    const api = await window.PathwiseSupabaseReady;
-    api.showTopNotice('error', 'Copy Failed', 'Clipboard access was blocked. Try download instead.');
-  } finally {
-    setButtonBusy('copy-summary-btn', false);
-    if (button) button.blur();
-  }
-}
-
-function downloadSummaryFile() {
-  if (!lastResults) return;
-  setButtonBusy('download-summary-btn', true, 'Preparing');
-  try {
-    const blob = new Blob([buildShareSummary()], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `pathwise-${selectedRole.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-summary.txt`;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
-    window.PathwiseSupabaseReady.then((api) => {
-      api.showTopNotice('success', 'Summary Downloaded', 'Your action-plan summary has been downloaded.');
-    });
-  } finally {
-    setTimeout(() => setButtonBusy('download-summary-btn', false), 320);
-  }
-}
-
-
 /* ═══ CUSTOM LEVEL DROPDOWN ═══ */
 (function() {
   const trigger   = document.getElementById('level-trigger');
@@ -1698,9 +1639,6 @@ document.addEventListener('keydown', e => {
     if (skills.length > 0) analyze();
   }
 });
-
-document.getElementById('copy-summary-btn')?.addEventListener('click', copySummaryToClipboard);
-document.getElementById('download-summary-btn')?.addEventListener('click', downloadSummaryFile);
 
 renderRoles();
 renderRoleScope();
