@@ -505,16 +505,11 @@
   }
   .role-scope-outlook {
     margin-top: 10px;
-    display: inline-flex;
-    align-items: center;
-    min-height: 32px;
-    padding: 0 11px;
-    border-radius: 999px;
-    border: 1px solid rgba(100,150,255,0.14);
-    background: rgba(10,20,49,0.34);
+    display: block;
     color: var(--accent2);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 600;
+    line-height: 1.6;
   }
   .role-btn {
     background: rgba(20,40,90,0.55); border: 1px solid rgba(100,150,255,0.15);
