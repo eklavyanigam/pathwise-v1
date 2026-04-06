@@ -61,49 +61,31 @@
     padding: 12px 4px 12px 0;
     max-width: 640px;
   }
-  .intro-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 18px;
-    padding: 8px 14px;
-    border-radius: 999px;
-    border: 1px solid rgba(100,140,255,0.22);
-    background: rgba(20,40,90,0.45);
+  .intro-brand {
+    margin-bottom: 22px;
+  }
+  .intro-brand .logo-mark {
+    width: 58px;
+    height: 58px;
+    border-radius: 18px;
+    font-size: 28px;
+  }
+  .intro-brand .logo-text {
+    font-size: clamp(30px, 5vw, 44px);
+    letter-spacing: -1.2px;
+    background: linear-gradient(90deg, #eef1ff, #8db3ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .intro-brand .logo-sub {
+    font-size: 12px;
     color: var(--accent2);
+    letter-spacing: 2px;
+    margin-top: 8px;
   }
-  .intro-eyebrow-mark {
-    width: 28px;
-    height: 28px;
-    border-radius: 999px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #1a4fc4, #3a6fd4);
-    color: white;
-    font-size: 14px;
-    font-weight: 800;
-    box-shadow: 0 6px 18px rgba(44,95,212,0.28);
-    flex-shrink: 0;
-  }
-  .intro-eyebrow-text {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    line-height: 1.1;
-  }
-  .intro-eyebrow-title {
-    color: var(--text);
-    font-size: 14px;
-    font-weight: 800;
-    letter-spacing: 0.3px;
-  }
-  .intro-eyebrow-sub {
-    color: var(--accent2);
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.15px;
-    text-transform: uppercase;
+  .header-stepper-shell {
+    display: none !important;
   }
   .intro-title {
     font-size: clamp(40px, 7vw, 72px);
