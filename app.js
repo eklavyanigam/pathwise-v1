@@ -94,12 +94,23 @@
     const profileBtn = document.getElementById('account-profile-btn');
     const signoutBtn = document.getElementById('account-signout-btn');
     const userLabel = document.getElementById('account-user-label');
+    const actionLabel = document.getElementById('account-action-label');
     if (user) {
       state.guestMode = false;
       if (accountMenu) accountMenu.style.display = 'flex';
       if (profileBtn) profileBtn.setAttribute('title', user.email || 'Profile');
       if (signoutBtn) signoutBtn.setAttribute('title', 'Sign out');
       if (userLabel) userLabel.textContent = user.email || 'Signed in';
+      if (actionLabel) actionLabel.textContent = 'Logout';
+      return;
+    }
+    if (isGuest) {
+      state.guestMode = true;
+      if (accountMenu) accountMenu.style.display = 'flex';
+      if (profileBtn) profileBtn.setAttribute('title', 'Profile');
+      if (signoutBtn) signoutBtn.setAttribute('title', 'Login');
+      if (userLabel) userLabel.textContent = 'Guest mode';
+      if (actionLabel) actionLabel.textContent = 'Login';
       return;
     }
     if (accountMenu) {
@@ -621,13 +632,22 @@ document.getElementById('guest-btn')?.addEventListener('click', () => {
 
   document.getElementById('account-signout-btn')?.addEventListener('click', async () => {
   try {
+    if (state.guestMode) {
+      const menu = document.getElementById('account-menu');
+      const trigger = document.getElementById('account-profile-btn');
+      if (menu) menu.classList.remove('open');
+      if (trigger) trigger.setAttribute('aria-expanded', 'false');
+      showIntro();
+      showTopNotice('info', 'Login', 'Choose Google or email to sign in.');
+      return;
+    }
     await signOut();
     if (window.PathwiseApp?.hydrateProgress) {
       await window.PathwiseApp.hydrateProgress();
     }
     showTopNotice('success', 'Signed Out', 'You are back in guest mode.');
   } catch (error) {
-    showTopNotice('error', 'Sign Out Failed', error.message || 'Sign out failed.');
+    showTopNotice('error', state.guestMode ? 'Login Failed' : 'Sign Out Failed', error.message || (state.guestMode ? 'Could not open the login screen.' : 'Sign out failed.'));
   }
 });
 
