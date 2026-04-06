@@ -72,6 +72,19 @@
     activatePage('setup');
   }
 
+  function transitionIntoAnalyzer(preferredStep) {
+    const introPage = document.getElementById('page-intro');
+    if (!introPage || !introPage.classList.contains('active')) {
+      enterAnalyzer(preferredStep);
+      return;
+    }
+    introPage.classList.add('intro-leaving');
+    setTimeout(() => {
+      introPage.classList.remove('intro-leaving');
+      enterAnalyzer(preferredStep);
+    }, 240);
+  }
+
   function renderAuthState(user, isGuest) {
     const accountMenu = document.getElementById('account-menu');
     const profileBtn = document.getElementById('account-profile-btn');
@@ -163,7 +176,7 @@
     });
     analyzerEntryTimer = setTimeout(() => {
       analyzerEntryTimer = null;
-      enterAnalyzer(preferredStep);
+      transitionIntoAnalyzer(preferredStep);
     }, typeof delay === 'number' ? delay : 1000);
   }
 

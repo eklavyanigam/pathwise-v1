@@ -434,9 +434,18 @@
     display: block;
     animation: pageIn 0.48s cubic-bezier(0.22,1,0.36,1);
   }
+  .page.intro-leaving {
+    display: block;
+    pointer-events: none;
+    animation: introOut 0.24s cubic-bezier(0.4,0,0.2,1) forwards;
+  }
   @keyframes pageIn {
     from { opacity: 0; transform: translateY(20px) scale(0.992); }
     to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes introOut {
+    from { opacity: 1; transform: translateY(0) scale(1); }
+    to   { opacity: 0; transform: translateY(-10px) scale(0.992); }
   }
 
   /* Layout */
