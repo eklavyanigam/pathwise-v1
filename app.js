@@ -83,15 +83,18 @@
   }
 
   function renderSaveStatus(kind, message) {
-    const badge = document.getElementById('save-status-badge');
-    const text = document.getElementById('save-status-text');
+    const badge = document.getElementById('header-sync-pill');
+    const text = document.getElementById('header-sync-text');
     if (!badge || !text) return;
 
-    badge.classList.remove('is-saving', 'is-saved', 'is-error');
-    if (kind === 'saving') badge.classList.add('is-saving');
-    if (kind === 'saved') badge.classList.add('is-saved');
-    if (kind === 'error') badge.classList.add('is-error');
-    text.textContent = message;
+    const isCloud = !!state.session?.user;
+    badge.classList.remove('is-cloud', 'is-browser');
+    badge.classList.add(isCloud ? 'is-cloud' : 'is-browser');
+    if (kind === 'error') {
+      text.textContent = 'Sync issue';
+      return;
+    }
+    text.textContent = isCloud ? 'Cloud sync active' : 'Browser';
   }
 
   let noticeTimer = null;
@@ -719,6 +722,17 @@ function persistStep(step) {
   } catch (error) {}
 }
 
+function renderHeaderPage(name) {
+  const el = document.getElementById('header-page-title');
+  if (!el) return;
+  const labels = {
+    setup: 'Setup',
+    analysis: 'Analysis',
+    action: 'Action Plan'
+  };
+  el.textContent = labels[name] || 'Setup';
+}
+
 function goToStep(name) {
   if (name === 'intro') {
     if (window.PathwiseApp?.showIntro) window.PathwiseApp.showIntro();
@@ -740,6 +754,7 @@ function goToStep(name) {
   const next    = document.getElementById('page-' + name);
   if (!next) return;
   persistStep(name);
+  renderHeaderPage(name);
 
   if (current && current !== next) {
     current.style.opacity = '0';

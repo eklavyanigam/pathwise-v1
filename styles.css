@@ -221,8 +221,70 @@
     padding: 28px 0; margin-bottom: 36px; flex-wrap: wrap; gap: 16px;
     border-bottom: 1px solid var(--border);
   }
-  .account-menu {
+  .header-context {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 150px;
+  }
+  .header-context-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+    color: var(--text3);
+  }
+  .header-context-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.4px;
+  }
+  .header-status-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-left: auto;
+  }
+  .header-sync-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 38px;
+    padding: 0 14px;
+    border-radius: 999px;
+    border: 1px solid rgba(100,140,255,0.18);
+    background: rgba(20,40,90,0.42);
+    color: var(--text2);
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .header-sync-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 0 4px rgba(40,201,144,0.08);
+    flex-shrink: 0;
+  }
+  .header-sync-pill.is-browser {
+    color: var(--text2);
+    border-color: rgba(100,140,255,0.18);
+    background: rgba(20,40,90,0.42);
+  }
+  .header-sync-pill.is-browser .header-sync-dot {
+    background: var(--accent2);
+    box-shadow: 0 0 0 4px rgba(102,153,255,0.08);
+  }
+  .header-sync-pill.is-cloud {
+    color: var(--green);
+    border-color: rgba(40,201,144,0.22);
+    background: rgba(15,36,34,0.42);
+  }
+  .header-sync-pill.is-cloud .header-sync-dot {
+    background: var(--green);
+    box-shadow: 0 0 0 4px rgba(40,201,144,0.08);
+  }
+  .account-menu {
     position: relative;
     z-index: 3;
   }
@@ -640,15 +702,6 @@
     line-height: 1.6;
     color: var(--text2);
   }
-  .setup-status-row {
-    margin-top: 14px;
-  }
-  .persist-badge-live {
-    min-height: 32px;
-    padding: 6px 11px;
-    border-radius: 999px;
-  }
-
   @media (max-width: 980px) {
     .intro-hero {
       grid-template-columns: 1fr;
@@ -658,6 +711,14 @@
     .intro-copy {
       max-width: none;
       padding-right: 0;
+    }
+    .header {
+      align-items: flex-start;
+    }
+    .header-status-wrap {
+      width: 100%;
+      justify-content: space-between;
+      margin-left: 0;
     }
   }
 

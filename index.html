@@ -109,6 +109,16 @@
   </div>
 
   <header class="header shell-only" id="app-header">
+    <div class="header-context">
+      <div class="header-context-label">Current Page</div>
+      <div class="header-context-title" id="header-page-title">Setup</div>
+    </div>
+    <div class="header-status-wrap">
+      <div class="header-sync-pill" id="header-sync-pill">
+        <span class="header-sync-dot" id="header-sync-dot"></span>
+        <span id="header-sync-text">Browser</span>
+      </div>
+    </div>
     <div class="account-menu shell-only" id="account-menu" style="display:none;">
       <button class="account-trigger" id="account-trigger" type="button" aria-label="Account menu" aria-expanded="false">
         <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
@@ -233,12 +243,6 @@
         <div id="skill-list-container">
           <div class="empty-state">
             <div>Add your skills above to get started</div>
-          </div>
-        </div>
-        <div class="setup-status-row">
-          <div class="persist-badge persist-badge-live" id="save-status-badge">
-            <span class="persist-dot" id="save-status-dot"></span>
-            <span id="save-status-text">Ready to save</span>
           </div>
         </div>
         <div class="analyze-section">
