@@ -313,6 +313,20 @@
     return supabase.auth.signInWithPassword({ email, password });
   }
 
+  async function withAuthTimeout(task, timeoutMessage) {
+    let timer = null;
+    try {
+      return await Promise.race([
+        task(),
+        new Promise((_, reject) => {
+          timer = setTimeout(() => reject(new Error(timeoutMessage)), 9000);
+        })
+      ]);
+    } finally {
+      if (timer) clearTimeout(timer);
+    }
+  }
+
   async function signUpWithEmail(email, password) {
     if (!supabase) throw bootError || new Error('Supabase is not configured.');
     return supabase.auth.signUp({ email, password });
@@ -375,7 +389,10 @@
         throw new Error('Enter both email and password to continue.');
       }
       showTopNotice('info', 'Signing In', 'Checking your email and password...');
-      const result = await signInWithEmail(email, password);
+      const result = await withAuthTimeout(
+        () => signInWithEmail(email, password),
+        'Email sign in is taking too long. Please try again.'
+      );
       if (result.error) throw result.error;
       showTopNotice('success', 'Signed In', 'Opening your analyzer...');
       setAuthButtonsBusy('');
@@ -397,7 +414,10 @@
         throw new Error('Enter both email and password to create your account.');
       }
       showTopNotice('info', 'Creating Account', 'Setting up your account...');
-      const result = await signUpWithEmail(email, password);
+      const result = await withAuthTimeout(
+        () => signUpWithEmail(email, password),
+        'Account creation is taking too long. Please try again.'
+      );
       if (result.error) throw result.error;
 
       if (result.data?.session?.user) {
@@ -423,7 +443,10 @@
       if (!email) {
         throw new Error('Enter your email first, then try password reset.');
       }
-      const result = await sendPasswordReset(email);
+      const result = await withAuthTimeout(
+        () => sendPasswordReset(email),
+        'Password reset is taking too long. Please try again.'
+      );
       if (result.error) throw result.error;
       showTopNotice('success', 'Reset Email Sent', 'Check your inbox for a password reset link.');
     } catch (error) {
