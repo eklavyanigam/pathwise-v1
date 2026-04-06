@@ -3,7 +3,8 @@
     supabaseUrl: 'https://isrvcqvakkzecucyjngd.supabase.co',
     supabaseAnonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlzcnZjcXZha2t6ZWN1Y3lqbmdkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUzODU3MjgsImV4cCI6MjA5MDk2MTcyOH0.S34nZVTlPD5yAK7g_IrNBl9jOW-JAz1KZLOk9byv4aU',
     storageKey: 'pw_guest_progress',
-    resumeModeKey: 'pw_resume_mode'
+    resumeModeKey: 'pw_resume_mode',
+    authNoticeKey: 'pw_auth_notice'
   };
 
   const state = {
@@ -94,6 +95,24 @@
   }
 
   let noticeTimer = null;
+  let analyzerEntryTimer = null;
+
+  function setPendingAuthNotice(kind, title, message) {
+    try {
+      sessionStorage.setItem(CONFIG.authNoticeKey, JSON.stringify({ kind, title, message }));
+    } catch (error) {}
+  }
+
+  function consumePendingAuthNotice() {
+    try {
+      const raw = sessionStorage.getItem(CONFIG.authNoticeKey);
+      if (!raw) return null;
+      sessionStorage.removeItem(CONFIG.authNoticeKey);
+      return JSON.parse(raw);
+    } catch (error) {
+      return null;
+    }
+  }
 
   function showTopNotice(kind, title, message, options) {
     const notice = document.getElementById('top-notice');
@@ -130,6 +149,22 @@
       noticeTimer = null;
     }
     notice.classList.remove('visible');
+  }
+
+  function openAnalyzerWithNotice(kind, title, message, preferredStep, delay) {
+    if (analyzerEntryTimer) {
+      clearTimeout(analyzerEntryTimer);
+      analyzerEntryTimer = null;
+    }
+    setAuthButtonsBusy('');
+    showTopNotice(kind, title, message, {
+      autoClose: true,
+      duration: typeof delay === 'number' ? Math.max(700, delay - 100) : 900
+    });
+    analyzerEntryTimer = setTimeout(() => {
+      analyzerEntryTimer = null;
+      enterAnalyzer(preferredStep);
+    }, typeof delay === 'number' ? delay : 1000);
   }
 
   function setButtonBusy(buttonId, busy, busyLabel) {
@@ -387,7 +422,7 @@
 
     setResumeMode('account');
     setAuthButtonsBusy('');
-    showTopNotice('success', successTitle, successMessage, { autoClose: false });
+    setPendingAuthNotice('success', successTitle, successMessage);
 
     const hash = new URLSearchParams({
       access_token: tokens.access_token,
@@ -434,7 +469,7 @@
     setResumeMode('guest');
     renderAuthState(null, true);
     renderSaveStatus('saved', 'Guest progress saves in this browser');
-    enterAnalyzer(getSavedStep());
+    openAnalyzerWithNotice('info', 'Guest Mode', 'Opening your analyzer in this browser...', getSavedStep(), 1000);
   }
 
   function getSession() {
@@ -445,9 +480,11 @@
     try {
       setAuthButtonsBusy('google');
       showTopNotice('info', 'Google Sign In', 'Redirecting you to Google...');
+      setPendingAuthNotice('success', 'Signed In', 'Opening your analyzer...');
       const { error } = await signInWithGoogle();
       if (error) throw error;
     } catch (error) {
+      consumePendingAuthNotice();
       setAuthButtonsBusy('');
       showTopNotice('error', 'Google Sign In Failed', error.message || 'Google login failed.');
     }
@@ -550,9 +587,7 @@
 
 document.getElementById('guest-btn')?.addEventListener('click', () => {
   setAuthButtonsBusy('guest');
-  showTopNotice('info', 'Guest Mode', 'Opening your analyzer in this browser...');
   continueAsGuest();
-  setTimeout(() => setAuthButtonsBusy(''), 420);
 });
 
   document.getElementById('account-signout-btn')?.addEventListener('click', async () => {
@@ -581,12 +616,21 @@ document.addEventListener('click', (event) => {
     supabase.auth.onAuthStateChange(async (event, session) => {
       state.session = session ?? null;
 
-      if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user) {
+      if (event === 'SIGNED_IN' && session?.user) {
         setResumeMode('account');
-        if (event === 'SIGNED_IN') {
-          await mergeGuestProgressToDatabase();
+        await mergeGuestProgressToDatabase();
+        const pendingNotice = consumePendingAuthNotice();
+        if (pendingNotice) {
+          openAnalyzerWithNotice(
+            pendingNotice.kind || 'success',
+            pendingNotice.title || 'Signed In',
+            pendingNotice.message || 'Opening your analyzer...',
+            getSavedStep(),
+            1000
+          );
+        } else {
+          openAnalyzerWithNotice('success', 'Signed In', 'Opening your analyzer...', getSavedStep(), 1000);
         }
-        enterAnalyzer(getSavedStep());
       } else if (event === 'SIGNED_OUT') {
         setResumeMode('');
         showIntro();
@@ -609,9 +653,20 @@ document.addEventListener('click', (event) => {
       state.guestMode = false;
       setResumeMode('account');
       renderAuthState(session.user, false);
-      setAuthButtonsBusy('');
       renderSaveStatus('saved', 'Cloud sync active');
-      enterAnalyzer(getSavedStep());
+      const pendingNotice = consumePendingAuthNotice();
+      if (pendingNotice) {
+        openAnalyzerWithNotice(
+          pendingNotice.kind || 'success',
+          pendingNotice.title || 'Signed In',
+          pendingNotice.message || 'Opening your analyzer...',
+          getSavedStep(),
+          1000
+        );
+      } else if (!analyzerEntryTimer) {
+        setAuthButtonsBusy('');
+        enterAnalyzer(getSavedStep());
+      }
     } else if (resumeMode === 'guest') {
       state.guestMode = true;
       renderAuthState(null, true);

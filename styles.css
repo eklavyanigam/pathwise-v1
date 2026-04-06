@@ -69,6 +69,7 @@
     align-items: flex-start;
     gap: 14px;
     padding: 14px 16px;
+    font-family: 'Montserrat', sans-serif;
     border-radius: 16px;
     border: 1px solid rgba(100,140,255,0.18);
     background: rgba(10,18,42,0.95);
@@ -93,6 +94,7 @@
   }
   .top-notice-title {
     font-size: 11px;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     letter-spacing: 1.1px;
     text-transform: uppercase;
@@ -101,6 +103,7 @@
   }
   .top-notice-message {
     font-size: 13px;
+    font-family: 'Montserrat', sans-serif;
     line-height: 1.55;
     color: var(--text);
   }
@@ -112,6 +115,7 @@
     background: rgba(255,255,255,0.06);
     color: var(--text2);
     cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
     font-size: 18px;
     line-height: 1;
     transition: background 0.18s ease, color 0.18s ease;
