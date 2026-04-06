@@ -286,8 +286,10 @@ document.addEventListener('click', (event) => {
     supabase.auth.onAuthStateChange(async (event, session) => {
       state.session = session ?? null;
 
-      if (event === 'SIGNED_IN' && session?.user) {
-        await mergeGuestProgressToDatabase();
+      if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session?.user) {
+        if (event === 'SIGNED_IN') {
+          await mergeGuestProgressToDatabase();
+        }
         enterAnalyzer();
       }
 
@@ -302,6 +304,9 @@ document.addEventListener('click', (event) => {
   try {
     const session = await refreshSession();
     renderAuthState(session?.user ?? null, !session?.user);
+    if (session?.user) {
+      enterAnalyzer();
+    }
   } catch (error) {
     console.error('Failed to restore session', error);
     renderAuthState(null, true);
