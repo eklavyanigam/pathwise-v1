@@ -46,7 +46,48 @@
   </div>
 
 
-  <header class="header">
+  <div class="page active" id="page-intro">
+    <section class="intro-hero">
+      <div class="intro-copy">
+        <div class="intro-eyebrow">Career Readiness Analyzer</div>
+        <h1 class="intro-title">Find your skill gaps before the market does.</h1>
+        <p class="intro-text">
+          Pathwise helps you compare your current skills against real role expectations, calculate your readiness score,
+          and turn the result into a focused action plan.
+        </p>
+        <div class="intro-points">
+          <div class="intro-point">Choose a target role and map your current skills.</div>
+          <div class="intro-point">Get a readiness score with gap analysis.</div>
+          <div class="intro-point">Leave with a practical roadmap for what to learn next.</div>
+        </div>
+      </div>
+
+      <div class="card auth-card intro-auth-card">
+        <div class="card-title"><span class="icon"></span> Start Your Analysis</div>
+        <div class="auth-actions">
+          <button id="login-google-btn" class="btn btn-add">Login with Google</button>
+          <button id="guest-btn" class="btn btn-ghost">Continue as Guest</button>
+          <button id="logout-btn" class="btn btn-clear" style="display:none;">Logout</button>
+        </div>
+        <div class="auth-email-row">
+          <div class="form-group">
+            <label for="email-input">Email</label>
+            <input id="email-input" class="form-input" type="email" placeholder="you@example.com" autocomplete="email" />
+          </div>
+          <div class="form-group">
+            <label for="password-input">Password</label>
+            <input id="password-input" class="form-input" type="password" placeholder="Password" autocomplete="current-password" />
+          </div>
+          <button id="email-login-btn" class="btn btn-add">Login with Email</button>
+          <button id="email-signup-btn" class="btn btn-ghost">Create Account</button>
+        </div>
+        <div id="auth-status" class="auth-status">Checking session...</div>
+        <div class="auth-note">Guests save locally. Signed-in users save to Supabase and keep progress across devices.</div>
+      </div>
+    </section>
+  </div>
+
+  <header class="header shell-only" id="app-header">
     <div class="logo">
       <div class="logo-mark">P</div>
       <div>
@@ -73,29 +114,7 @@
   </header>
 
   <!-- PAGE 1: SETUP -->
-  <div class="page active" id="page-setup">
-    <div class="card auth-card">
-      <div class="card-title"><span class="icon"></span> Account</div>
-      <div class="auth-actions">
-        <button id="login-google-btn" class="btn btn-add">Login with Google</button>
-        <button id="guest-btn" class="btn btn-ghost">Continue as Guest</button>
-        <button id="logout-btn" class="btn btn-clear" style="display:none;">Logout</button>
-      </div>
-      <div class="auth-email-row">
-        <div class="form-group">
-          <label for="email-input">Email</label>
-          <input id="email-input" class="form-input" type="email" placeholder="you@example.com" autocomplete="email" />
-        </div>
-        <div class="form-group">
-          <label for="password-input">Password</label>
-          <input id="password-input" class="form-input" type="password" placeholder="Password" autocomplete="current-password" />
-        </div>
-        <button id="email-login-btn" class="btn btn-add">Login with Email</button>
-        <button id="email-signup-btn" class="btn btn-ghost">Create Account</button>
-      </div>
-      <div id="auth-status" class="auth-status">Checking session...</div>
-      <div class="auth-note">Guests save locally. Signed-in users save to Supabase and keep progress across devices.</div>
-    </div>
+  <div class="page" id="page-setup">
     <div class="main-grid">
 
       <div class="card">

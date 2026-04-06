@@ -8,8 +8,32 @@ window.PathwiseSupabaseReady = (async function () {
   const state = {
     currentProgressId: null,
     guestMode: false,
-    session: null
+    session: null,
+    introDismissed: false
   };
+
+  function setShellVisible(isVisible) {
+    document.querySelectorAll('.shell-only').forEach((el) => {
+      el.style.display = isVisible ? '' : 'none';
+    });
+  }
+
+  function showIntro() {
+    const current = document.querySelector('.page.active');
+    const intro = document.getElementById('page-intro');
+    if (current && current !== intro) current.classList.remove('active');
+    if (intro) intro.classList.add('active');
+    setShellVisible(false);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+
+  function enterAnalyzer() {
+    state.introDismissed = true;
+    setShellVisible(true);
+    if (typeof goToStep === 'function') {
+      goToStep('setup');
+    }
+  }
 
   function renderAuthState(user, isGuest) {
     const status = document.getElementById('auth-status');
@@ -202,17 +226,20 @@ window.PathwiseSupabaseReady = (async function () {
   async function signOut() {
     state.guestMode = true;
     state.currentProgressId = null;
+    state.introDismissed = false;
 
     if (supabase) {
       await supabase.auth.signOut();
     }
 
     renderAuthState(null, true);
+    showIntro();
   }
 
   function continueAsGuest() {
     state.guestMode = true;
     renderAuthState(null, true);
+    enterAnalyzer();
   }
 
   function getSession() {
@@ -272,6 +299,7 @@ window.PathwiseSupabaseReady = (async function () {
 
       if (event === 'SIGNED_IN' && session?.user) {
         await mergeGuestProgressToDatabase();
+        enterAnalyzer();
       }
 
       renderAuthState(session?.user ?? null, !session?.user && state.guestMode);
@@ -303,6 +331,8 @@ window.PathwiseSupabaseReady = (async function () {
     signUpWithEmail,
     continueAsGuest,
     signOut,
+    enterAnalyzer,
+    showIntro,
     mergeGuestProgressToDatabase,
     readGuestProgress,
     clearGuestProgress,
@@ -316,6 +346,12 @@ window.PathwiseApp = {
     renderRoles();
     renderRequiredSkills();
     renderSkillList();
+  },
+  enterAnalyzer: function () {
+    window.PathwiseSupabaseReady.then((api) => api.enterAnalyzer());
+  },
+  showIntro: function () {
+    window.PathwiseSupabaseReady.then((api) => api.showIntro());
   }
 };
 /* ═══════════════════════════════════════════
@@ -533,6 +569,15 @@ function getScoreInfo(s) { return SCORE_COLORS.find(x => s < x.max) || SCORE_COL
 const STEP_ORDER = ['setup', 'analysis', 'action'];
 
 function goToStep(name) {
+  if (name === 'intro') {
+    if (window.PathwiseApp?.showIntro) window.PathwiseApp.showIntro();
+    return;
+  }
+
+  if (window.PathwiseSupabaseReady) {
+    window.PathwiseSupabaseReady.then((api) => api.enterAnalyzer());
+  }
+
   // Gate: analysis and action require completed results
   if ((name === 'analysis' || name === 'action') && !lastResults) {
     // Visual shake on disabled step button
@@ -1310,6 +1355,14 @@ function animateResults(score) {
 })();
 
 /* ═══ INIT ═══ */
+window.PathwiseSupabaseReady.then((api) => {
+  if (api.getSession()) {
+    api.enterAnalyzer();
+  } else {
+    api.showIntro();
+  }
+});
+
 loadState();
 const addBtn = document.getElementById('add-btn');
 // mousedown: prevent default so input doesn't lose focus (blur event fires)
@@ -3416,5 +3469,3 @@ function buildLearnResources(missing) {
     </div>`;
   }).join('')}</div>`;
 }
-
-
