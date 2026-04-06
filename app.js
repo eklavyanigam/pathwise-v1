@@ -1490,7 +1490,8 @@ function buildResultsHTML({ score, missing, matched, catResults, priorities }) {
     ? `<div class="good-msg">All required skills covered.</div>`
     : missing.map(s => {
         const tierLabel = s.weight >= 4 ? 'Critical' : s.weight === 3 ? 'Supporting' : 'Optional';
-        return `<div class="missing-item"><span class="missing-item-name">${s.name}</span><span class="weight-badge">${tierLabel}</span></div>`;
+        const tierClass = s.weight >= 4 ? 'is-critical' : s.weight === 3 ? 'is-supporting' : 'is-optional';
+        return `<div class="missing-item"><span class="missing-item-name">${s.name}</span><span class="weight-badge ${tierClass}">${tierLabel}</span></div>`;
       }).join('');
 
   buildInsights(selectedRole, score);
