@@ -3001,7 +3001,7 @@ function initRevealObserver() {
 function triggerRevealSequence() {
   const activePage = document.querySelector('.page.active');
   const allReveals = Array.from(document.querySelectorAll('.page.active .reveal'));
-  const immediateCount = activePage?.id === 'page-analysis' ? 2 : 1;
+  const immediateCount = activePage?.id === 'page-analysis' ? 2 : 0;
 
   // Small stagger: top section fires immediately, rest on scroll.
   allReveals.slice(0, immediateCount).forEach((el, i) => {

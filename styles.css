@@ -437,6 +437,9 @@
   .page.active.no-page-animate {
     animation: none;
   }
+  #page-setup.active {
+    animation: none !important;
+  }
   .page.intro-leaving {
     display: block;
     pointer-events: none;
