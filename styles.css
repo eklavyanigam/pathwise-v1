@@ -434,6 +434,9 @@
     display: block;
     animation: pageIn 0.48s cubic-bezier(0.22,1,0.36,1);
   }
+  .page.active.no-page-animate {
+    animation: none;
+  }
   .page.intro-leaving {
     display: block;
     pointer-events: none;
@@ -889,13 +892,6 @@
     backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.11);
   }
-  .result-spotlight {
-    animation: resultLiftIn 0.58s cubic-bezier(0.22,1,0.36,1);
-  }
-  @keyframes resultLiftIn {
-    from { opacity: 0; transform: translateY(18px) scale(0.985); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-  }
   .section-title { font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 1.8px; color: var(--text2); margin-bottom: 16px; display: flex; align-items: center; gap: 6px; }
   .s-icon { color: var(--accent); }
 
@@ -1215,7 +1211,11 @@
     background: linear-gradient(180deg, rgba(44,95,212,0.6), rgba(74,111,212,0.4), rgba(255,255,255,0.05));
     border-radius: 2px;
   }
-  .roadmap-phase { display: flex; gap: 16px; padding-bottom: 20px; position: relative; }
+  .roadmap-phase {
+    display: flex; gap: 16px; padding-bottom: 20px; position: relative;
+    opacity: 0; transform: translateY(18px);
+    transition: opacity 0.42s cubic-bezier(0.4,0,0.2,1), transform 0.42s cubic-bezier(0.4,0,0.2,1);
+  }
   .roadmap-phase:last-child { padding-bottom: 0; }
   .roadmap-node {
     width: 38px; height: 38px; border-radius: 50%; flex-shrink: 0;
@@ -1247,6 +1247,11 @@
     margin-top: 8px; font-size: 11px; font-family: 'Montserrat', sans-serif;
     color: var(--text3); display: flex; align-items: center; gap: 5px;
   }
+  .roadmap-section.visible .roadmap-phase { opacity: 1; transform: translateY(0); }
+  .roadmap-section.visible .roadmap-phase:nth-child(1) { transition-delay: 0.06s; }
+  .roadmap-section.visible .roadmap-phase:nth-child(2) { transition-delay: 0.14s; }
+  .roadmap-section.visible .roadmap-phase:nth-child(3) { transition-delay: 0.22s; }
+  .roadmap-section.visible .roadmap-phase:nth-child(4) { transition-delay: 0.30s; }
 
 
   /* ── Skill Simulator ── */

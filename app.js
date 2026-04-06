@@ -45,8 +45,12 @@
   function activatePage(name) {
     const current = document.querySelector('.page.active');
     const next = document.getElementById('page-' + name);
+    const skipAnimation = name === 'setup' && current && current.id !== 'page-intro';
     if (current && current !== next) current.classList.remove('active');
-    if (next) next.classList.add('active');
+    if (next) {
+      next.classList.toggle('no-page-animate', !!skipAnimation);
+      next.classList.add('active');
+    }
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
 
@@ -1774,7 +1778,6 @@ function buildResultsHTML({ score, missing, matched, catResults, priorities }) {
     : priorities.map((s, i) => `<div class="priority-item" style="animation-delay:${i*40}ms"><div class="priority-num" style="background:${pc[i]}20;color:${pc[i]};border-radius:6px;">#${i+1}</div><div class="priority-info"><div class="priority-name">${s.name}</div><div class="priority-cat">${s.category}</div></div><span class="skill-level-badge" style="font-size:10px;padding:2px 8px;">wt ${s.weight}</span></div>`).join('');
 
   renderActionSummary({ score, missing, matched, catResults, priorities });
-  kickResultSpotlight();
 }
 
 function renderActionSummary({ score, missing, matched, catResults, priorities }) {
@@ -1848,21 +1851,7 @@ function animateResults(score) {
 }
 
 function kickResultSpotlight() {
-  const targets = document.querySelectorAll(
-    '#page-analysis .score-hero, ' +
-    '#page-analysis .stat-box, ' +
-    '#page-analysis .section-card:not(#insights-section), ' +
-    '#page-analysis .advisor-wrap, ' +
-    '#page-action .section-card:not(#action-summary-card):not(.roadmap-section), ' +
-    '#page-action #portfolio-projects-block'
-  );
-  targets.forEach((element, index) => {
-    element.classList.remove('result-spotlight');
-    element.style.animationDelay = `${Math.min(index * 45, 220)}ms`;
-    requestAnimationFrame(() => {
-      element.classList.add('result-spotlight');
-    });
-  });
+  return;
 }
 
 /* ═══ CUSTOM LEVEL DROPDOWN ═══ */
