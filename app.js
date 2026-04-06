@@ -402,7 +402,8 @@
     });
 
     setTimeout(() => {
-      window.location.assign(`${window.location.pathname}#${hash.toString()}`);
+      const bust = `email_auth=${Date.now()}`;
+      window.location.replace(`${window.location.origin}${window.location.pathname}?${bust}#${hash.toString()}`);
     }, 220);
     return true;
   }
