@@ -36,10 +36,19 @@ window.PathwiseSupabaseReady = (async function () {
   }
 
   function renderAuthState(user, isGuest) {
+    const accountMenu = document.getElementById('account-menu');
+    const accountTrigger = document.getElementById('account-trigger');
     if (user) {
       state.guestMode = false;
+      if (accountMenu) accountMenu.style.display = '';
+      if (accountTrigger) accountTrigger.setAttribute('aria-expanded', 'false');
       return;
     }
+    if (accountMenu) {
+      accountMenu.style.display = 'none';
+      accountMenu.classList.remove('open');
+    }
+    if (accountTrigger) accountTrigger.setAttribute('aria-expanded', 'false');
   }
 
   function readGuestProgress() {
@@ -239,9 +248,39 @@ window.PathwiseSupabaseReady = (async function () {
     }
   });
 
-  document.getElementById('guest-btn')?.addEventListener('click', () => {
-    continueAsGuest();
-  });
+document.getElementById('guest-btn')?.addEventListener('click', () => {
+  continueAsGuest();
+});
+
+document.getElementById('account-trigger')?.addEventListener('click', () => {
+  const menu = document.getElementById('account-menu');
+  const trigger = document.getElementById('account-trigger');
+  if (!menu || !trigger) return;
+  const willOpen = !menu.classList.contains('open');
+  menu.classList.toggle('open', willOpen);
+  trigger.setAttribute('aria-expanded', String(willOpen));
+});
+
+document.getElementById('account-signout-btn')?.addEventListener('click', async () => {
+  try {
+    await signOut();
+    if (window.PathwiseApp?.hydrateProgress) {
+      await window.PathwiseApp.hydrateProgress();
+    }
+  } catch (error) {
+    alert(error.message || 'Sign out failed.');
+  }
+});
+
+document.addEventListener('click', (event) => {
+  const menu = document.getElementById('account-menu');
+  const trigger = document.getElementById('account-trigger');
+  if (!menu || !trigger) return;
+  if (!menu.contains(event.target)) {
+    menu.classList.remove('open');
+    trigger.setAttribute('aria-expanded', 'false');
+  }
+});
 
   if (supabase) {
     supabase.auth.onAuthStateChange(async (event, session) => {
