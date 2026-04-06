@@ -604,6 +604,41 @@
     min-width: 220px;
   }
   .auth-field { min-width: 220px; }
+  .password-field-wrap {
+    position: relative;
+  }
+  .password-toggle-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+  .password-toggle-btn:hover {
+    background: rgba(255,255,255,0.06);
+    color: var(--text);
+  }
+  .password-toggle-btn:focus-visible {
+    outline: 2px solid rgba(102,153,255,0.45);
+    outline-offset: 2px;
+  }
+  .password-eye {
+    font-size: 12px;
+    line-height: 1;
+  }
+  .password-eye-closed { display: none; }
+  .password-toggle-btn.is-visible .password-eye-open { display: none; }
+  .password-toggle-btn.is-visible .password-eye-closed { display: inline; }
   .auth-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
   .auth-actions .btn,
   .auth-email-row .btn,

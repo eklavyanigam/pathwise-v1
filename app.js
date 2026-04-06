@@ -407,6 +407,18 @@
     }
   });
 
+  document.getElementById('password-toggle-btn')?.addEventListener('click', () => {
+    const passwordInput = document.getElementById('password-input');
+    const toggleButton = document.getElementById('password-toggle-btn');
+    if (!passwordInput || !toggleButton) return;
+
+    const isVisible = passwordInput.type === 'text';
+    passwordInput.type = isVisible ? 'password' : 'text';
+    toggleButton.classList.toggle('is-visible', !isVisible);
+    toggleButton.setAttribute('aria-pressed', String(!isVisible));
+    toggleButton.setAttribute('aria-label', isVisible ? 'Show password' : 'Hide password');
+  });
+
   document.getElementById('top-notice-close')?.addEventListener('click', hideTopNotice);
 
 document.getElementById('guest-btn')?.addEventListener('click', () => {
