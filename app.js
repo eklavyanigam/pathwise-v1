@@ -331,10 +331,24 @@
 
     const signUpResult = await supabase.auth.signUp({ email, password });
     if (signUpResult.error) {
+      const signUpMessage = (signUpResult.error.message || '').toLowerCase();
+      if (signUpMessage.includes('user already registered')) {
+        const retrySignIn = await supabase.auth.signInWithPassword({ email, password });
+        if (!retrySignIn.error) {
+          return { ...retrySignIn, mode: 'signin' };
+        }
+      }
       return { ...signUpResult, mode: 'signup_error' };
     }
 
     const hasSession = !!signUpResult.data?.session;
+    if (!hasSession) {
+      const retryAfterSignUp = await supabase.auth.signInWithPassword({ email, password });
+      if (!retryAfterSignUp.error) {
+        return { ...retryAfterSignUp, mode: 'signup_signed_in' };
+      }
+    }
+
     return {
       ...signUpResult,
       mode: hasSession ? 'signup_signed_in' : 'signup_check_email'
@@ -399,7 +413,22 @@
       } else if (result.mode === 'signup_signed_in') {
         showTopNotice('success', 'Account Created', 'Your account is ready. Opening the analyzer...');
       } else {
+        setAuthButtonsBusy('');
         showTopNotice('success', 'Account Created', 'Check your email to confirm your account, then sign in.');
+      }
+
+      if (result.data?.session?.user) {
+        state.session = result.data.session;
+        state.guestMode = false;
+        setResumeMode('account');
+        renderAuthState(result.data.session.user, false);
+        setAuthButtonsBusy('');
+        await mergeGuestProgressToDatabase();
+        if (window.PathwiseApp?.hydrateProgress) {
+          await window.PathwiseApp.hydrateProgress();
+        }
+        renderSaveStatus('saved', 'Cloud sync active');
+        enterAnalyzer(getSavedStep());
       }
     } catch (error) {
       setAuthButtonsBusy('');
