@@ -16,6 +16,92 @@
     pendingStep: 'setup'
   };
 
+  const IDENTITY_STORAGE_KEY = 'pw_identity_profiles';
+
+  function normalizeFirstName(value) {
+    if (!value || typeof value !== 'string') return '';
+    const cleaned = value.trim().replace(/\s+/g, ' ');
+    if (!cleaned) return '';
+    const first = cleaned.split(' ')[0].replace(/[^a-zA-Z0-9'-]/g, '');
+    if (!first) return '';
+    return first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
+  }
+
+  function getEmailFirstName(email) {
+    if (!email || typeof email !== 'string') return '';
+    const localPart = email.split('@')[0] || '';
+    return normalizeFirstName(localPart.replace(/[._-]+/g, ' '));
+  }
+
+  function readIdentityProfiles() {
+    try {
+      const raw = localStorage.getItem(IDENTITY_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch (error) {
+      return {};
+    }
+  }
+
+  function writeIdentityProfiles(profiles) {
+    try {
+      localStorage.setItem(IDENTITY_STORAGE_KEY, JSON.stringify(profiles));
+    } catch (error) {}
+  }
+
+  function getIdentityKeys(user, isGuest) {
+    if (isGuest) return ['guest'];
+    if (!user) return [];
+    const keys = [];
+    if (user.id) keys.push(`user:${user.id}`);
+    if (user.email) keys.push(`email:${user.email.toLowerCase()}`);
+    return keys;
+  }
+
+  function resolveFirstName(user, explicitName, isGuest) {
+    if (isGuest) return 'Guest';
+    const metadata = user?.user_metadata || {};
+    return normalizeFirstName(metadata.full_name)
+      || normalizeFirstName(metadata.name)
+      || normalizeFirstName(explicitName)
+      || getEmailFirstName(user?.email)
+      || 'Guest';
+  }
+
+  function persistIdentityProfile(user, explicitName, isGuest) {
+    const keys = getIdentityKeys(user, isGuest);
+    if (!keys.length) return { firstName: 'Guest', isReturningUser: false };
+    const profiles = readIdentityProfiles();
+    const firstName = resolveFirstName(user, explicitName, isGuest);
+    let isReturningUser = false;
+    keys.forEach((key) => {
+      if (profiles[key]?.firstName) isReturningUser = true;
+      profiles[key] = {
+        firstName,
+        isReturningUser: true,
+        updatedAt: new Date().toISOString()
+      };
+    });
+    writeIdentityProfiles(profiles);
+    return { firstName, isReturningUser };
+  }
+
+  function getIdentityProfile(user, isGuest) {
+    const profiles = readIdentityProfiles();
+    const keys = getIdentityKeys(user, isGuest);
+    for (const key of keys) {
+      if (profiles[key]?.firstName) {
+        return {
+          firstName: profiles[key].firstName,
+          isReturningUser: !!profiles[key].isReturningUser
+        };
+      }
+    }
+    return {
+      firstName: resolveFirstName(user, '', isGuest),
+      isReturningUser: false
+    };
+  }
+
   function setShellVisible(isVisible) {
     document.querySelectorAll('.shell-only').forEach((el) => {
       el.style.display = isVisible ? '' : 'none';
@@ -95,27 +181,28 @@
     const signoutBtn = document.getElementById('account-signout-btn');
     const userLabel = document.getElementById('account-user-label');
     const actionLabel = document.getElementById('account-action-label');
+    const profile = getIdentityProfile(user, isGuest);
     if (user) {
       state.guestMode = false;
       if (accountMenu) accountMenu.style.display = 'flex';
-      if (profileBtn) profileBtn.setAttribute('title', user.email || 'Profile');
+      if (profileBtn) profileBtn.setAttribute('title', `Hi, ${profile.firstName}`);
       if (signoutBtn) {
         signoutBtn.setAttribute('title', 'Sign out');
         signoutBtn.classList.remove('guest-login-trigger');
       }
-      if (userLabel) userLabel.textContent = user.email || 'Signed in';
+      if (userLabel) userLabel.textContent = `Hi, ${profile.firstName}${profile.isReturningUser ? ' • Welcome back' : ''}`;
       if (actionLabel) actionLabel.textContent = 'Logout';
       return;
     }
     if (isGuest) {
       state.guestMode = true;
       if (accountMenu) accountMenu.style.display = 'flex';
-      if (profileBtn) profileBtn.setAttribute('title', 'Profile');
+      if (profileBtn) profileBtn.setAttribute('title', 'Guest');
       if (signoutBtn) {
         signoutBtn.setAttribute('title', 'Login');
         signoutBtn.classList.add('guest-login-trigger');
       }
-      if (userLabel) userLabel.textContent = 'Guest mode';
+      if (userLabel) userLabel.textContent = 'Hi, Guest';
       if (actionLabel) actionLabel.textContent = 'Login';
       return;
     }
@@ -419,8 +506,9 @@
     }
   }
 
-  async function signUpWithEmail(email, password) {
+  async function signUpWithEmail(email, password, fullName) {
     if (!supabase) throw bootError || new Error('Supabase is not configured.');
+    const metadata = normalizeFirstName(fullName) ? { full_name: fullName.trim(), name: fullName.trim() } : undefined;
     const response = await fetch(`${CONFIG.supabaseUrl}/auth/v1/signup`, {
       method: 'POST',
       headers: {
@@ -428,7 +516,7 @@
         Authorization: `Bearer ${CONFIG.supabaseAnonKey}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email, password, data: metadata })
     });
 
     const payload = await response.json();
@@ -502,6 +590,7 @@
   function continueAsGuest() {
     state.guestMode = true;
     setResumeMode('guest');
+    persistIdentityProfile(null, 'Guest', true);
     renderAuthState(null, true);
     renderSaveStatus('saved', 'Guest progress saves in this browser');
     openAnalyzerWithNotice('info', 'Guest Mode', 'Opening your analyzer in this browser...', getSavedStep(), 1000);
@@ -539,6 +628,7 @@
         'Email sign in is taking too long. Please try again.'
       );
       if (result.error) throw result.error;
+      persistIdentityProfile({ email }, '', false);
       if (!redirectWithEmailTokens(result, 'Signed In', 'Opening your analyzer...')) {
         throw new Error('Email sign in succeeded, but the session could not be started.');
       }
@@ -551,6 +641,7 @@
   document.getElementById('email-signup-btn')?.addEventListener('click', async () => {
     try {
       setAuthButtonsBusy('signup');
+      const fullName = '';
       const email = document.getElementById('email-input').value.trim();
       const password = document.getElementById('password-input').value;
       if (!email || !password) {
@@ -558,10 +649,11 @@
       }
       showTopNotice('info', 'Creating Account', 'Setting up your account...');
       const result = await withAuthTimeout(
-        () => signUpWithEmail(email, password),
+        () => signUpWithEmail(email, password, fullName),
         'Account creation is taking too long. Please try again.'
       );
       if (result.error) throw result.error;
+      persistIdentityProfile({ email, user_metadata: { full_name: fullName, name: fullName } }, fullName, false);
 
       if (result.data?.tokens?.access_token) {
         if (!redirectWithEmailTokens(result, 'Account Created', 'Opening your analyzer...')) {
@@ -597,13 +689,15 @@
     }
   });
 
-  document.getElementById('account-profile-btn')?.addEventListener('click', () => {
+  document.getElementById('account-profile-btn')?.addEventListener('click', async () => {
     const menu = document.getElementById('account-menu');
     const trigger = document.getElementById('account-profile-btn');
-    if (!menu || !trigger) return;
-    const willOpen = !menu.classList.contains('open');
-    menu.classList.toggle('open', willOpen);
-    trigger.setAttribute('aria-expanded', String(willOpen));
+    if (menu) menu.classList.remove('open');
+    if (trigger) trigger.setAttribute('aria-expanded', 'true');
+    try {
+      await saveState();
+    } catch (error) {}
+    goToStep('profile');
   });
 
   document.getElementById('password-toggle-btn')?.addEventListener('click', () => {
@@ -680,6 +774,7 @@ document.addEventListener('keydown', (event) => {
   if (supabase) {
     supabase.auth.onAuthStateChange(async (event, session) => {
       state.session = session ?? null;
+      if (session?.user) persistIdentityProfile(session.user, '', false);
 
       if (event === 'SIGNED_IN' && session?.user) {
         setResumeMode('account');
@@ -716,6 +811,7 @@ document.addEventListener('keydown', (event) => {
     const resumeMode = getResumeMode();
     if (session?.user) {
       state.guestMode = false;
+      persistIdentityProfile(session.user, '', false);
       setResumeMode('account');
       renderAuthState(session.user, false);
       renderSaveStatus('saved', 'Cloud sync active');
@@ -799,6 +895,55 @@ window.PathwiseApp = {
     window.PathwiseSupabaseReady.then((api) => api.showIntro());
   }
 };
+
+async function buildProfilePage() {
+  const title = document.getElementById('profile-page-title');
+  const subtitle = document.getElementById('profile-page-subtitle');
+  const modeValue = document.getElementById('profile-mode-value');
+  const roleValue = document.getElementById('profile-role-value');
+  const skillsValue = document.getElementById('profile-skills-value');
+  const scoreValue = document.getElementById('profile-score-value');
+  const progressCopy = document.getElementById('profile-progress-copy');
+  const topSkills = document.getElementById('profile-top-skills');
+  if (!title || !subtitle || !modeValue || !roleValue || !skillsValue || !scoreValue || !progressCopy || !topSkills) return;
+
+  const api = await window.PathwiseSupabaseReady;
+  const sessionUser = api.getSession()?.user || null;
+  const storedProgress = await api.getProgress();
+  const profileRole = storedProgress?.selected_role && ROLES[storedProgress.selected_role]
+    ? storedProgress.selected_role
+    : (selectedRole && ROLES[selectedRole] ? selectedRole : '');
+  const profileSkills = Array.isArray(storedProgress?.skills) && storedProgress.skills.length
+    ? storedProgress.skills
+    : skills;
+  const profileScore = storedProgress?.score ?? (lastResults ? lastResults.score : null);
+  const label = document.getElementById('account-user-label')?.textContent?.trim() || 'Pathwise User';
+  const score = profileScore !== null ? `${profileScore}%` : '—';
+  const roleLabel = profileRole ? getDisplayRoleName(profileRole) : 'Not selected';
+
+  title.textContent = label;
+  subtitle.textContent = sessionUser
+    ? 'Your progress is connected to your account and ready whenever you come back.'
+    : 'You are currently using guest mode in this browser.';
+  modeValue.textContent = sessionUser ? 'Cloud' : 'Guest mode';
+  roleValue.textContent = roleLabel;
+  skillsValue.textContent = String(profileSkills.length);
+  scoreValue.textContent = score;
+  progressCopy.textContent = profileScore !== null && profileRole
+    ? `You are tracking ${roleLabel} with ${profileSkills.length} saved skills and a readiness score of ${score}.`
+    : profileSkills.length && profileRole
+    ? `You already have ${profileSkills.length} saved skills for ${roleLabel}. Run an analysis to generate your readiness report.`
+    : 'Start by choosing a role and adding your current skills to build your Pathwise profile.';
+  topSkills.innerHTML = profileSkills.length
+    ? profileSkills.slice(0, 8).map((skill) => `<span class="profile-tag">${escapeHTML(skill.name)}</span>`).join('')
+    : '<span class="profile-empty-note">No saved skills yet.</span>';
+
+  const signoutBtn = document.getElementById('profile-page-signout-btn');
+  if (signoutBtn) {
+    signoutBtn.textContent = sessionUser ? 'Logout' : 'Login';
+    signoutBtn.classList.toggle('profile-login-btn', !sessionUser);
+  }
+}
 /* ═══════════════════════════════════════════
    DATA
 ═══════════════════════════════════════════ */
@@ -818,21 +963,21 @@ const ROLES = {
       { name: "Communication", weight: 3, category: "Soft Skills" },
     ]
   },
-  "Business Analyst": {
-    icon: "📈",
-    scope: "Business analysts connect business goals with product and process decisions. The role focuses on gathering requirements, mapping workflows, identifying inefficiencies, and turning business problems into clear solution plans for teams.",
-    outlook: "Great fit for consulting, enterprise systems, operations improvement, and strategy-heavy product roles.",
+  "SAP Consultant": {
+    icon: "🏢",
+    scope: "SAP consultants help organizations implement and optimize enterprise workflows inside SAP systems. The role centers on business process understanding, SAP module configuration, stakeholder alignment, and guiding digital transformation projects from requirement to rollout.",
+    outlook: "Strong fit for enterprise consulting, ERP implementation teams, process transformation, and large-scale business systems roles.",
     skills: [
-      { name: "Requirements Gathering", weight: 5, category: "Analysis" },
-      { name: "Business Process Mapping", weight: 5, category: "Analysis" },
-      { name: "Stakeholder Communication", weight: 5, category: "Communication" },
-      { name: "Excel / Google Sheets", weight: 4, category: "Tools" },
-      { name: "SQL", weight: 4, category: "Data" },
-      { name: "Data Analysis", weight: 4, category: "Data" },
-      { name: "Documentation & Reporting", weight: 4, category: "Documentation" },
-      { name: "User Stories / BRDs / FRDs", weight: 4, category: "Documentation" },
-      { name: "Process Improvement", weight: 3, category: "Strategy" },
-      { name: "Power BI / Tableau", weight: 3, category: "Tools" }
+      { name: "SAP ERP Modules (FI/CO/MM/SD)", weight: 5, category: "SAP Core" },
+      { name: "SAP S/4HANA", weight: 5, category: "SAP Core" },
+      { name: "SAP Configuration & Customising", weight: 5, category: "Implementation" },
+      { name: "Business Process Analysis", weight: 5, category: "Analysis" },
+      { name: "SAP ABAP (Basics)", weight: 3, category: "Technical" },
+      { name: "SAP Fiori / UI5", weight: 3, category: "User Experience" },
+      { name: "Data Migration (LSMW/BAPI)", weight: 4, category: "Implementation" },
+      { name: "Integration (SAP PI/PO / BTP)", weight: 4, category: "Integration" },
+      { name: "Project Management", weight: 3, category: "Delivery" },
+      { name: "Stakeholder Communication", weight: 4, category: "Communication" }
     ]
   },
   "Frontend Developer": {
@@ -852,20 +997,20 @@ const ROLES = {
     ]
   },
   "Software Developer": {
-    icon: "💻",
-    scope: "Software developers solve broader engineering problems across features, systems, and internal tools. This path leans on programming fundamentals, clean code, testing, and the ability to build reliable software end to end.",
-    outlook: "Good general path for product engineering, application development, and broad SWE roles.",
+    icon: "🌐",
+    scope: "Network administrators keep business systems connected, secure, and stable across LAN, WAN, servers, users, and remote access. The role centers on configuring infrastructure, maintaining core services, resolving incidents fast, and preventing outages before they spread.",
+    outlook: "Strong fit for IT operations, enterprise infrastructure, helpdesk escalation, NOC, and internal systems administration roles.",
     skills: [
-      { name: "Data Structures & Algorithms", weight: 5, category: "CS Fundamentals" },
-      { name: "Object-Oriented Programming", weight: 5, category: "CS Fundamentals" },
-      { name: "Python / Java / C++", weight: 5, category: "Programming" },
-      { name: "Git / Version Control", weight: 4, category: "Tools" },
-      { name: "REST APIs", weight: 4, category: "Architecture" },
-      { name: "Unit Testing", weight: 4, category: "Quality" },
-      { name: "SQL / Databases", weight: 3, category: "Databases" },
-      { name: "CI/CD Pipelines", weight: 3, category: "DevOps" },
-      { name: "System Design", weight: 4, category: "Architecture" },
-      { name: "Code Review", weight: 3, category: "Collaboration" },
+      { name: "TCP/IP & Subnetting", weight: 5, category: "Networking Core" },
+      { name: "Routing & Switching", weight: 5, category: "Networking Core" },
+      { name: "DNS / DHCP", weight: 5, category: "Infrastructure Services" },
+      { name: "Windows Server Administration", weight: 4, category: "Systems" },
+      { name: "Linux Administration", weight: 4, category: "Systems" },
+      { name: "Active Directory & Group Policy", weight: 4, category: "Identity" },
+      { name: "Firewall Configuration", weight: 4, category: "Security" },
+      { name: "Network Monitoring & Troubleshooting", weight: 5, category: "Operations" },
+      { name: "VPN / Remote Access", weight: 3, category: "Connectivity" },
+      { name: "PowerShell / Bash Scripting", weight: 3, category: "Automation" },
     ]
   },
   "Backend Developer": {
@@ -884,21 +1029,21 @@ const ROLES = {
       { name: "System Design", weight: 4, category: "Architecture" },
     ]
   },
-  "Data Engineer": {
-    icon: "🛠️",
-    scope: "Data engineers build the pipelines and infrastructure that move, transform, and serve reliable data. The role centers on ETL/ELT workflows, warehousing, orchestration, modeling, and keeping analytics systems trustworthy at scale.",
-    outlook: "Strong path for analytics engineering, data platform teams, BI infrastructure, and ML data pipelines.",
+  "Product Manager": {
+    icon: "🧭",
+    scope: "Product managers decide what to build, why it matters, and how to align teams around delivery. The role focuses on customer problems, prioritization, roadmapping, metrics, and balancing business goals with user needs.",
+    outlook: "Great fit for product teams, startups, digital platforms, and strategy-heavy tech roles that need clear ownership of product direction.",
     skills: [
-      { name: "SQL", weight: 5, category: "Databases" },
-      { name: "Python", weight: 5, category: "Programming" },
-      { name: "ETL / ELT Pipelines", weight: 5, category: "Data Pipelines" },
-      { name: "Data Warehousing", weight: 5, category: "Storage" },
-      { name: "Apache Spark", weight: 4, category: "Big Data" },
-      { name: "Airflow / Orchestration", weight: 4, category: "Workflow" },
-      { name: "Data Modeling", weight: 4, category: "Architecture" },
-      { name: "Cloud Data Platforms", weight: 4, category: "Cloud" },
-      { name: "DBT / Transformation Tools", weight: 3, category: "Transformation" },
-      { name: "Data Quality & Validation", weight: 3, category: "Reliability" }
+      { name: "Roadmapping", weight: 5, category: "Strategy" },
+      { name: "Stakeholder Management", weight: 5, category: "Communication" },
+      { name: "Data Analysis / Metrics", weight: 4, category: "Analytics" },
+      { name: "Agile / Scrum", weight: 4, category: "Delivery" },
+      { name: "User Research", weight: 4, category: "Discovery" },
+      { name: "Product Sense", weight: 4, category: "Strategy" },
+      { name: "Prioritization", weight: 4, category: "Strategy" },
+      { name: "A/B Testing", weight: 3, category: "Experimentation" },
+      { name: "Competitive Research", weight: 3, category: "Market" },
+      { name: "PRD / Documentation", weight: 3, category: "Documentation" }
     ]
   },
   "Machine Learning Engineer": {
@@ -1053,6 +1198,28 @@ const SCORE_COLORS = [
 // 3-level system: 1=Beginner, 2=Intermediate, 3=Expert
 const LEVEL_LABELS = { 1: "Beginner", 2: "Intermediate", 3: "Expert" };
 const LEVEL_CSS    = { 1: "lvl-beginner", 2: "lvl-intermediate", 3: "lvl-expert" };
+const UI_STORAGE_KEYS = {
+  step: 'pw_last_step',
+  activeSection: 'activeSection'
+};
+const ROLE_LABELS = {
+  "Cybersecurity": "Cybersecurity Analyst",
+  "Software Developer": "Network Administrator",
+  "Data Engineer": "Network Administrator",
+  "Business Analyst": "SAP Consultant"
+};
+const SECTION_IDS = [
+  'setup-instruction-banner',
+  'role-selection-card',
+  'skill-entry-card',
+  'score-hero-section',
+  'insights-section',
+  'action-summary-card',
+  'skill-simulator',
+  'roadmap-section',
+  'learn-resources-section',
+  'portfolio-projects-block'
+];
 
 /* ═══ STATE ═══ */
 let selectedRole = "Data Analyst";
@@ -1060,6 +1227,20 @@ let skills = [];
 let editId = null;
 let lastResults = null;
 let highlightedIndex = -1;
+let sectionTrackTicking = false;
+
+function getDisplayRoleName(roleName) {
+  return ROLE_LABELS[roleName] || roleName;
+}
+
+function escapeHTML(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
 
 /* ═══ HELPERS ═══ */
 function getScoreInfo(s) { return SCORE_COLORS.find(x => s < x.max) || SCORE_COLORS[SCORE_COLORS.length - 1]; }
@@ -1077,7 +1258,7 @@ function isValidStepName(name) {
 
 function getSavedStep() {
   try {
-    const saved = localStorage.getItem('pw_last_step');
+    const saved = localStorage.getItem(UI_STORAGE_KEYS.step);
     return isValidStepName(saved) ? saved : 'setup';
   } catch (error) {
     return 'setup';
@@ -1087,8 +1268,65 @@ function getSavedStep() {
 function persistStep(step) {
   if (!isValidStepName(step)) return;
   try {
-    localStorage.setItem('pw_last_step', step);
+    localStorage.setItem(UI_STORAGE_KEYS.step, step);
   } catch (error) {}
+}
+
+function persistActiveSection(sectionId) {
+  if (!sectionId) return;
+  try {
+    localStorage.setItem(UI_STORAGE_KEYS.activeSection, sectionId);
+  } catch (error) {}
+}
+
+function getSavedActiveSection() {
+  try {
+    return localStorage.getItem(UI_STORAGE_KEYS.activeSection) || '';
+  } catch (error) {
+    return '';
+  }
+}
+
+function getTrackableSections(stepName) {
+  return SECTION_IDS
+    .map((id) => document.getElementById(id))
+    .filter((el) => el && el.closest(`#page-${stepName}`));
+}
+
+function getVisibleSectionId(stepName) {
+  const sections = getTrackableSections(stepName);
+  if (!sections.length) return '';
+  let best = sections[0];
+  let bestDistance = Number.POSITIVE_INFINITY;
+  sections.forEach((section) => {
+    const rect = section.getBoundingClientRect();
+    if (rect.height <= 0 || rect.bottom < 0 || rect.top > window.innerHeight) return;
+    const distance = Math.abs(rect.top - 120);
+    if (distance < bestDistance) {
+      bestDistance = distance;
+      best = section;
+    }
+  });
+  return best?.id || '';
+}
+
+function recordCurrentSection() {
+  const activePage = document.querySelector('.page.active');
+  if (!activePage) return;
+  const stepName = activePage.id.replace('page-', '');
+  const sectionId = getVisibleSectionId(stepName);
+  if (sectionId) persistActiveSection(sectionId);
+}
+
+function restorePersistedSection(stepName) {
+  const savedSectionId = getSavedActiveSection();
+  if (!savedSectionId) return;
+  const el = document.getElementById(savedSectionId);
+  if (!el || !el.closest(`#page-${stepName}`)) return;
+  requestAnimationFrame(() => {
+    const top = window.scrollY + el.getBoundingClientRect().top - 18;
+    window.scrollTo({ top: Math.max(0, top), behavior: 'instant' });
+  });
 }
 
 function renderHeaderPage(name) {
@@ -1103,7 +1341,8 @@ function renderHeaderPage(name) {
   const labels = {
     setup: 'Setup',
     analysis: 'Analysis',
-    action: 'Action Plan'
+    action: 'Action Plan',
+    profile: 'Profile'
   };
   el.textContent = labels[name] || 'Setup';
 }
@@ -1128,7 +1367,7 @@ function goToStep(name) {
   const current = document.querySelector('.page.active');
   const next    = document.getElementById('page-' + name);
   if (!next) return;
-  persistStep(name);
+  if (isValidStepName(name)) persistStep(name);
   renderHeaderPage(name);
 
   if (current && current !== next) {
@@ -1152,19 +1391,25 @@ function goToStep(name) {
   }
 
   // Update stepper state immediately
-  const currentIdx = STEP_ORDER.indexOf(name);
-  STEP_ORDER.forEach((step, idx) => {
-    const btn = document.getElementById('step-' + step);
-    if (!btn) return;
-    btn.classList.remove('active', 'done');
-    if (idx < currentIdx)  btn.classList.add('done');
-    if (idx === currentIdx) btn.classList.add('active');
-  });
-  document.getElementById('step-analysis').disabled = !lastResults;
-  document.getElementById('step-action').disabled   = !lastResults;
+  if (isValidStepName(name)) {
+    const currentIdx = STEP_ORDER.indexOf(name);
+    STEP_ORDER.forEach((step, idx) => {
+      const btn = document.getElementById('step-' + step);
+      if (!btn) return;
+      btn.classList.remove('active', 'done');
+      if (idx < currentIdx)  btn.classList.add('done');
+      if (idx === currentIdx) btn.classList.add('active');
+    });
+    document.getElementById('step-analysis').disabled = !lastResults;
+    document.getElementById('step-action').disabled   = !lastResults;
+  }
 }
 
 function _afterStepChange(name) {
+  recordCurrentSection();
+  if (name === 'profile') {
+    buildProfilePage();
+  }
   if (name === 'analysis' && lastResults) {
     animateResults(lastResults.score);
     setTimeout(triggerRevealSequence, 60);
@@ -1207,7 +1452,7 @@ function renderDropdown(data) {
   } else {
     let html = '', idx = 0;
     if (roleItems.length > 0) {
-      html += '<div class="combo-group-label">For ' + selectedRole + '</div>';
+      html += '<div class="combo-group-label">For ' + getDisplayRoleName(selectedRole) + '</div>';
       html += roleItems.map(item =>
         '<div class="combo-option combo-role-skill" data-value="' + item + '" data-index="' + (idx++) + '">' + item + '</div>'
       ).join('');
@@ -1302,7 +1547,7 @@ function renderRoles() {
   Object.entries(ROLES).forEach(([name, data]) => {
     const btn = document.createElement('button');
     btn.className = 'role-btn' + (selectedRole === name ? ' active' : '');
-    btn.innerHTML = '<div class="role-name">' + name + '</div><div class="role-count">' + data.skills.length + ' skills</div>';
+    btn.innerHTML = '<div class="role-name">' + getDisplayRoleName(name) + '</div><div class="role-count">' + data.skills.length + ' skills</div>';
     btn.onclick = () => { selectedRole = name; renderRoles(); renderRoleScope(); renderRequiredSkills(); resetResults(); saveState(); };
     grid.appendChild(btn);
   });
@@ -1314,7 +1559,7 @@ function renderRoleScope() {
   const outlook = document.getElementById('role-scope-outlook');
   const role = ROLES[selectedRole];
   if (!title || !copy || !outlook || !role) return;
-  title.textContent = selectedRole;
+  title.textContent = getDisplayRoleName(selectedRole);
   copy.textContent = role.scope || '';
   outlook.textContent = role.outlook || '';
 }
@@ -1469,8 +1714,8 @@ function loadState() {
   } catch(e) {}
 }
 
-function computeResults() {
-  const role = ROLES[selectedRole];
+function computeResultsForRole(roleName, userSkills = skills) {
+  const role = ROLES[roleName];
   const LEVEL_MULT  = { 1: 0.30, 2: 0.65, 3: 1.00 };
   const TIER_FACTOR = (w) => w >= 4 ? 1.0 : w === 3 ? 1.0 : 0.6;
 
@@ -1483,7 +1728,7 @@ function computeResults() {
     const tierF = TIER_FACTOR(rs.weight);
     totalPossible += rs.weight * tierF;
 
-    const us = skills.find(u =>
+    const us = userSkills.find(u =>
       u.name.toLowerCase().includes(rs.name.toLowerCase()) ||
       rs.name.toLowerCase().includes(u.name.toLowerCase())
     );
@@ -1522,6 +1767,10 @@ function computeResults() {
   return { score, missing, matched, catResults, priorities };
 }
 
+function computeResults() {
+  return computeResultsForRole(selectedRole, skills);
+}
+
 function getProgressPayload(scoreOverride = null) {
   return {
     selected_role: selectedRole,
@@ -1535,6 +1784,9 @@ async function resetResults() {
   document.getElementById('step-analysis').disabled = true;
   document.getElementById('step-action').disabled   = true;
   document.getElementById('score-badge').style.display = 'none';
+  try {
+    localStorage.removeItem('pw_results');
+  } catch (error) {}
 }
 
 async function saveState() {
@@ -1567,7 +1819,21 @@ async function loadState() {
   try {
     const api = await window.PathwiseSupabaseReady;
     api.renderSaveStatus('saving', 'Loading progress...');
-    const progress = await api.getProgress();
+    let progress = await api.getProgress();
+    if (!progress) {
+      try {
+        const legacySkills = localStorage.getItem('pw_skills');
+        const legacyRole = localStorage.getItem('pw_role');
+        const legacyResults = localStorage.getItem('pw_results');
+        if (legacySkills || legacyRole || legacyResults) {
+          progress = {
+            selected_role: legacyRole,
+            skills: legacySkills ? JSON.parse(legacySkills) : [],
+            score: legacyResults ? JSON.parse(legacyResults)?.score ?? null : null
+          };
+        }
+      } catch (error) {}
+    }
     if (!progress) {
       api.renderSaveStatus('saved', api.getSession()?.user ? 'Cloud sync active' : 'Ready to save in this browser');
       return;
@@ -1592,6 +1858,8 @@ async function loadState() {
         const resumeStep = api.getPendingStep ? api.getPendingStep() : getSavedStep();
         if (resumeStep === 'analysis' || resumeStep === 'action') {
           goToStep(resumeStep);
+        } else {
+          restorePersistedSection('setup');
         }
       }, 0);
     }
@@ -1600,6 +1868,10 @@ async function loadState() {
     const api = await window.PathwiseSupabaseReady;
     api.renderSaveStatus('error', 'Could not load saved progress');
   }
+}
+
+function loadProgress() {
+  return loadState();
 }
 
 /* ═══ ANALYZE ═══ */
@@ -1789,7 +2061,7 @@ function buildResultsHTML({ score, missing, matched, catResults, priorities }) {
   const si = getScoreInfo(score);
   const circ = 2 * Math.PI * 60;
 
-  document.getElementById('results-role-badge').textContent = selectedRole;
+  document.getElementById('results-role-badge').textContent = getDisplayRoleName(selectedRole);
 
   const arc = document.getElementById('score-arc');
   arc.setAttribute('stroke', si.color);
@@ -1851,7 +2123,7 @@ function renderActionSummary({ score, missing, matched, catResults, priorities }
   const nextSkill = priorities.length ? priorities[0] : null;
 
   document.getElementById('action-summary-score').textContent = `${score}%`;
-  document.getElementById('action-summary-role').textContent = `${selectedRole} readiness snapshot`;
+  document.getElementById('action-summary-role').textContent = `${getDisplayRoleName(selectedRole)} readiness snapshot`;
   document.getElementById('action-summary-strength').textContent = strongestCategory ? strongestCategory.name : 'Still building';
   document.getElementById('action-summary-strength-note').textContent = strongestCategory
     ? `${strongestCategory.score}% coverage in your best category.`
@@ -1863,7 +2135,7 @@ function renderActionSummary({ score, missing, matched, catResults, priorities }
   document.getElementById('action-summary-next').textContent = nextSkill ? `Learn ${nextSkill.name}` : 'Build projects';
   document.getElementById('action-summary-next-note').textContent = nextSkill
     ? `Start with ${nextSkill.name}, then move into ${priorities[1] ? priorities[1].name : 'portfolio practice'}.`
-    : `Turn your current skills into projects for ${selectedRole}.`;
+    : `Turn your current skills into projects for ${getDisplayRoleName(selectedRole)}.`;
 }
 
 function animateResults(score) {
@@ -1965,10 +2237,11 @@ window.PathwiseSupabaseReady.then((api) => {
   if (session?.user || resumeMode === 'guest') {
     const resumeStep = api.getPendingStep ? api.getPendingStep() : getSavedStep();
     api.enterAnalyzer(resumeStep);
+    setTimeout(() => restorePersistedSection(resumeStep), 120);
   }
 });
 
-loadState();
+loadProgress();
 const addBtn = document.getElementById('add-btn');
 // mousedown: prevent default so input doesn't lose focus (blur event fires)
 addBtn.addEventListener('mousedown', e => {
@@ -1985,6 +2258,32 @@ document.addEventListener('keydown', e => {
     if (skills.length > 0) analyze();
   }
 });
+
+async function profilePageSignOut() {
+  try {
+    const api = await window.PathwiseSupabaseReady;
+    if (api.getSession()?.user) {
+      await api.signOut();
+      showTopNotice('success', 'Signed Out', 'You are back in guest mode.');
+    } else {
+      goToStep('intro');
+      showTopNotice('info', 'Login', 'Choose Google or email to sign in.');
+    }
+  } catch (error) {
+    showTopNotice('error', 'Profile Action Failed', error.message || 'Could not complete that profile action.');
+  }
+}
+
+window.profilePageSignOut = profilePageSignOut;
+
+window.addEventListener('scroll', () => {
+  if (sectionTrackTicking) return;
+  sectionTrackTicking = true;
+  requestAnimationFrame(() => {
+    recordCurrentSection();
+    sectionTrackTicking = false;
+  });
+}, { passive: true });
 
 renderRoles();
 renderRoleScope();
@@ -2016,6 +2315,26 @@ const PORTFOLIO_PROJECTS = {
       why: "SQL proficiency is tested in virtually every data analyst interview. A public GitHub repo of well-commented SQL shows both technical and communication skills."
     }
   ],
+  "SAP Consultant": [
+    {
+      title: "SAP Business Process Implementation Blueprint",
+      skills: ["SAP ERP Modules (FI/CO/MM/SD)", "Business Process Analysis", "SAP Configuration & Customising", "Stakeholder Communication"],
+      build: "Pick one real business flow such as procure-to-pay or order-to-cash and document the full SAP solution blueprint. Map business requirements, module fit, configuration decisions, user roles, test cases, and rollout considerations in a consultant-style deck or PDF.",
+      why: "SAP consulting interviews often test process clarity more than raw coding. A polished blueprint shows you can think like a consultant, connect business needs to SAP modules, and communicate implementation decisions clearly."
+    },
+    {
+      title: "Mini SAP Migration and Data Mapping Case Study",
+      skills: ["SAP S/4HANA", "Data Migration (LSMW/BAPI)", "Integration (SAP PI/PO / BTP)", "Project Management"],
+      build: "Create a case study around migrating legacy master data into SAP S/4HANA. Define source-to-target mappings, mock migration templates, validation checks, integration touchpoints, risk logs, and a simple project timeline.",
+      why: "Migration work is common in SAP projects. Showing that you understand cutover planning, mapping, and validation makes you look far more industry-ready than just listing SAP terms on a resume."
+    },
+    {
+      title: "SAP Fiori Workflow Prototype",
+      skills: ["SAP Fiori / UI5", "SAP ABAP (Basics)", "Stakeholder Communication"],
+      build: "Design a simple approval workflow interface such as leave approval, purchase request, or invoice validation. Mock the screens, explain the backend data flow, and document how the UI improves process efficiency for business users.",
+      why: "Enterprise teams value consultants who can bridge business users and system behavior. A Fiori-style workflow prototype proves you understand usability, process pain points, and SAP solution design together."
+    }
+  ],
   "Frontend Developer": [
     {
       title: "Personal Finance Tracker App",
@@ -2038,22 +2357,22 @@ const PORTFOLIO_PROJECTS = {
   ],
   "Software Developer": [
     {
-      title: "CLI Task Manager with Persistent Storage",
-      skills: ["Python / Java / C++", "Data Structures & Algorithms", "Unit Testing"],
-      build: "Build a command-line task manager in Python or Java. Support add/list/complete/delete commands, store tasks in a JSON file, and write unit tests for all operations. Publish on GitHub.",
-      why: "A well-tested CLI tool shows algorithmic thinking, file I/O, and software craftsmanship — all skills that come up in technical interviews at every level."
+      title: "Small Office Network Home Lab",
+      skills: ["TCP/IP & Subnetting", "Routing & Switching", "DNS / DHCP", "Firewall Configuration"],
+      build: "Design a small office network in Packet Tracer, GNS3, or EVE-NG with VLANs, DHCP scopes, DNS, routing between segments, and firewall rules. Document the topology, IP plan, and troubleshooting steps in a clear README.",
+      why: "A working network lab shows employers you understand real infrastructure, not just theory. It proves you can plan connectivity, segment traffic, and explain your design choices."
     },
     {
-      title: "REST API with Full Test Coverage",
-      skills: ["REST APIs", "Unit Testing", "SQL / Databases", "CI/CD Pipelines"],
-      build: "Build a REST API (e.g. a book tracking or recipe API) with CRUD endpoints, a SQL database, input validation, and 80%+ test coverage. Add a GitHub Actions CI pipeline that runs tests on every push.",
-      why: "APIs with tests and CI are how professional developers actually work. This project proves you understand the full development lifecycle — not just writing code."
+      title: "Active Directory + Group Policy Admin Lab",
+      skills: ["Windows Server Administration", "Active Directory & Group Policy", "DNS / DHCP"],
+      build: "Set up a Windows Server lab with a domain controller, organizational units, users, group policies, shared folders, and DNS integration. Create a short admin guide covering onboarding, password policy, and access controls.",
+      why: "AD is still a core requirement in many infrastructure roles. A clean domain lab proves you can handle user management, policy enforcement, and day-to-day enterprise admin tasks."
     },
     {
-      title: "Algorithm Visualiser",
-      skills: ["Data Structures & Algorithms", "JavaScript", "System Design"],
-      build: "Build a web page that animates sorting algorithms (bubble, merge, quicksort) and path-finding (BFS, Dijkstra) with speed controls. Implement each algorithm from scratch in JavaScript.",
-      why: "Forces deep understanding of the algorithms that come up in every technical interview. Interviewers love seeing this — it shows you can both implement and explain your work."
+      title: "Network Monitoring and Incident Dashboard",
+      skills: ["Network Monitoring & Troubleshooting", "Linux Administration", "PowerShell / Bash Scripting", "VPN / Remote Access"],
+      build: "Use tools like Zabbix, PRTG, LibreNMS, or Grafana to monitor a lab network. Add uptime checks, bandwidth alerts, interface status, and a small script for automated diagnostics or log collection. Document one incident simulation and how you resolved it.",
+      why: "Monitoring is where network admins prove their value. This project shows that you can spot failures early, investigate the root cause, and communicate remediation clearly."
     }
   ],
   "Backend Developer": [
@@ -2074,6 +2393,26 @@ const PORTFOLIO_PROJECTS = {
       skills: ["REST APIs", "Cloud Platforms", "CI/CD Pipelines", "System Design"],
       build: "Build a microservice that accepts webhook events (e.g. from Stripe) and dispatches email/SMS notifications. Use a message queue (Redis or SQS), deploy on a cloud platform, and write a clear system design doc.",
       why: "Event-driven architecture is how modern backends scale. Building and explaining this system positions you as someone who thinks beyond simple request-response patterns."
+    }
+  ],
+  "Product Manager": [
+    {
+      title: "Product Strategy Case Study for a Student App",
+      skills: ["Roadmapping", "Prioritization", "PRD / Documentation", "Stakeholder Management"],
+      build: "Pick a familiar student-facing product and create a mini product strategy pack: problem statement, user personas, roadmap, priority matrix, success metrics, and a concise PRD for one proposed feature.",
+      why: "Product interviews heavily test structured thinking and prioritization. A strong case study shows you can turn messy user needs into clear product direction and communicate it like a real PM."
+    },
+    {
+      title: "User Research to Feature Launch Simulation",
+      skills: ["User Research", "Product Sense", "Data Analysis / Metrics", "Agile / Scrum"],
+      build: "Run 5-8 lightweight interviews with students or peers about a real app problem, synthesize pain points, propose a feature, define metrics, and outline the sprint plan from discovery to launch.",
+      why: "This proves you are not guessing features. Research-backed product thinking is one of the clearest differentiators between aspiring PMs and people who just like giving opinions."
+    },
+    {
+      title: "Experimentation and Growth Dashboard",
+      skills: ["A/B Testing", "Competitive Research", "Data Analysis / Metrics"],
+      build: "Create a mock growth dashboard for a digital product, compare it to competitors, define one A/B test, and explain the decision criteria you would use based on conversion, retention, and engagement metrics.",
+      why: "Modern PM roles reward candidates who can reason with evidence. An experimentation project shows strategic thinking, market awareness, and comfort with product metrics."
     }
   ],
   "Machine Learning Engineer": [
@@ -2309,6 +2648,16 @@ const SKILL_REASONS = {
   "CI/CD Pipelines": "Automating build and deployment saves time and reduces human error. Expected in modern engineering teams.",
   "System Design": "At senior levels, you design systems, not just write code. Starting to think in systems early gives you a huge edge.",
   "Code Review": "A core part of team-based development. Good code review skills show maturity and collaborative ability.",
+  "TCP/IP & Subnetting": "Every network issue eventually comes back to IP addressing, routes, and subnets. This is the foundation of network administration.",
+  "Routing & Switching": "Switches and routers move traffic across real networks. Admins are expected to understand VLANs, trunking, routing paths, and fault isolation.",
+  "DNS / DHCP": "If DNS or DHCP breaks, everything feels broken. These services are core operational responsibilities for network teams.",
+  "Windows Server Administration": "Many enterprise environments still run on Windows infrastructure. Managing users, services, shares, and policies is a baseline skill.",
+  "Linux Administration": "Network services, monitoring tools, and infra appliances often run on Linux. Comfort on the command line makes troubleshooting much faster.",
+  "Active Directory & Group Policy": "Identity, permissions, and policy control sit at the heart of most enterprise IT environments.",
+  "Firewall Configuration": "Good firewall rules protect the network without blocking the business. This is a practical, daily infrastructure skill.",
+  "Network Monitoring & Troubleshooting": "The job is not just building networks, but keeping them healthy. Monitoring and troubleshooting separate real admins from theory-only learners.",
+  "VPN / Remote Access": "Secure remote connectivity is a standard business requirement. Admins need to configure it reliably and support users through failures.",
+  "PowerShell / Bash Scripting": "Automation saves hours of repetitive admin work and reduces configuration mistakes across large environments.",
   "Python / Node.js / Java": "Server-side languages that power the business logic of applications. Fundamental to any backend role.",
   "SQL Databases": "Relational databases store the majority of the world's structured data. Essential for any backend developer.",
   "Authentication & Security": "Security breaches are costly. Every backend developer must understand auth flows and common vulnerabilities.",
@@ -2454,28 +2803,7 @@ function buildWhySection(matched, missing, role) {
 /* ═══ CAREER PATH INSIGHTS ═══ */
 
 function scoreRoleForSkills(roleName) {
-  const role = ROLES[roleName];
-  const LEVEL_MULT2  = { 1: 0.30, 2: 0.65, 3: 1.00 };
-  const TIER_FACTOR2 = (w) => w >= 4 ? 1.0 : w === 3 ? 1.0 : 0.6;
-  let totalPossible = 0, matchedWeight = 0, missingCritical = 0, hasCritical = false;
-  role.skills.forEach(rs => {
-    const tf = TIER_FACTOR2(rs.weight);
-    totalPossible += rs.weight * tf;
-    if (rs.weight >= 4) hasCritical = true;
-    const us = skills.find(u =>
-      u.name.toLowerCase().includes(rs.name.toLowerCase()) ||
-      rs.name.toLowerCase().includes(u.name.toLowerCase())
-    );
-    if (us) {
-      matchedWeight += rs.weight * (LEVEL_MULT2[us.level] || 0.30) * tf;
-    } else if (rs.weight >= 4) {
-      missingCritical++;
-    }
-  });
-  const raw = (matchedWeight / totalPossible) * 100;
-  const penalty = missingCritical * 3;
-  const bonus = (missingCritical === 0 && hasCritical) ? 8 : 0;
-  return Math.min(100, Math.max(0, Math.round(raw - penalty + bonus)));
+  return computeResultsForRole(roleName, skills).score;
 }
 
 function buildInsights(currentRole, currentScore) {
@@ -2502,7 +2830,7 @@ function buildInsights(currentRole, currentScore) {
 
       <div class="insights-primary-body">
         <div class="insights-primary-label">Your Primary Target</div>
-        <div class="insights-primary-role">${currentRole}</div>
+        <div class="insights-primary-role">${getDisplayRoleName(currentRole)}</div>
         <div class="insights-primary-sub">
           ${currentScore >= 75
             ? "You're a strong candidate — start applying with confidence."
@@ -2526,7 +2854,7 @@ function buildInsights(currentRole, currentScore) {
         <div class="insights-adj-item">
 
           <div class="insights-adj-body">
-            <div class="insights-adj-name">${r.name}</div>
+            <div class="insights-adj-name">${getDisplayRoleName(r.name)}</div>
             <div class="insights-adj-bar-wrap">
               <div class="insights-adj-bar" data-target="${r.score}" style="background:${adjColor(r.score)}"></div>
             </div>
@@ -2987,36 +3315,36 @@ function buildAdvisor(role, score, missing, matched) {
 
   // Summary
   const summary = score >= 85
-    ? `Strong profile for <strong>${role}</strong> at ${score}% — you've covered what most hiring managers need to see.`
+    ? `Strong profile for <strong>${displayRole}</strong> at ${score}%. You've covered what most hiring managers need to see.`
     : score >= 65
     ? `Solid foundation at ${score}%, but interviewers will probe the remaining gaps.`
     : score >= 40
-    ? `At ${score}%, you're heading in the right direction but not yet competitive for most ${role} openings.`
-    : `At ${score}%, you're early in the journey — that's fine, the path forward is clear.`;
+    ? `At ${score}%, you're heading in the right direction, but not yet competitive for most ${displayRole} openings.`
+    : `At ${score}%, you're early in the journey. That's fine, and the path forward is clear.`;
 
   // Weakness
   const weakness = criticalMissing.length >= 2
-    ? `Biggest gap: <strong>${criticalMissing.slice(0,2).map(s=>s.name).join('</strong> and <strong>')}</strong>${criticalMissing.length > 2 ? ` (+${criticalMissing.length-2} more critical skills)` : ''} — these are screened first.`
+    ? `Biggest gap: <strong>${criticalMissing.slice(0,2).map(s=>s.name).join('</strong> and <strong>')}</strong>${criticalMissing.length > 2 ? ` (+${criticalMissing.length-2} more critical skills)` : ''}. These are screened first.`
     : criticalMissing.length === 1
-    ? `Key missing skill: <strong>${criticalMissing[0].name}</strong> — employers treat this as near-mandatory.`
+    ? `Key missing skill: <strong>${criticalMissing[0].name}</strong>. Employers treat this as near-mandatory.`
     : beginnerSkills.length > matched.length / 2 && matched.length > 2
-    ? `${beginnerSkills.length} skills at Beginner level — depth matters more than coverage at this stage.`
+    ? `${beginnerSkills.length} skills are still at Beginner level. Depth matters more than coverage at this stage.`
     : topPriority
-    ? `Main gap: <strong>${topPriority.name}</strong> — without it many recruiters will screen you out early.`
+    ? `Main gap: <strong>${topPriority.name}</strong>. Without it, many recruiters will screen you out early.`
     : `No critical gaps. Focus on polishing depth and portfolio quality.`;
 
   // Next step
   const nextstep = criticalMissing.length > 0
-    ? `Build a project with <strong>${criticalMissing[0].name}</strong> — a live demo beats any certificate.`
+    ? `Build a project with <strong>${criticalMissing[0].name}</strong>. A live demo beats any certificate.`
     : beginnerSkills.length > 2
     ? `Level up <strong>${(beginnerSkills.find(s=>s.weight>=4)||beginnerSkills[0]).name}</strong> to Intermediate with one real, finished project.`
     : topPriority
-    ? `Add <strong>${topPriority.name}</strong> to your portfolio this month — project first, tutorials second.`
+    ? `Add <strong>${topPriority.name}</strong> to your portfolio this month. Project first, tutorials second.`
     : `Polish your portfolio: live demos, clear READMEs, and documented decision-making.`;
 
   // Outlook
   const realistic = score >= 85
-    ? `Start applying now — 3–5 apps per week. Don't wait for 100%, it never comes.`
+    ? `Start applying now. Aim for 3–5 apps per week. Don't wait for 100%, it never comes.`
     : score >= 65
     ? `Give it 6–8 weeks on your top gaps, then apply. Network in parallel.`
     : score >= 40
@@ -4099,3 +4427,5 @@ function buildLearnResources(missing) {
 
 
 
+
+  const displayRole = getDisplayRoleName(role);

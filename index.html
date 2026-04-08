@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Pathwise — Career Readiness Analyzer</title>
+<title>Pathwise</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%231a4fc4'/%3E%3Cpath d='M20 16h15.5c9.1 0 15.5 5 15.5 13.4 0 8.8-6.4 14-16.3 14H28v12H20V16Zm8 21h6.3c5.3 0 8.4-2.2 8.4-7.1 0-4.7-3.1-6.8-8.1-6.8H28v13.9Z' fill='white'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet" />
@@ -172,9 +173,12 @@
 
   <!-- PAGE 1: SETUP -->
   <div class="page" id="page-setup">
+    <div class="setup-instruction-banner" id="setup-instruction-banner" data-section-anchor="setup-intro">
+      Select your target role → Add your skills → Click Analyze
+    </div>
     <div class="main-grid">
 
-      <div class="card">
+      <div class="card" id="role-selection-card" data-section-anchor="role-selection-card">
         <div class="card-title"><span class="icon"></span> Select Career Role</div>
         <div class="role-grid" id="role-grid"></div>
         <div class="role-scope" id="role-scope">
@@ -190,7 +194,7 @@
         <div id="required-skills" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
       </div>
 
-      <div class="card">
+      <div class="card" id="skill-entry-card" data-section-anchor="skill-entry-card">
         <div class="card-title" id="skill-card-title"><span class="icon">✦</span> Your Skills</div>
 
         <!-- Skill name combobox + level select on one row -->
@@ -271,7 +275,7 @@
     </div>
 
     <!-- Score Hero -->
-    <div class="score-hero reveal">
+    <div class="score-hero reveal" id="score-hero-section" data-section-anchor="score-hero-section">
       <div class="score-circle">
         <svg width="150" height="150" class="score-svg" viewBox="0 0 150 150">
           <circle class="score-track" cx="75" cy="75" r="60"/>
@@ -286,6 +290,7 @@
       <div>
         <div class="score-label" id="score-label">—</div>
         <p class="score-desc" id="score-desc"></p>
+        <div class="score-helper-note" id="score-helper-note">Score is calculated based on weighted industry-relevant skills</div>
         <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progress-fill"></div></div>
         <div class="progress-label"><span>0%</span><span>Readiness Score</span><span>100%</span></div>
         <div style="margin-top:8px;font-size:11px;color:var(--text2);letter-spacing:0.2px;">To reach 100%, add all role skills at Expert proficiency.</div>
@@ -299,27 +304,16 @@
       <div class="stat-box"><div class="stat-label">Readiness Score</div><div class="stat-value" id="stat-score">—</div></div>
     </div>
 
-    <!-- Career Path Insights -->
-    <div class="section-card insights-card reveal" id="insights-section" style="margin-bottom:0;">
-      <div class="section-title"><span class="s-icon">—</span> Career Path Insights</div>
-      <div id="insights-content"></div>
-    </div>
-
     <!-- Category Breakdown -->
     <div class="section-card reveal" style="margin-bottom:0;">
       <div class="section-title"><span class="s-icon">—</span> Category Breakdown</div>
       <div class="cat-grid" id="cat-grid"></div>
     </div>
 
-    <!-- Career Advisor -->
-    <div class="advisor-wrap reveal" id="advisor-wrap" style="visibility:hidden;min-height:0;max-height:0;overflow:hidden;padding:0;margin:0;">
-      <div class="advisor-header">
-        <div class="advisor-label-wrap">
-          <div class="advisor-label">Career Advisor</div>
-          <div class="advisor-name">Your Personalised Assessment</div>
-        </div>
-      </div>
-      <div class="advisor-body" id="advisor-body"></div>
+    <!-- Career Path Insights -->
+    <div class="section-card insights-card reveal" id="insights-section" style="margin-bottom:0;">
+      <div class="section-title"><span class="s-icon">—</span> Career Path Insights</div>
+      <div id="insights-content"></div>
     </div>
 
     <!-- Missing Skills + Top 3 -->
@@ -332,6 +326,17 @@
         <div class="section-title"><span class="s-icon" style="color:var(--yellow)">—</span> Top 3 to Learn Next</div>
         <div class="priority-list" id="priority-list"></div>
       </div>
+    </div>
+
+    <!-- Career Advisor -->
+    <div class="advisor-wrap reveal" id="advisor-wrap" style="visibility:hidden;min-height:0;max-height:0;overflow:hidden;padding:0;margin:0;">
+      <div class="advisor-header">
+        <div class="advisor-label-wrap">
+          <div class="advisor-label">Career Advisor</div>
+          <div class="advisor-name">Your Personalised Assessment</div>
+        </div>
+      </div>
+      <div class="advisor-body" id="advisor-body"></div>
     </div>
 
     <!-- Career Readiness Tiers -->
@@ -442,7 +447,7 @@
     </div>
 
     <!-- 1. What If I Learned (Simulator) -->
-    <div class="simulator-wrap" id="skill-simulator" style="visibility:hidden;min-height:0;max-height:0;overflow:hidden;margin:0 0 20px 0;">
+    <div class="simulator-wrap" id="skill-simulator" data-section-anchor="skill-simulator" style="visibility:hidden;min-height:0;max-height:0;overflow:hidden;margin:0 0 20px 0;">
       <div class="simulator-header">
         <div class="simulator-title">
           <div class="simulator-title-icon">+</div>
@@ -450,6 +455,7 @@
         </div>
         <button class="sim-reset-btn" onclick="simReset()">↺ Reset</button>
       </div>
+      <div class="simulator-kicker">Toggle skills to see how your score improves</div>
       <div class="simulator-subtitle">Toggle skills below and watch your score update in real time</div>
 
       <!-- Live score bar -->
@@ -492,21 +498,78 @@
     </div>
 
     <!-- 2. Skill Learning Roadmap -->
-    <div class="section-card roadmap-section reveal" style="margin-bottom:20px;">
+    <div class="section-card roadmap-section reveal" id="roadmap-section" data-section-anchor="roadmap-section" style="margin-bottom:20px;">
       <div class="section-title"><span class="s-icon" style="color:var(--accent)">—</span> Skill Learning Roadmap</div>
       <div class="roadmap-timeline" id="roadmap-timeline"></div>
     </div>
 
     <!-- 3. Where to Learn -->
-    <div class="section-card reveal" id="learn-resources-section" style="visibility:hidden;min-height:0;max-height:0;overflow:hidden;padding:0;border:none;margin:0;">
+    <div class="section-card reveal" id="learn-resources-section" data-section-anchor="learn-resources-section" style="visibility:hidden;min-height:0;max-height:0;overflow:hidden;padding:0;border:none;margin:0;">
       <div class="section-title"><span class="s-icon" style="color:var(--accent2)">—</span> Where to Learn — Critical Skills</div>
       <div id="learn-resources-list"></div>
     </div>
 
     <!-- 4. Suggested Portfolio Projects -->
-    <div id="portfolio-projects-block" class="reveal" style="visibility:hidden;min-height:0;max-height:0;overflow:hidden;margin:0;"></div>
+    <div id="portfolio-projects-block" class="reveal" data-section-anchor="portfolio-projects-block" style="visibility:hidden;min-height:0;max-height:0;overflow:hidden;margin:0;"></div>
 
   </div><!-- end page-action -->
+
+  <div class="page" id="page-profile">
+    <div class="results-page-header">
+      <div class="results-page-title">Your Profile</div>
+      <div class="results-actions">
+        <button class="btn-back" type="button" onclick="goToStep(lastResults ? 'analysis' : 'setup')">Back</button>
+      </div>
+    </div>
+
+          <div class="profile-hero-card">
+            <div class="profile-hero-copy">
+              <div class="profile-hero-label">Account Overview</div>
+              <div class="profile-hero-title" id="profile-page-title">Pathwise User</div>
+        <div class="profile-hero-subtitle" id="profile-page-subtitle">Your saved progress and next steps live here.</div>
+      </div>
+      <button class="btn profile-signout-btn" id="profile-page-signout-btn" type="button" onclick="profilePageSignOut()">Logout</button>
+    </div>
+
+    <div class="profile-grid">
+      <div class="section-card profile-summary-card">
+        <div class="section-title"><span class="s-icon">—</span> Snapshot</div>
+        <div class="profile-stat-grid">
+          <div class="profile-stat-item">
+            <div class="profile-stat-label">Mode</div>
+            <div class="profile-stat-value" id="profile-mode-value">Guest</div>
+          </div>
+          <div class="profile-stat-item">
+            <div class="profile-stat-label">Target Role</div>
+            <div class="profile-stat-value profile-stat-value-sm" id="profile-role-value">Not selected</div>
+          </div>
+          <div class="profile-stat-item">
+            <div class="profile-stat-label">Skills Added</div>
+            <div class="profile-stat-value" id="profile-skills-value">0</div>
+          </div>
+          <div class="profile-stat-item">
+            <div class="profile-stat-label">Readiness</div>
+            <div class="profile-stat-value" id="profile-score-value">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-card profile-actions-card">
+        <div class="section-title"><span class="s-icon">—</span> Quick Actions</div>
+        <div class="profile-action-list">
+          <button class="profile-action-btn" type="button" onclick="goToStep('setup')">Update your role and skills</button>
+          <button class="profile-action-btn" type="button" onclick="goToStep(lastResults ? 'analysis' : 'setup')">Open readiness report</button>
+          <button class="profile-action-btn" type="button" onclick="goToStep(lastResults ? 'action' : 'setup')">View action plan</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card profile-progress-card">
+      <div class="section-title"><span class="s-icon">—</span> Progress Summary</div>
+      <div class="profile-progress-copy" id="profile-progress-copy">Add a target role and skills to start building your path.</div>
+      <div class="profile-tags" id="profile-top-skills"></div>
+    </div>
+  </div>
 
 </div>
 
