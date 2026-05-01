@@ -689,13 +689,14 @@
     }
   });
 
-  document.getElementById('account-profile-btn')?.addEventListener('click', async () => {
+  document.getElementById('account-profile-btn')?.addEventListener('click', () => {
     const menu = document.getElementById('account-menu');
     const trigger = document.getElementById('account-profile-btn');
     if (menu) menu.classList.remove('open');
     if (trigger) trigger.setAttribute('aria-expanded', 'true');
     try {
-      await saveState();
+      const maybeSave = saveState();
+      if (maybeSave?.catch) maybeSave.catch(() => {});
     } catch (error) {}
     goToStep('profile');
   });
@@ -4429,3 +4430,4 @@ function buildLearnResources(missing) {
 
 
   const displayRole = getDisplayRoleName(role);
+
