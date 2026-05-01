@@ -911,13 +911,17 @@ async function buildProfilePage() {
   const api = await window.PathwiseSupabaseReady;
   const sessionUser = api.getSession()?.user || null;
   const storedProgress = await api.getProgress();
-  const profileRole = storedProgress?.selected_role && ROLES[storedProgress.selected_role]
+  const liveRole = selectedRole && ROLES[selectedRole] ? selectedRole : '';
+  const liveSkills = Array.isArray(skills) ? skills : [];
+  const liveScore = lastResults ? lastResults.score : null;
+
+  const profileRole = liveRole || (storedProgress?.selected_role && ROLES[storedProgress.selected_role]
     ? storedProgress.selected_role
-    : (selectedRole && ROLES[selectedRole] ? selectedRole : '');
-  const profileSkills = Array.isArray(storedProgress?.skills) && storedProgress.skills.length
-    ? storedProgress.skills
-    : skills;
-  const profileScore = storedProgress?.score ?? (lastResults ? lastResults.score : null);
+    : '');
+  const profileSkills = liveSkills.length
+    ? liveSkills
+    : (Array.isArray(storedProgress?.skills) ? storedProgress.skills : []);
+  const profileScore = liveScore !== null ? liveScore : (storedProgress?.score ?? null);
   const label = document.getElementById('account-user-label')?.textContent?.trim() || 'Pathwise User';
   const score = profileScore !== null ? `${profileScore}%` : '—';
   const roleLabel = profileRole ? getDisplayRoleName(profileRole) : 'Not selected';
@@ -4430,4 +4434,5 @@ function buildLearnResources(missing) {
 
 
   const displayRole = getDisplayRoleName(role);
+
 
