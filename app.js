@@ -911,17 +911,46 @@ async function buildProfilePage() {
   const api = await window.PathwiseSupabaseReady;
   const sessionUser = api.getSession()?.user || null;
   const storedProgress = await api.getProgress();
+  const directGuestProgress = !sessionUser && typeof api.readGuestProgress === 'function'
+    ? api.readGuestProgress()
+    : null;
+
+  let legacyProgress = null;
+  try {
+    const legacySkills = localStorage.getItem('pw_skills');
+    const legacyRole = localStorage.getItem('pw_role');
+    const legacyResults = localStorage.getItem('pw_results');
+    if (legacySkills || legacyRole || legacyResults) {
+      legacyProgress = {
+        selected_role: legacyRole || '',
+        skills: legacySkills ? JSON.parse(legacySkills) : [],
+        score: legacyResults ? (JSON.parse(legacyResults)?.score ?? null) : null
+      };
+    }
+  } catch (error) {}
+
   const liveRole = selectedRole && ROLES[selectedRole] ? selectedRole : '';
   const liveSkills = Array.isArray(skills) ? skills : [];
   const liveScore = lastResults ? lastResults.score : null;
 
-  const profileRole = liveRole || (storedProgress?.selected_role && ROLES[storedProgress.selected_role]
-    ? storedProgress.selected_role
+  const fallbackProgress = storedProgress || directGuestProgress || legacyProgress || null;
+  const profileRole = liveRole || (fallbackProgress?.selected_role && ROLES[fallbackProgress.selected_role]
+    ? fallbackProgress.selected_role
     : '');
   const profileSkills = liveSkills.length
     ? liveSkills
-    : (Array.isArray(storedProgress?.skills) ? storedProgress.skills : []);
-  const profileScore = liveScore !== null ? liveScore : (storedProgress?.score ?? null);
+    : (Array.isArray(fallbackProgress?.skills) ? fallbackProgress.skills : []);
+
+  let computedScore = null;
+  if (profileRole && profileSkills.length) {
+    try {
+      computedScore = computeResultsForRole(profileRole, profileSkills).score;
+    } catch (error) {}
+  }
+
+  const profileScore = liveScore !== null
+    ? liveScore
+    : (computedScore !== null ? computedScore : (fallbackProgress?.score ?? null));
   const label = document.getElementById('account-user-label')?.textContent?.trim() || 'Pathwise User';
   const score = profileScore !== null ? `${profileScore}%` : '—';
   const roleLabel = profileRole ? getDisplayRoleName(profileRole) : 'Not selected';
@@ -4434,5 +4463,6 @@ function buildLearnResources(missing) {
 
 
   const displayRole = getDisplayRoleName(role);
+
 
 
