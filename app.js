@@ -2077,10 +2077,12 @@ async function analyze() {
     });
   }
 
+  // Lock the app onto the analysis step before any async restore/save paths run.
+  persistStep('analysis');
+  goToStep('analysis');
+
   // Persist results explicitly (only after user-triggered analysis)
   saveResults({ score, missing, matched, catResults, priorities });
-
-  goToStep('analysis');
   setTimeout(triggerRevealSequence, 200);
 
   // Reset bar + log for next time
@@ -4463,6 +4465,7 @@ function buildLearnResources(missing) {
 
 
   const displayRole = getDisplayRoleName(role);
+
 
 
 
