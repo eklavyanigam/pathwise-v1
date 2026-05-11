@@ -78,7 +78,7 @@
         </div>
         <div class="intro-metrics">
           <div class="intro-metric-card">
-            <div class="intro-metric-value">19+</div>
+            <div class="intro-metric-value">18+</div>
             <div class="intro-metric-label">Role Tracks</div>
           </div>
           <div class="intro-metric-card">
@@ -151,20 +151,28 @@
         <div class="header-context-title" id="header-page-title">Setup</div>
       </div>
     </div>
-    <div class="account-menu" id="account-menu" style="display:none;">
-      <button class="account-trigger account-profile-trigger" id="account-profile-btn" type="button" aria-label="Profile" aria-expanded="false">
+    <div class="header-utility shell-only">
+      <button class="account-trigger chat-entry-trigger" id="chat-entry-btn" type="button" aria-label="Open AI Chat" title="AI Chat">
         <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-          <path d="M12 12a4.25 4.25 0 1 0 0-8.5 4.25 4.25 0 0 0 0 8.5Zm0 1.75c-4.07 0-7.25 2.15-7.25 4.89 0 .48.39.86.86.86h12.78c.47 0 .86-.38.86-.86 0-2.74-3.18-4.89-7.25-4.89Z"/>
+          <path d="M6.5 5.25A3.25 3.25 0 0 0 3.25 8.5v5A3.25 3.25 0 0 0 6.5 16.75h1.85l2.82 2.25a1 1 0 0 0 1.24 0l2.82-2.25h2.27a3.25 3.25 0 0 0 3.25-3.25v-5A3.25 3.25 0 0 0 17.5 5.25h-11Zm0 1.5h11A1.75 1.75 0 0 1 19.25 8.5v5a1.75 1.75 0 0 1-1.75 1.75h-2.53a.75.75 0 0 0-.47.16L12 17.38l-2.5-1.97a.75.75 0 0 0-.47-.16H6.5A1.75 1.75 0 0 1 4.75 13.5v-5A1.75 1.75 0 0 1 6.5 6.75Zm1.5 3.5a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm4 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm4 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"/>
         </svg>
+        <span>AI Chat</span>
       </button>
-      <div class="account-dropdown" id="account-dropdown">
-        <div class="account-dropdown-profile" id="account-user-label">Signed in</div>
-        <button class="account-dropdown-item account-signout-trigger" id="account-signout-btn" type="button" aria-label="Sign out">
+      <div class="account-menu" id="account-menu" style="display:none;">
+        <button class="account-trigger account-profile-trigger" id="account-profile-btn" type="button" aria-label="Profile" aria-expanded="false">
           <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-            <path d="M10.75 3.75a.75.75 0 0 1 0 1.5H6.5A1.25 1.25 0 0 0 5.25 6.5v11A1.25 1.25 0 0 0 6.5 18.75h4.25a.75.75 0 0 1 0 1.5H6.5a2.75 2.75 0 0 1-2.75-2.75v-11A2.75 2.75 0 0 1 6.5 3.75h4.25Zm4.72 3.97a.75.75 0 0 1 1.06 0l3.72 3.72a.75.75 0 0 1 0 1.06l-3.72 3.72a.75.75 0 1 1-1.06-1.06l2.44-2.44H9.5a.75.75 0 0 1 0-1.5h8.41l-2.44-2.44a.75.75 0 0 1 0-1.06Z"/>
+            <path d="M12 12a4.25 4.25 0 1 0 0-8.5 4.25 4.25 0 0 0 0 8.5Zm0 1.75c-4.07 0-7.25 2.15-7.25 4.89 0 .48.39.86.86.86h12.78c.47 0 .86-.38.86-.86 0-2.74-3.18-4.89-7.25-4.89Z"/>
           </svg>
-          <span id="account-action-label">Logout</span>
         </button>
+        <div class="account-dropdown" id="account-dropdown">
+          <div class="account-dropdown-profile" id="account-user-label">Signed in</div>
+          <button class="account-dropdown-item account-signout-trigger" id="account-signout-btn" type="button" aria-label="Sign out">
+            <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+              <path d="M10.75 3.75a.75.75 0 0 1 0 1.5H6.5A1.25 1.25 0 0 0 5.25 6.5v11A1.25 1.25 0 0 0 6.5 18.75h4.25a.75.75 0 0 1 0 1.5H6.5a2.75 2.75 0 0 1-2.75-2.75v-11A2.75 2.75 0 0 1 6.5 3.75h4.25Zm4.72 3.97a.75.75 0 0 1 1.06 0l3.72 3.72a.75.75 0 0 1 0 1.06l-3.72 3.72a.75.75 0 1 1-1.06-1.06l2.44-2.44H9.5a.75.75 0 0 1 0-1.5h8.41l-2.44-2.44a.75.75 0 0 1 0-1.06Z"/>
+            </svg>
+            <span id="account-action-label">Logout</span>
+          </button>
+        </div>
       </div>
     </div>
     <div class="header-stepper-shell" style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
@@ -527,6 +535,37 @@
     <div id="portfolio-projects-block" class="reveal" data-section-anchor="portfolio-projects-block" style="visibility:hidden;min-height:0;max-height:0;overflow:hidden;margin:0;"></div>
 
   </div><!-- end page-action -->
+
+  <div class="page" id="page-chat">
+    <div class="results-page-header">
+      <div class="results-page-title">AI Chat</div>
+      <button class="btn btn-ghost" type="button" id="chat-reset-btn">Clear Chat</button>
+    </div>
+
+    <div class="chat-hero-card">
+      <div class="chat-hero-copy">
+        <div class="chat-hero-label">Career Mentor</div>
+        <div class="chat-hero-title">Ask about your next move.</div>
+        <div class="chat-hero-text">
+          Use the chat to understand your current role, what skills to focus on next, and which learning resources make the most sense for you.
+        </div>
+      </div>
+      <div class="chat-chip-row">
+        <button class="chat-suggestion-chip" type="button" data-chat-prompt="What should I learn next for my selected role?">What should I learn next?</button>
+        <button class="chat-suggestion-chip" type="button" data-chat-prompt="How ready am I for my selected role?">How ready am I?</button>
+        <button class="chat-suggestion-chip" type="button" data-chat-prompt="Suggest certifications for my biggest gaps.">Suggest certifications</button>
+        <button class="chat-suggestion-chip" type="button" data-chat-prompt="Give me a 30 day plan based on my current skills.">Give me a 30 day plan</button>
+      </div>
+    </div>
+
+    <div class="chat-shell">
+      <div class="chat-thread" id="chat-thread"></div>
+      <form class="chat-input-row" id="chat-form">
+        <input class="chat-input" id="chat-input" type="text" placeholder="Ask about roles, missing skills, certifications, or your roadmap..." autocomplete="off" />
+        <button class="btn btn-add chat-send-btn" id="chat-send-btn" type="submit">Send</button>
+      </form>
+    </div>
+  </div><!-- end page-chat -->
 
   <div class="page" id="page-profile">
     <div class="results-page-header">

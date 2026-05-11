@@ -701,6 +701,14 @@
     goToStep('profile');
   });
 
+  document.getElementById('chat-entry-btn')?.addEventListener('click', () => {
+    try {
+      const maybeSave = saveState();
+      if (maybeSave?.catch) maybeSave.catch(() => {});
+    } catch (error) {}
+    goToStep('chat');
+  });
+
   document.getElementById('password-toggle-btn')?.addEventListener('click', () => {
     const passwordInput = document.getElementById('password-input');
     const toggleButton = document.getElementById('password-toggle-btn');
@@ -983,7 +991,6 @@ async function buildProfilePage() {
 ═══════════════════════════════════════════ */
 const ROLES = {
   "Data Analyst": {
-    icon: "📊",
     scope: "Data analysts turn raw business data into clear answers. The role usually focuses on querying datasets, cleaning messy inputs, spotting trends, and presenting insights that help teams make better decisions.",
     outlook: "Strong fit for reporting, operations, product, and business decision support roles.",
     skills: [
@@ -998,7 +1005,6 @@ const ROLES = {
     ]
   },
   "SAP Consultant": {
-    icon: "🏢",
     scope: "SAP consultants help organizations implement and optimize enterprise workflows inside SAP systems. The role centers on business process understanding, SAP module configuration, stakeholder alignment, and guiding digital transformation projects from requirement to rollout.",
     outlook: "Strong fit for enterprise consulting, ERP implementation teams, process transformation, and large-scale business systems roles.",
     skills: [
@@ -1015,7 +1021,6 @@ const ROLES = {
     ]
   },
   "Frontend Developer": {
-    icon: "🎨",
     scope: "Frontend developers build the part of the product users see and interact with. The work centers on interface quality, responsiveness, accessibility, performance, and turning designs into polished web experiences.",
     outlook: "Best suited for product UI, design-heavy web apps, and user-facing engineering teams.",
     skills: [
@@ -1031,7 +1036,6 @@ const ROLES = {
     ]
   },
   "Software Developer": {
-    icon: "💻",
     scope: "Software developers solve broader engineering problems across features, systems, and internal tools. This path leans on programming fundamentals, clean code, testing, and the ability to build reliable software end to end.",
     outlook: "Good general path for product engineering, application development, and broad software engineering roles.",
     skills: [
@@ -1048,7 +1052,6 @@ const ROLES = {
     ]
   },
   "Backend Developer": {
-    icon: "⚙️",
     scope: "Backend developers build the services, APIs, and data layers behind applications. The role focuses on server-side logic, security, database design, reliability, and how systems behave under real usage.",
     outlook: "Strong path for API platforms, SaaS products, internal systems, and service-heavy apps.",
     skills: [
@@ -1064,7 +1067,6 @@ const ROLES = {
     ]
   },
   "Product Manager": {
-    icon: "🧭",
     scope: "Product managers decide what to build, why it matters, and how to align teams around delivery. The role focuses on customer problems, prioritization, roadmapping, metrics, and balancing business goals with user needs.",
     outlook: "Great fit for product teams, startups, digital platforms, and strategy-heavy tech roles that need clear ownership of product direction.",
     skills: [
@@ -1081,7 +1083,6 @@ const ROLES = {
     ]
   },
   "Machine Learning Engineer": {
-    icon: "🤖",
     scope: "Machine learning engineers build models that solve prediction, classification, and recommendation problems in production. The role combines math, experimentation, data handling, and deployment discipline.",
     outlook: "Best for data-driven product teams building predictive or intelligent features at scale.",
     skills: [
@@ -1097,7 +1098,6 @@ const ROLES = {
     ]
   },
   "QA Engineer": {
-    icon: "🧪",
     scope: "QA engineers protect product quality through structured testing, bug discovery, and release confidence. The role spans manual validation, automation, API checks, and clear defect communication.",
     outlook: "Great fit for teams that ship fast and need strong quality gates across web and API releases.",
     skills: [
@@ -1113,7 +1113,6 @@ const ROLES = {
     ]
   },
   "Full Stack Developer": {
-    icon: "🔀",
     scope: "Full stack developers work across both user interfaces and backend systems. This path is about building complete features, connecting frontend to APIs, and understanding the full request-to-database flow.",
     outlook: "Ideal for startups, product teams, and builders who like owning features from UI to backend.",
     skills: [
@@ -1130,7 +1129,6 @@ const ROLES = {
     ]
   },
   "Game Developer": {
-    icon: "🎮",
     scope: "Game developers build interactive real-time experiences with gameplay systems, engines, and performance constraints. The work often mixes programming, math, iteration, and a strong sense of player experience.",
     outlook: "Best suited for gameplay, tools, indie projects, and interactive media teams.",
     skills: [
@@ -1147,7 +1145,6 @@ const ROLES = {
     ]
   },
   "DevOps Engineer": {
-    icon: "🔧",
     scope: "DevOps engineers improve how software is built, deployed, monitored, and maintained. The role is centered on automation, infrastructure, reliability, and helping engineering teams ship faster with less friction.",
     outlook: "High-value path for platform teams, cloud-heavy products, and reliability-focused engineering orgs.",
     skills: [
@@ -1163,7 +1160,6 @@ const ROLES = {
     ]
   },
   "Cybersecurity": {
-    icon: "🛡️",
     scope: "Cybersecurity roles focus on protecting systems, identities, networks, and data from misuse or attack. The work can span defense, monitoring, vulnerability management, incident response, and security operations.",
     outlook: "Strong path for SOC, blue-team, risk, and infrastructure security roles across many industries.",
     skills: [
@@ -1181,25 +1177,7 @@ const ROLES = {
       { name: "Compliance & Frameworks (NIST/ISO)", weight: 3, category: "Governance" },
     ]
   },
-  "Ethical Hacker": {
-    icon: "🕵️",
-    scope: "Ethical hackers simulate real attacks to uncover weaknesses before malicious actors do. The role focuses on reconnaissance, exploitation, web and network testing, reporting findings clearly, and recommending practical remediation.",
-    outlook: "Strong fit for penetration testing, red-team exercises, offensive security consulting, and application-security roles.",
-    skills: [
-      { name: "Network Security", weight: 5, category: "Security" },
-      { name: "Web Application Security", weight: 5, category: "Application Security" },
-      { name: "Vulnerability Assessment", weight: 4, category: "Security" },
-      { name: "Penetration Testing Methodology", weight: 5, category: "Testing" },
-      { name: "Security Tools (Wireshark/Nmap)", weight: 4, category: "Tools" },
-      { name: "Burp Suite / OWASP Testing", weight: 4, category: "Application Security" },
-      { name: "Linux Administration", weight: 3, category: "Systems" },
-      { name: "Python / Scripting", weight: 3, category: "Programming" },
-      { name: "Privilege Escalation Basics", weight: 3, category: "Offensive Security" },
-      { name: "Reporting & Remediation", weight: 4, category: "Communication" }
-    ]
-  },
   "System Administrator": {
-    icon: "🖥️",
     scope: "System administrators keep servers, user accounts, operating systems, and core business services healthy and reliable. The role is centered on uptime, troubleshooting, automation, access control, and day-to-day infrastructure maintenance.",
     outlook: "Best fit for IT infrastructure, enterprise operations, support escalation, and on-prem or hybrid systems administration roles.",
     skills: [
@@ -1216,7 +1194,6 @@ const ROLES = {
     ]
   },
   "Network Engineer": {
-    icon: "🌐",
     scope: "Network engineers design, configure, and support the connectivity layer that keeps systems talking to each other. The work focuses on routing, switching, access, security, monitoring, and designing stable enterprise network environments.",
     outlook: "Strong fit for NOC teams, infrastructure engineering, enterprise networking, telecom support, and cloud-connectivity roles.",
     skills: [
@@ -1233,7 +1210,6 @@ const ROLES = {
     ]
   },
   "Database Administrator": {
-    icon: "🗄️",
     scope: "Database administrators manage the performance, reliability, security, and recovery of critical data systems. The role centers on tuning queries, backups, user access, monitoring, and keeping databases fast and available.",
     outlook: "Best suited for enterprise data operations, managed database teams, backend-heavy products, and business-critical systems support.",
     skills: [
@@ -1250,7 +1226,6 @@ const ROLES = {
     ]
   },
   "Blockchain Developer": {
-    icon: "⛓️",
     scope: "Blockchain developers build decentralized applications, smart contracts, and token-driven systems on distributed ledgers. The role combines programming, security awareness, protocol understanding, and careful contract design.",
     outlook: "Good fit for Web3 product teams, smart-contract engineering, blockchain tooling, and distributed application development.",
     skills: [
@@ -1267,7 +1242,6 @@ const ROLES = {
     ]
   },
   "Cloud Architect": {
-    icon: "☁️",
     scope: "Cloud architects design scalable, secure, and cost-aware cloud systems. The role emphasizes high-level system design, platform choices, networking, identity, and infrastructure patterns for long-term growth.",
     outlook: "Best fit for senior cloud design, platform strategy, and enterprise architecture tracks.",
     skills: [
@@ -1283,7 +1257,6 @@ const ROLES = {
     ]
   },
   "Gen AI Developer": {
-    icon: "🧠",
     scope: "Gen AI developers build applications powered by large language models and related tooling. The role blends prompting, model APIs, retrieval systems, backend integration, evaluation, and product thinking around AI behavior.",
     outlook: "Great fit for AI product teams, internal copilots, knowledge tools, and AI-powered workflows.",
     skills: [
@@ -1342,9 +1315,21 @@ let editId = null;
 let lastResults = null;
 let highlightedIndex = -1;
 let sectionTrackTicking = false;
+let chatMessages = [];
 
 function getDisplayRoleName(roleName) {
   return ROLE_LABELS[roleName] || roleName;
+}
+
+function getRoleBadgeLabel(roleName) {
+  const words = String(roleName || '')
+    .replace(/[^A-Za-z0-9/ ]/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean);
+  if (!words.length) return 'PW';
+  if (words[0].length <= 3 && words.length === 1) return words[0].toUpperCase();
+  if (words[0].length <= 3 && words.length === 2) return words[0].toUpperCase();
+  return words.slice(0, 3).map((word) => word[0]).join('').toUpperCase();
 }
 
 function escapeHTML(value) {
@@ -1456,7 +1441,8 @@ function renderHeaderPage(name) {
     setup: 'Setup',
     analysis: 'Analysis',
     action: 'Action Plan',
-    profile: 'Profile'
+    profile: 'Profile',
+    chat: 'AI Chat'
   };
   el.textContent = labels[name] || 'Setup';
 }
@@ -1523,6 +1509,9 @@ function _afterStepChange(name) {
   recordCurrentSection();
   if (name === 'profile') {
     buildProfilePage();
+  }
+  if (name === 'chat') {
+    renderCareerChat();
   }
   if (name === 'analysis' && lastResults) {
     animateResults(lastResults.score);
@@ -1661,11 +1650,11 @@ function renderRoles() {
   Object.entries(ROLES).forEach(([name, data]) => {
     const btn = document.createElement('button');
     btn.className = 'role-btn' + (selectedRole === name ? ' active' : '');
-    const scopePreview = escapeHTML((data.scope || '').split('. ')[0] || '');
+    const scopePreview = escapeHTML(data.scope || '');
     btn.innerHTML = `
       <div class="role-btn-top">
         <div class="role-btn-meta">
-          <span class="role-btn-icon">${escapeHTML(data.icon || '•')}</span>
+          <span class="role-btn-icon">${escapeHTML(getRoleBadgeLabel(name))}</span>
           <div>
             <div class="role-name">${escapeHTML(getDisplayRoleName(name))}</div>
             <div class="role-count">${data.skills.length} skills</div>
@@ -1744,7 +1733,7 @@ function addSkill() {
     document.getElementById('add-btn').textContent = '+ Add Skill';
   } else {
     if (skills.find(s => s.name.toLowerCase() === name.toLowerCase())) {
-      showToast('⚠ "' + name + '" is already in your skills list.');
+      showToast('"' + name + '" is already in your skills list.');
       skillInput.select();
       renderDropdown(getFilteredSuggestions(skillInput.value));
       return;
@@ -2020,7 +2009,7 @@ async function analyze() {
     [1050, 72,  'run',    '>>>', 'gap-analysis',   'Running gap analysis + penalty model...'],
     [1200, 82,  'run',    '>>>', 'gen-insights',   'Generating insights + learning roadmap...'],
     [1340, 91,  'run',    '>>>', 'build-report',   'Compiling readiness report...'],
-    [1480, 98,  'done',   '✓',  '',                'Analysis complete. Loading results...'],
+    [1480, 98,  'done',   'OK',  '',               'Analysis complete. Loading results...'],
   ];
 
   // Clear log
@@ -2663,26 +2652,6 @@ const PORTFOLIO_PROJECTS = {
       why: "IR planning is a core competency tested in every blue-team interview. A published playbook signals structured thinking and preparation — exactly what security teams want."
     }
   ],
-  "Ethical Hacker": [
-    {
-      title: "Web App Pentest Report",
-      skills: ["Web Application Security", "Burp Suite / OWASP Testing", "Reporting & Remediation"],
-      build: "Test a deliberately vulnerable web app such as DVWA or OWASP Juice Shop. Document attack paths, findings, severity, proof of concept, and remediation steps in a professional pentest-style report.",
-      why: "Ethical hacking roles value evidence of structured testing and communication. A clean report proves you can do both the technical and consulting side of the work."
-    },
-    {
-      title: "Internal Network Recon Lab",
-      skills: ["Network Security", "Security Tools (Wireshark/Nmap)", "Penetration Testing Methodology"],
-      build: "Set up a small virtual lab and perform internal reconnaissance, service enumeration, attack-path mapping, and vulnerability validation. Record methodology, commands used, and lessons learned.",
-      why: "A home lab shows practical offensive security ability, not just certification knowledge. It also gives you concrete examples to discuss in interviews."
-    },
-    {
-      title: "Privilege Escalation Practice Journal",
-      skills: ["Linux Administration", "Privilege Escalation Basics", "Python / Scripting"],
-      build: "Work through Linux and Windows privilege escalation scenarios in a lab environment, automate repeatable checks with scripts, and maintain a journal of techniques, detection signs, and mitigations.",
-      why: "Privilege escalation is a common interview topic in offensive security. Showing repeated practice makes you look much more prepared than listing tools alone."
-    }
-  ],
   "System Administrator": [
     {
       title: "Windows and Linux Admin Lab",
@@ -3041,7 +3010,7 @@ function buildInsights(currentRole, currentScore) {
   // Score every other role
   const otherRoles = Object.keys(ROLES)
     .filter(r => r !== currentRole)
-    .map(r => ({ name: r, icon: ROLES[r].icon, score: scoreRoleForSkills(r) }))
+    .map(r => ({ name: r, score: scoreRoleForSkills(r) }))
     .sort((a, b) => b.score - a.score);
 
   // "Next role you can target" = highest scoring role you're NOT already analysing
@@ -3188,7 +3157,7 @@ function buildRoadmap(matched, missing, role) {
       title: 'Critical Foundations',
       color: 'var(--accent)',
       skills: critical.slice(0, 4),
-      note: critical.length === 0 ? 'All critical skills covered ✓' : null,
+      note: critical.length === 0 ? 'All critical skills covered' : null,
     },
     {
       id: 2,
@@ -3197,7 +3166,7 @@ function buildRoadmap(matched, missing, role) {
       title: 'Supporting Skills',
       color: 'var(--yellow)',
       skills: important.slice(0, 4),
-      note: important.length === 0 ? 'All supporting skills covered ✓' : null,
+      note: important.length === 0 ? 'All supporting skills covered' : null,
     },
     {
       id: 3,
@@ -3206,7 +3175,7 @@ function buildRoadmap(matched, missing, role) {
       title: 'Level Up Existing Skills',
       color: 'var(--green)',
       skills: owned.filter(s => s.userLevel < 3).slice(0, 4),
-      note: owned.filter(s => s.userLevel < 3).length === 0 ? 'All matched skills at Expert level ✓' : null,
+      note: owned.filter(s => s.userLevel < 3).length === 0 ? 'All matched skills at Expert level' : null,
     },
     {
       id: 4,
@@ -3383,7 +3352,7 @@ function renderSimulator() {
     const gainPts = Math.round((s.gain / simBaseTotalWeight) * 100);
     const reason  = SKILL_REASONS[s.name] || `Important for the ${simCurrentRole} role.`;
     const depWarning = s.missingDeps.length > 0 && !isLearned
-      ? `<div style="font-size:10px;color:var(--yellow);font-family:'Montserrat',sans-serif;margin-top:4px;">⚠ Needs: ${s.missingDeps.slice(0,2).join(', ')}</div>`
+      ? `<div style="font-size:10px;color:var(--yellow);font-family:'Montserrat',sans-serif;margin-top:4px;">Needs: ${s.missingDeps.slice(0,2).join(', ')}</div>`
       : '';
     const unlockNote = s.unlock > 0
       ? `<span style="font-family:'Montserrat',sans-serif;font-size:9px;color:var(--accent2);background:rgba(44,95,212,0.12);padding:1px 5px;border-radius:8px;margin-left:4px;">unlocks ${s.unlock}</span>`
@@ -3392,7 +3361,7 @@ function renderSimulator() {
     return `
       <div class="sim-skill-card ${isLearned ? 'learned' : ''} ${rank < 3 ? 'high-impact' : ''}"
            id="sim-card-${key}" onclick="simToggle('${s.name.replace(/'/g,"\'")}')">
-        <div class="sim-toggle" id="sim-toggle-${key}">${isLearned ? '✓' : ''}</div>
+        <div class="sim-toggle" id="sim-toggle-${key}">${isLearned ? 'On' : ''}</div>
         <div class="sim-skill-info" style="flex:1;min-width:0;">
           <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
             ${rank < 3 ? '<span style="font-family:Montserrat,sans-serif;font-size:9px;color:var(--accent2);background:rgba(44,95,212,0.15);padding:1px 5px;border-radius:8px;">Top Pick</span>' : ''}
@@ -3423,7 +3392,7 @@ function renderLearningOrder(scored) {
     const isLearned = simLearnedSkills.has(s.name);
     return `
       <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-        <div style="width:22px;height:22px;border-radius:50%;background:${isLearned?'var(--green)':'rgba(44,95,212,0.25)'};border:1.5px solid ${isLearned?'var(--green)':'rgba(44,95,212,0.5)'};display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-weight:800;font-size:11px;color:${isLearned?'white':'var(--accent2)'};flex-shrink:0;transition:all 0.3s;">${isLearned?'✓':(i+1)}</div>
+        <div style="width:22px;height:22px;border-radius:50%;background:${isLearned?'var(--green)':'rgba(44,95,212,0.25)'};border:1.5px solid ${isLearned?'var(--green)':'rgba(44,95,212,0.5)'};display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-weight:800;font-size:10px;color:${isLearned?'white':'var(--accent2)'};flex-shrink:0;transition:all 0.3s;">${isLearned?'Done':(i+1)}</div>
         <div style="flex:1;">
           <div style="font-size:13px;font-weight:600;color:${isLearned?'var(--green)':'var(--text)'};text-decoration:${isLearned?'line-through':'none'};margin-bottom:2px;transition:all 0.3s;">${s.name}</div>
           <div style="font-family:'Montserrat',sans-serif;font-size:10px;color:var(--text2);">+${gainPts}pts to readiness${s.unlock>0?' · unlocks '+s.unlock+' more skill'+(s.unlock>1?'s':''):''}</div>
@@ -4561,6 +4530,433 @@ const LEARN_DATA = {
   },
 };
 
+Object.assign(LEARN_DATA, {
+  "SAP ERP Modules (FI/CO/MM/SD)": {
+    learn: [
+      { name: "openSAP — ERP and business process courses", type: "Course", url: "https://learning.sap.com/open-learning" },
+      { name: "SAP Help Portal — ERP modules", type: "Docs", url: "https://help.sap.com" },
+    ],
+    certs: [
+      { name: "SAP Certified Associate — Business Process Integration", type: "Cert", url: "https://training.sap.com/certification/c_ts410" },
+    ],
+    test: [
+      { name: "SAP Learning Journeys practice content", type: "Practice", url: "https://learning.sap.com/learning-journeys" },
+    ],
+  },
+  "SAP S/4HANA": {
+    learn: [
+      { name: "SAP Learning Journey — S/4HANA", type: "Course", url: "https://learning.sap.com/learning-journeys" },
+      { name: "SAP Help Portal — S/4HANA", type: "Docs", url: "https://help.sap.com/docs/SAP_S4HANA_ON-PREMISE" },
+    ],
+    certs: [
+      { name: "SAP Certified Associate — SAP S/4HANA", type: "Cert", url: "https://training.sap.com/certification" },
+    ],
+    test: [
+      { name: "SAP Sandbox and guided exercises", type: "Practice", url: "https://developers.sap.com/tutorials.html" },
+    ],
+  },
+  "SAP Configuration & Customising": {
+    learn: [
+      { name: "SAP configuration tutorials", type: "Guide", url: "https://community.sap.com" },
+      { name: "SAP Learning — implementation basics", type: "Course", url: "https://learning.sap.com" },
+    ],
+    certs: [
+      { name: "SAP Certified Application Associate", type: "Cert", url: "https://training.sap.com/certification" },
+    ],
+    test: [
+      { name: "SAP implementation case exercises", type: "Practice", url: "https://learning.sap.com/learning-journeys" },
+    ],
+  },
+  "Business Process Analysis": {
+    learn: [
+      { name: "Coursera — Business Process Management", type: "Course", url: "https://www.coursera.org/learn/process-mining" },
+      { name: "SAP Signavio process resources", type: "Guide", url: "https://www.sap.com/products/technology-platform/signavio.html" },
+    ],
+    certs: [
+      { name: "ECBA — Entry Certificate in Business Analysis", type: "Cert", url: "https://www.iiba.org/business-analysis-certifications/ecba" },
+    ],
+    test: [
+      { name: "Process mapping exercises", type: "Practice", url: "https://www.lucidchart.com/pages/process-map" },
+    ],
+  },
+  "Data Migration (LSMW/BAPI)": {
+    learn: [
+      { name: "SAP data migration tutorials", type: "Guide", url: "https://community.sap.com" },
+      { name: "SAP Help — migration cockpit", type: "Docs", url: "https://help.sap.com" },
+    ],
+    certs: [
+      { name: "SAP S/4HANA implementation certification", type: "Cert", url: "https://training.sap.com/certification" },
+    ],
+    test: [
+      { name: "Sample migration exercise walk-throughs", type: "Practice", url: "https://developers.sap.com/tutorial-navigator.html" },
+    ],
+  },
+  "Integration (SAP PI/PO / BTP)": {
+    learn: [
+      { name: "SAP Integration Suite learning content", type: "Course", url: "https://learning.sap.com" },
+      { name: "SAP BTP documentation", type: "Docs", url: "https://help.sap.com/docs/BTP" },
+    ],
+    certs: [
+      { name: "SAP Certified Associate — Integration Developer", type: "Cert", url: "https://training.sap.com/certification" },
+    ],
+    test: [
+      { name: "SAP integration tutorials", type: "Practice", url: "https://developers.sap.com/tutorial-navigator.html" },
+    ],
+  },
+  "Stakeholder Communication": {
+    learn: [
+      { name: "Atlassian communication for teams", type: "Guide", url: "https://www.atlassian.com/team-playbook" },
+      { name: "LinkedIn Learning — stakeholder communication", type: "Course", url: "https://www.linkedin.com/learning/topics/communication" },
+    ],
+    certs: [
+      { name: "PMI Communication modules", type: "Cert", url: "https://www.pmi.org/learning/training-development" },
+    ],
+    test: [
+      { name: "Write and present a stakeholder update", type: "Practice", url: "https://www.canva.com/presentations/templates/project-update" },
+    ],
+  },
+  "Windows Server Administration": {
+    learn: [
+      { name: "Microsoft Learn — Windows Server", type: "Course", url: "https://learn.microsoft.com/en-us/training/windowsserver" },
+      { name: "Windows Server documentation", type: "Docs", url: "https://learn.microsoft.com/en-us/windows-server" },
+    ],
+    certs: [
+      { name: "Windows Server Hybrid Administrator Associate", type: "Cert", url: "https://learn.microsoft.com/en-us/certifications/windows-server-hybrid-administrator" },
+    ],
+    test: [
+      { name: "Build a home lab with Windows Server", type: "Practice", url: "https://learn.microsoft.com/en-us/windows-server/administration/server-core/server-core-overview" },
+    ],
+  },
+  "Linux Administration": {
+    learn: [
+      { name: "Linux Foundation admin training", type: "Course", url: "https://training.linuxfoundation.org/training/essentials-of-linux-system-administration" },
+      { name: "Red Hat system administration overview", type: "Guide", url: "https://www.redhat.com/en/services/training/rh124-red-hat-system-administration-i" },
+    ],
+    certs: [
+      { name: "CompTIA Linux+", type: "Cert", url: "https://www.comptia.org/certifications/linux" },
+      { name: "LFCS — Linux Foundation Sysadmin", type: "Cert", url: "https://training.linuxfoundation.org/certification/lfcs" },
+    ],
+    test: [
+      { name: "OverTheWire Bandit", type: "Practice", url: "https://overthewire.org/wargames/bandit" },
+    ],
+  },
+  "Active Directory & Group Policy": {
+    learn: [
+      { name: "Microsoft Learn — Active Directory", type: "Course", url: "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview" },
+      { name: "Group Policy documentation", type: "Docs", url: "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-overview" },
+    ],
+    certs: [
+      { name: "Windows Server Hybrid Administrator Associate", type: "Cert", url: "https://learn.microsoft.com/en-us/certifications/windows-server-hybrid-administrator" },
+    ],
+    test: [
+      { name: "Create users, OUs, and policies in a lab", type: "Practice", url: "https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/deploy/virtual-dc/virtualized-domain-controller-deployment-and-configuration" },
+    ],
+  },
+  "PowerShell / Bash Scripting": {
+    learn: [
+      { name: "Microsoft Learn — PowerShell", type: "Course", url: "https://learn.microsoft.com/en-us/training/powershell" },
+      { name: "Bash scripting tutorial", type: "Guide", url: "https://ryanstutorials.net/bash-scripting-tutorial" },
+    ],
+    certs: [
+      { name: "Google IT Automation with Python", type: "Cert", url: "https://grow.google/certificates/it-automation-python" },
+    ],
+    test: [
+      { name: "HackerRank Shell challenges", type: "Test", url: "https://www.hackerrank.com/domains/shell" },
+    ],
+  },
+  "User & Access Management": {
+    learn: [
+      { name: "Microsoft Learn — identity basics", type: "Course", url: "https://learn.microsoft.com/en-us/training/paths/describe-concepts-of-security-compliance-and-identity" },
+      { name: "Okta identity access basics", type: "Guide", url: "https://developer.okta.com/docs/concepts/iam" },
+    ],
+    certs: [
+      { name: "SC-900 Microsoft Security, Compliance, and Identity Fundamentals", type: "Cert", url: "https://learn.microsoft.com/en-us/certifications/security-compliance-and-identity-fundamentals" },
+    ],
+    test: [
+      { name: "Build a least-privilege user access plan", type: "Practice", url: "https://learn.microsoft.com/en-us/azure/role-based-access-control/overview" },
+    ],
+  },
+  "Backup & Recovery": {
+    learn: [
+      { name: "Veeam backup fundamentals", type: "Guide", url: "https://www.veeam.com/blog/backup-recovery-explained.html" },
+      { name: "AWS backup and recovery planning", type: "Docs", url: "https://docs.aws.amazon.com/prescriptive-guidance/latest/backup-recovery/welcome.html" },
+    ],
+    certs: [
+      { name: "CompTIA Server+", type: "Cert", url: "https://www.comptia.org/certifications/server" },
+    ],
+    test: [
+      { name: "Restore-test runbook exercise", type: "Practice", url: "https://learn.microsoft.com/en-us/azure/backup/backup-azure-recovery-services-vault-overview" },
+    ],
+  },
+  "Monitoring & Troubleshooting": {
+    learn: [
+      { name: "Microsoft Learn — system monitoring", type: "Course", url: "https://learn.microsoft.com/en-us/training" },
+      { name: "SolarWinds network and server monitoring guides", type: "Guide", url: "https://www.solarwinds.com/resources" },
+    ],
+    certs: [
+      { name: "CompTIA Server+", type: "Cert", url: "https://www.comptia.org/certifications/server" },
+    ],
+    test: [
+      { name: "Troubleshoot alerts in a home lab", type: "Practice", url: "https://learn.microsoft.com/en-us/windows-server/administration/performance-tuning" },
+    ],
+  },
+  "TCP/IP & Subnetting": {
+    learn: [
+      { name: "Practical Networking — TCP/IP and subnetting", type: "Guide", url: "https://www.practicalnetworking.net" },
+      { name: "Cisco Networking Academy basics", type: "Course", url: "https://www.netacad.com/courses/networking-basics" },
+    ],
+    certs: [
+      { name: "CompTIA Network+", type: "Cert", url: "https://www.comptia.org/certifications/network" },
+    ],
+    test: [
+      { name: "Subnetting practice questions", type: "Practice", url: "https://subnetipv4.com" },
+    ],
+  },
+  "Routing & Switching": {
+    learn: [
+      { name: "Cisco CCNA learning path", type: "Course", url: "https://www.cisco.com/site/us/en/learn/training-certifications/certifications/enterprise/ccna/index.html" },
+      { name: "Cisco NetAcad switching and routing", type: "Course", url: "https://www.netacad.com" },
+    ],
+    certs: [
+      { name: "Cisco CCNA", type: "Cert", url: "https://www.cisco.com/site/us/en/learn/training-certifications/certifications/enterprise/ccna/index.html" },
+    ],
+    test: [
+      { name: "Packet Tracer routing labs", type: "Practice", url: "https://www.netacad.com/courses/packet-tracer" },
+    ],
+  },
+  "DNS / DHCP": {
+    learn: [
+      { name: "Cloudflare Learning Center — DNS", type: "Guide", url: "https://www.cloudflare.com/learning/dns/what-is-dns" },
+      { name: "Microsoft Learn — DHCP and DNS", type: "Docs", url: "https://learn.microsoft.com/en-us/windows-server/networking/technologies/dhcp/dhcp-top" },
+    ],
+    certs: [
+      { name: "CompTIA Network+", type: "Cert", url: "https://www.comptia.org/certifications/network" },
+    ],
+    test: [
+      { name: "Build and test DNS/DHCP in a lab", type: "Practice", url: "https://learn.microsoft.com/en-us/windows-server/networking/dns/quickstart-install-configure-dns-server" },
+    ],
+  },
+  "Firewall Configuration": {
+    learn: [
+      { name: "Fortinet NSE training", type: "Course", url: "https://training.fortinet.com" },
+      { name: "Cisco firewall basics", type: "Guide", url: "https://www.cisco.com/c/en/us/products/security/firewalls/index.html" },
+    ],
+    certs: [
+      { name: "Fortinet NSE 4", type: "Cert", url: "https://www.fortinet.com/training/certification" },
+    ],
+    test: [
+      { name: "pfSense firewall lab", type: "Practice", url: "https://docs.netgate.com/pfsense/en/latest" },
+    ],
+  },
+  "VPN / Remote Access": {
+    learn: [
+      { name: "Cisco VPN fundamentals", type: "Guide", url: "https://www.cisco.com/c/en/us/products/security/vpn-endpoint-security-clients/index.html" },
+      { name: "OpenVPN docs", type: "Docs", url: "https://openvpn.net/community-resources/how-to" },
+    ],
+    certs: [
+      { name: "CompTIA Security+", type: "Cert", url: "https://www.comptia.org/certifications/security" },
+    ],
+    test: [
+      { name: "Set up and test remote access in a lab", type: "Practice", url: "https://openvpn.net/community-resources/how-to" },
+    ],
+  },
+  "Network Monitoring & Troubleshooting": {
+    learn: [
+      { name: "Wireshark University starter guides", type: "Guide", url: "https://www.wireshark.org/docs" },
+      { name: "SolarWinds troubleshooting resources", type: "Guide", url: "https://www.solarwinds.com/resources" },
+    ],
+    certs: [
+      { name: "CompTIA Network+", type: "Cert", url: "https://www.comptia.org/certifications/network" },
+    ],
+    test: [
+      { name: "Wireshark packet analysis practice", type: "Practice", url: "https://www.wireshark.org/docs/wsug_html_chunked/ChapterIntroduction.html" },
+    ],
+  },
+  "Cisco / Juniper Basics": {
+    learn: [
+      { name: "Cisco Networking Academy", type: "Course", url: "https://www.netacad.com" },
+      { name: "Juniper Open Learning", type: "Course", url: "https://learningportal.juniper.net/juniper/user_activity_info.aspx?id=11478" },
+    ],
+    certs: [
+      { name: "Cisco CCNA", type: "Cert", url: "https://www.cisco.com/site/us/en/learn/training-certifications/certifications/enterprise/ccna/index.html" },
+      { name: "Juniper JNCIA-Junos", type: "Cert", url: "https://www.juniper.net/us/en/training/certification/tracks/junos/jncia-junos.html" },
+    ],
+    test: [
+      { name: "Packet Tracer and Juniper vLabs", type: "Practice", url: "https://jlabs.juniper.net/vlabs" },
+    ],
+  },
+  "Database Design": {
+    learn: [
+      { name: "Database Design course by freeCodeCamp", type: "Course", url: "https://www.freecodecamp.org/news/database-design-full-course-450-part-video-tutorial" },
+      { name: "Vertabelo data modeling articles", type: "Guide", url: "https://vertabelo.com/blog" },
+    ],
+    certs: [
+      { name: "Meta Database Engineer Professional Certificate", type: "Cert", url: "https://www.coursera.org/professional-certificates/meta-database-engineer" },
+    ],
+    test: [
+      { name: "Design schemas for sample business cases", type: "Practice", url: "https://www.db-fiddle.com" },
+    ],
+  },
+  "Performance Tuning": {
+    learn: [
+      { name: "Use The Index, Luke", type: "Guide", url: "https://use-the-index-luke.com" },
+      { name: "PostgreSQL performance docs", type: "Docs", url: "https://www.postgresql.org/docs/current/performance-tips.html" },
+    ],
+    certs: [
+      { name: "Oracle Database SQL Certified Associate", type: "Cert", url: "https://education.oracle.com/oracle-database-sql/pexam_1Z0-071" },
+    ],
+    test: [
+      { name: "EXPLAIN plan tuning practice", type: "Practice", url: "https://www.postgresqltutorial.com/postgresql-explain" },
+    ],
+  },
+  "Indexing & Query Optimization": {
+    learn: [
+      { name: "Use The Index, Luke — indexing guide", type: "Guide", url: "https://use-the-index-luke.com/sql/anatomy" },
+      { name: "SQL Server query tuning docs", type: "Docs", url: "https://learn.microsoft.com/en-us/sql/relational-databases/performance/monitor-and-tune-for-performance" },
+    ],
+    certs: [
+      { name: "Oracle Database SQL Certified Associate", type: "Cert", url: "https://education.oracle.com/oracle-database-sql/pexam_1Z0-071" },
+    ],
+    test: [
+      { name: "LeetCode database optimization practice", type: "Practice", url: "https://leetcode.com/problemset/database" },
+    ],
+  },
+  "User Roles & Access Control": {
+    learn: [
+      { name: "PostgreSQL role management docs", type: "Docs", url: "https://www.postgresql.org/docs/current/user-manag.html" },
+      { name: "OWASP least privilege guide", type: "Guide", url: "https://owasp.org/www-community/controls/Least_Privilege_Principle" },
+    ],
+    certs: [
+      { name: "Microsoft DP-300 Database Administrator Associate", type: "Cert", url: "https://learn.microsoft.com/en-us/certifications/azure-database-administrator-associate" },
+    ],
+    test: [
+      { name: "Create and audit role permissions in a lab DB", type: "Practice", url: "https://www.postgresqltutorial.com/postgresql-administration/postgresql-roles" },
+    ],
+  },
+  "Replication / High Availability": {
+    learn: [
+      { name: "PostgreSQL replication docs", type: "Docs", url: "https://www.postgresql.org/docs/current/high-availability.html" },
+      { name: "MySQL replication tutorial", type: "Guide", url: "https://dev.mysql.com/doc/refman/8.0/en/replication.html" },
+    ],
+    certs: [
+      { name: "Microsoft DP-300 Database Administrator Associate", type: "Cert", url: "https://learn.microsoft.com/en-us/certifications/azure-database-administrator-associate" },
+    ],
+    test: [
+      { name: "Build a primary-replica database lab", type: "Practice", url: "https://www.digitalocean.com/community/tutorials/how-to-set-up-replication-in-mysql" },
+    ],
+  },
+  "MySQL / PostgreSQL / SQL Server": {
+    learn: [
+      { name: "PostgreSQL tutorial", type: "Guide", url: "https://www.postgresqltutorial.com" },
+      { name: "MySQL tutorials", type: "Guide", url: "https://dev.mysql.com/doc" },
+      { name: "Microsoft Learn — SQL Server", type: "Course", url: "https://learn.microsoft.com/en-us/sql/sql-server" },
+    ],
+    certs: [
+      { name: "DP-300 Azure Database Administrator Associate", type: "Cert", url: "https://learn.microsoft.com/en-us/certifications/azure-database-administrator-associate" },
+    ],
+    test: [
+      { name: "Set up and benchmark multiple DB engines", type: "Practice", url: "https://www.db-fiddle.com" },
+    ],
+  },
+  "Solidity": {
+    learn: [
+      { name: "CryptoZombies — Solidity basics", type: "Interactive", url: "https://cryptozombies.io" },
+      { name: "Solidity official docs", type: "Docs", url: "https://docs.soliditylang.org" },
+    ],
+    certs: [
+      { name: "Alchemy University Ethereum Developer Bootcamp", type: "Cert", url: "https://university.alchemy.com" },
+    ],
+    test: [
+      { name: "SpeedRunEthereum challenges", type: "Practice", url: "https://speedrunethereum.com" },
+    ],
+  },
+  "Ethereum / EVM Basics": {
+    learn: [
+      { name: "Ethereum.org developer docs", type: "Docs", url: "https://ethereum.org/en/developers/docs" },
+      { name: "Alchemy University Ethereum fundamentals", type: "Course", url: "https://university.alchemy.com" },
+    ],
+    certs: [
+      { name: "ConsenSys blockchain developer learning path", type: "Cert", url: "https://consensys.net/academy" },
+    ],
+    test: [
+      { name: "Build and inspect transactions on Sepolia", type: "Practice", url: "https://sepoliafaucet.com" },
+    ],
+  },
+  "JavaScript / TypeScript": {
+    learn: [
+      { name: "TypeScript Handbook", type: "Docs", url: "https://www.typescriptlang.org/docs/handbook" },
+      { name: "javascript.info", type: "Guide", url: "https://javascript.info" },
+    ],
+    certs: [
+      { name: "Meta Front-End Developer Professional Certificate", type: "Cert", url: "https://www.coursera.org/professional-certificates/meta-front-end-developer" },
+    ],
+    test: [
+      { name: "Exercism JavaScript track", type: "Practice", url: "https://exercism.org/tracks/javascript" },
+    ],
+  },
+  "Smart Contract Security": {
+    learn: [
+      { name: "OpenZeppelin security guides", type: "Guide", url: "https://docs.openzeppelin.com/contracts" },
+      { name: "Secureum bootcamp content", type: "Course", url: "https://secureum.substack.com" },
+    ],
+    certs: [
+      { name: "ConsenSys smart contract security learning", type: "Cert", url: "https://consensys.net/academy" },
+    ],
+    test: [
+      { name: "Ethernaut security challenges", type: "Practice", url: "https://ethernaut.openzeppelin.com" },
+    ],
+  },
+  "Web3 Libraries (ethers.js/web3.js)": {
+    learn: [
+      { name: "ethers.js docs", type: "Docs", url: "https://docs.ethers.org" },
+      { name: "web3.js docs", type: "Docs", url: "https://docs.web3js.org" },
+    ],
+    certs: [
+      { name: "Alchemy University dApp development path", type: "Cert", url: "https://university.alchemy.com" },
+    ],
+    test: [
+      { name: "Build a wallet connect flow", type: "Practice", url: "https://speedrunethereum.com" },
+    ],
+  },
+  "Testing & Deployment Frameworks": {
+    learn: [
+      { name: "Hardhat tutorials", type: "Docs", url: "https://hardhat.org/tutorial" },
+      { name: "Foundry book", type: "Docs", url: "https://book.getfoundry.sh" },
+    ],
+    certs: [
+      { name: "Alchemy University smart contract deployment track", type: "Cert", url: "https://university.alchemy.com" },
+    ],
+    test: [
+      { name: "Write tests and deploy to Sepolia", type: "Practice", url: "https://hardhat.org/tutorial/testing-contracts" },
+    ],
+  },
+  "Token Standards (ERC-20/ERC-721)": {
+    learn: [
+      { name: "OpenZeppelin ERC standards docs", type: "Docs", url: "https://docs.openzeppelin.com/contracts/api/token/erc20" },
+      { name: "Ethereum.org token standards overview", type: "Guide", url: "https://ethereum.org/en/developers/docs/standards/tokens" },
+    ],
+    certs: [
+      { name: "ConsenSys token development learning", type: "Cert", url: "https://consensys.net/academy" },
+    ],
+    test: [
+      { name: "Deploy an ERC-20 or ERC-721 demo contract", type: "Practice", url: "https://speedrunethereum.com" },
+    ],
+  },
+  "Vulnerability Assessment": {
+    learn: [
+      { name: "OWASP Web Security Testing Guide", type: "Guide", url: "https://owasp.org/www-project-web-security-testing-guide" },
+      { name: "TryHackMe vulnerability management rooms", type: "Practice", url: "https://tryhackme.com" },
+    ],
+    certs: [
+      { name: "CompTIA Security+", type: "Cert", url: "https://www.comptia.org/certifications/security" },
+      { name: "CompTIA PenTest+", type: "Cert", url: "https://www.comptia.org/certifications/pentest" },
+    ],
+    test: [
+      { name: "OWASP Juice Shop and DVWA labs", type: "Practice", url: "https://owasp.org/www-project-juice-shop" },
+    ],
+  },
+});
+
 function buildLearnResources(missing) {
   const section = document.getElementById('learn-resources-section');
   const list    = document.getElementById('learn-resources-list');
@@ -4651,13 +5047,145 @@ function buildLearnResources(missing) {
   }).join('')}</div>`;
 }
 
+function getChatRoleContext() {
+  const roleName = selectedRole && ROLES[selectedRole] ? selectedRole : '';
+  const role = roleName ? ROLES[roleName] : null;
+  const computed = role ? computeResultsForRole(roleName, skills) : null;
+  return {
+    roleName,
+    roleLabel: roleName ? getDisplayRoleName(roleName) : 'your selected role',
+    role,
+    results: computed,
+    priorities: computed?.priorities || [],
+    matched: computed?.matched || [],
+    missing: computed?.missing || [],
+    score: computed?.score ?? null,
+    savedSkills: Array.isArray(skills) ? skills : []
+  };
+}
 
+function getChatResourceSummary(skillName, type, limit = 2) {
+  const data = LEARN_DATA[skillName];
+  const items = data?.[type] || [];
+  return items.slice(0, limit).map((item) => item.name);
+}
 
+function getChatPortfolioIdeas(roleName) {
+  return (PORTFOLIO_PROJECTS[roleName] || []).slice(0, 2).map((project) => project.title);
+}
 
+function buildCareerChatReply(input) {
+  const prompt = String(input || '').trim();
+  const lower = prompt.toLowerCase();
+  const context = getChatRoleContext();
+  const hasRole = !!context.role;
+  const hasResults = context.score !== null;
+  const topMissing = context.priorities.slice(0, 3);
+  const strongest = context.matched.slice().sort((a, b) => b.contribution - a.contribution).slice(0, 3);
 
+  if (!hasRole) {
+    return `Select a target role first, then I can help with readiness, missing skills, certifications, and a learning plan. Right now you can start by choosing the role you want to aim for on the Setup page.`;
+  }
 
-  const displayRole = getDisplayRoleName(role);
+  if (lower.includes('scope') || lower.includes('what does') || lower.includes('about this role') || lower.includes('about the role')) {
+    return `${context.roleLabel} is mainly about ${context.role.scope.toLowerCase()}\n\nThis path is a strong fit for ${context.role.outlook.toLowerCase()}`;
+  }
 
+  if (lower.includes('ready') || lower.includes('score') || lower.includes('how am i doing')) {
+    if (!hasResults) {
+      return `You already have ${context.savedSkills.length} saved skills for ${context.roleLabel}, but you still need to run Analyze Readiness to generate your score.\n\nOnce you do that, I can break down your strongest areas and biggest gaps.`;
+    }
+    const strongestArea = strongest.length ? strongest[0].name : 'your current foundation';
+    const biggestGap = topMissing.length ? topMissing[0].name : 'no major critical gap';
+    return `You are currently at ${context.score}% readiness for ${context.roleLabel}.\n\nYour strongest signal right now is ${strongestArea}. The biggest gap to close next is ${biggestGap}.`;
+  }
 
+  if (lower.includes('learn next') || lower.includes('missing') || lower.includes('gap') || lower.includes('next step')) {
+    if (!topMissing.length) {
+      return `You have already covered the critical skills for ${context.roleLabel}. At this stage, focus on deeper project work, better documentation, and stronger portfolio proof.`;
+    }
+    return `For ${context.roleLabel}, the best next skills to focus on are:\n\n${topMissing.map((skill, index) => `${index + 1}. ${skill.name}`).join('\n')}\n\nStart with ${topMissing[0].name}, then move to ${topMissing[1] ? topMissing[1].name : 'project practice'}.`;
+  }
 
+  if (lower.includes('cert') || lower.includes('course') || lower.includes('resource') || lower.includes('practice')) {
+    const focusSkill = topMissing[0]?.name || context.role.skills[0]?.name;
+    const learn = getChatResourceSummary(focusSkill, 'learn');
+    const certs = getChatResourceSummary(focusSkill, 'certs');
+    const tests = getChatResourceSummary(focusSkill, 'test');
+    return `For ${context.roleLabel}, I would focus on ${focusSkill} first.\n\nLearn:\n${learn.length ? learn.map((item) => `- ${item}`).join('\n') : '- Use the Action Plan learning section'}\n\nCertifications:\n${certs.length ? certs.map((item) => `- ${item}`).join('\n') : '- No strong certification needed yet; hands-on practice matters more'}\n\nPractice:\n${tests.length ? tests.map((item) => `- ${item}`).join('\n') : '- Build one guided project around this skill'}`;
+  }
+
+  if (lower.includes('roadmap') || lower.includes('30 day') || lower.includes('plan')) {
+    const first = topMissing[0]?.name || context.role.skills[0]?.name;
+    const second = topMissing[1]?.name || context.role.skills[1]?.name;
+    const third = topMissing[2]?.name || context.role.skills[2]?.name;
+    return `Here is a focused 30-day plan for ${context.roleLabel}:\n\nWeek 1: Learn the basics of ${first}.\nWeek 2: Practice ${first} with guided exercises and notes.\nWeek 3: Start ${second} and connect it to your target role.\nWeek 4: Build a small proof project using ${first}${second ? ` and ${second}` : ''}${third ? `, then review ${third}` : ''}.`;
+  }
+
+  if (lower.includes('project') || lower.includes('portfolio')) {
+    const projects = getChatPortfolioIdeas(context.roleName);
+    if (!projects.length) {
+      return `For ${context.roleLabel}, build one small project that shows your top missing skill in action, then document the problem, architecture, and what you learned.`;
+    }
+    return `For ${context.roleLabel}, these portfolio ideas would be strong starting points:\n\n${projects.map((project, index) => `${index + 1}. ${project}`).join('\n')}`;
+  }
+
+  return `For ${context.roleLabel}, the best move right now is to focus on ${topMissing[0]?.name || context.role.skills[0]?.name}, keep building proof through projects, and use the Action Plan as your weekly roadmap.\n\nIf you want, ask me about readiness, missing skills, certifications, or a 30-day plan.`;
+}
+
+function renderCareerChat() {
+  const thread = document.getElementById('chat-thread');
+  if (!thread) return;
+
+  if (!chatMessages.length) {
+    const context = getChatRoleContext();
+    const greeting = context.role
+      ? `You are working toward ${context.roleLabel}. Ask about missing skills, readiness, certifications, or what to do next.`
+      : 'Choose a role on the Setup page, then come here for help with readiness, learning priorities, and next steps.';
+    chatMessages = [
+      { sender: 'assistant', text: greeting }
+    ];
+  }
+
+  thread.innerHTML = chatMessages.length
+    ? chatMessages.map((message) => `
+      <div class="chat-message ${message.sender}">
+        <span class="chat-message-meta">${message.sender === 'assistant' ? 'Pathwise AI Chat' : 'You'}</span>
+        ${escapeHTML(message.text)}
+      </div>
+    `).join('')
+    : `<div class="chat-empty-state"><div><strong>AI Chat is ready.</strong>Ask about your role, missing skills, or learning plan.</div></div>`;
+
+  thread.scrollTop = thread.scrollHeight;
+}
+
+function handleCareerChatSubmit(promptText) {
+  const prompt = String(promptText || '').trim();
+  if (!prompt) return;
+  chatMessages.push({ sender: 'user', text: prompt });
+  const reply = buildCareerChatReply(prompt);
+  chatMessages.push({ sender: 'assistant', text: reply });
+  renderCareerChat();
+}
+
+document.getElementById('chat-form')?.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const input = document.getElementById('chat-input');
+  if (!input) return;
+  handleCareerChatSubmit(input.value);
+  input.value = '';
+  input.focus();
+});
+
+document.querySelectorAll('[data-chat-prompt]').forEach((button) => {
+  button.addEventListener('click', () => {
+    const prompt = button.getAttribute('data-chat-prompt') || '';
+    handleCareerChatSubmit(prompt);
+  });
+});
+
+document.getElementById('chat-reset-btn')?.addEventListener('click', () => {
+  chatMessages = [];
+  renderCareerChat();
+});
 
